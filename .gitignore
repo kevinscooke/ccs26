@@ -1,0 +1,53 @@
+# === Node / pnpm ===
+node_modules/
+.pnpm-store/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+# keep pnpm-lock.yaml committed!
+
+# === Next.js / Build output ===
+.next/
+out/
+.next/cache/
+.vercel/
+.netlify/
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Env / secrets ===
+.env
+.env.*
+!.env.example
+
+# === Prisma ===
+# Keep migrations in git!
+# prisma/migrations/   <-- DO NOT IGNORE (commit your migrations)
+.prisma/
+
+# === Logs & coverage ===
+logs/
+*.log
+*.log.*
+coverage/
+.cache/
+
+# === Linting ===
+.eslintcache
+
+# === Editor / OS cruft ===
+.vscode/
+.idea/
+.fleet/
+.DS_Store
+Thumbs.db
+
+# === Images / uploads (if any runtime-generated) ===
+public/uploads/
+uploads/
+
+# === Misc build tooling ===
+.turbo/

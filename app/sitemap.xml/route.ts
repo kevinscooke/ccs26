@@ -1,0 +1,17 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+
+export const revalidate = 86400;
+
+export async function GET() {
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const events = await prisma.event.findMany({ where: { status: 'PUBLISHED' }, select: { slug: true } });
+  const urls = events.map(e => `<url><loc>${base}/events/${e.slug}</loc><changefreq>daily</changefreq></url>`).join('');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url><loc>${base}/</loc></url>
+    <url><loc>${base}/events</loc></url>
+    ${urls}
+  </urlset>`;
+  return new NextResponse(xml, { headers: { 'Content-Type': 'application/xml' } });
+}
