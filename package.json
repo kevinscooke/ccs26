@@ -51,6 +51,9 @@
       "@prisma/engines",
       "prisma",
       "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
+      "esbuild"
     ]
   }
 }
