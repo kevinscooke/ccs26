@@ -8,22 +8,12 @@ export default function Contact() {
         Prefer email? Reach us at <a className="underline" href="mailto:hello@charlottecarshows.com">hello@charlottecarshows.com</a>.
       </p>
 
-      {/* Netlify Forms */}
+      
       <form
-        name="event-submission"
         method="POST"
-        data-netlify="true"
-        data-netlify-honeypot="bot-field"
-        action="/thanks"
+        action="/api/submissions"
         className="mt-6 space-y-5"
       >
-        {/* Netlify required hidden inputs */}
-        <input type="hidden" name="form-name" value="event-submission" />
-        <p className="hidden">
-          <label>
-            Don’t fill this out: <input name="bot-field" />
-          </label>
-        </p>
 
         <div className="grid gap-4">
           {/* Name */}
@@ -115,9 +105,6 @@ export default function Contact() {
               placeholder="Tell us about your event (parking info, cost, special notes, etc.)"
             />
           </label>
-
-          {/* Optional: Netlify reCAPTCHA v2 */}
-          {/* <div data-netlify-recaptcha="true"></div> */}
 
           <div className="pt-2">
             <button type="submit" className="ccs-btn">Submit Event</button>
