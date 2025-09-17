@@ -1,25 +1,49 @@
 // lib/prisma.ts
 import { PrismaClient } from "@prisma/client";
+import { promises as dns } from "dns";
 
-let prisma: PrismaClient;
-
-if (typeof globalThis !== "undefined") {
-  // @ts-ignore
-  if (!globalThis.__prisma) {
-    // Only instantiate if env exists to avoid build-time crash
-    if (!process.env.DATABASE_URL) {
-      // create a no-op shim so imports won’t explode during build
-      // @ts-ignore
-      globalThis.__prisma = null;
-    } else {
-      // @ts-ignore
-      globalThis.__prisma = new PrismaClient();
-    }
-  }
-  // @ts-ignore
-  prisma = globalThis.__prisma ?? ({} as any);
-} else {
-  prisma = new PrismaClient();
+declare global {
+  // eslint-disable-next-line no-var
+  var __prisma: PrismaClient | undefined;
 }
 
-export { prisma };
+/**
+ * Resolve DATABASE_URL hostname to IPv4 and patch process.env so Prisma/pg uses it.
+ * Do this once per cold start.
+ */
+async function ensureIPv4DatabaseUrl() {
+  const raw = process.env.DATABASE_URL;
+  if (!raw) throw new Error("DATABASE_URL not set");
+
+  // If someone already set an IPv4 override, use it.
+  const override = process.env.DATABASE_URL_IPV4;
+  if (override) {
+    process.env.DATABASE_URL = override;
+    return;
+  }
+
+  try {
+    const u = new URL(raw);
+    const { address } = await dns.lookup(u.hostname, { family: 4 });
+    if (address && address !== u.hostname) {
+      u.hostname = address;
+      process.env.DATABASE_URL = u.toString();
+    }
+  } catch {
+    // If DNS lookup fails, keep original; prisma will surface the error
+    process.env.DATABASE_URL = raw;
+  }
+}
+
+export async function getPrisma(): Promise<PrismaClient> {
+  if (global.__prisma) return global.__prisma;
+
+  await ensureIPv4DatabaseUrl();
+
+  const client = new PrismaClient({
+    log: ["warn", "error"],
+  });
+
+  global.__prisma = client;
+  return client;
+}

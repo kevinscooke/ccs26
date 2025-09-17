@@ -1,25 +1,17 @@
-// netlify/functions/series_generate.ts
-import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
+import { promises as dns } from "dns";
 
-// If you need DB access; otherwise remove Prisma entirely.
-const prisma = new PrismaClient();
+// Small inline helper (functions can’t easily import "@/lib/prisma")
+async function getPrismaForFunction() {
+  const raw = process.env.DATABASE_URL;
+  if (!raw) throw new Error("DATABASE_URL not set");
 
-export const handler: Handler = async () => {
-  try {
-    // TODO: put your series generation logic here.
-    // Example:
-    // await generateNextWeekSeries();
+  const u = new URL(raw);
+  const { address } = await dns.lookup(u.hostname, { family: 4 });
+  if (address && address !== u.hostname) u.hostname = address;
+  process.env.DATABASE_URL = u.toString();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ ok: true, job: "series_generate" }),
-    };
-  } catch (err) {
-    console.error("series_generate error:", err);
-    return { statusCode: 500, body: "series_generate failed" };
-  } finally {
-    // Safe to ignore if you removed Prisma
-    await prisma.$disconnect().catch(() => {});
-  }
-};
+  return new PrismaClient({ log: ["warn", "error"] });
+}
+
+const prisma = await getPrismaForFunction();

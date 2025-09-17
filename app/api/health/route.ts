@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";  // your prisma client module
+import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    // lightweight check
+    const prisma = await getPrisma();
     await prisma.$queryRaw`SELECT 1`;
     return NextResponse.json({ ok: true });
   } catch (e: any) {
-    console.error("HEALTH ERROR:", e);
-    return NextResponse.json({ ok: false, error: String(e?.message || e) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, name: e?.name, code: e?.code, message: String(e?.message || e) },
+      { status: 500 }
+    );
   }
 }
+
