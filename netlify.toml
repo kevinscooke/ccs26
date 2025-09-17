@@ -4,17 +4,27 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  PNPM_VERSION = "9"                 # optional, match your local
   NEXT_TELEMETRY_DISABLED = "1"
 
 [functions]
   node_bundler = "esbuild"
   external_node_modules = ["@prisma/client"]
   included_files = ["prisma/**"]
-  timeout = 10
+
+# ✅ Function config must be an object/table.
+# Apply defaults to ALL functions:
+[functions."*"]
+  timeout = 10                       # seconds (adjust as needed)
+
+# (Optional) Override a specific function:
+# [functions."weekly_digest"]
+#   timeout = 15
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Caching headers
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
@@ -25,11 +35,11 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# Each job must be its own array item:
+# ✅ Each scheduled function needs its own block
 [[scheduled.functions]]
   name = "weekly_digest"
-  schedule = "0 14 * * 4"   # Thursdays 14:00 UTC
+  schedule = "0 14 * * 4"           # Thursdays 14:00 UTC
 
 [[scheduled.functions]]
   name = "series_generate"
-  schedule = "0 11 * * 1"   # Mondays 11:00 UTC (~7am ET)
+  schedule = "0 11 * * 1"           # Mondays 11:00 UTC (~7am ET)
