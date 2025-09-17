@@ -20,6 +20,7 @@ export const metadata = {
     images: [{ url: "/og/og-default.jpg", width: 1200, height: 630 }],
   },
   twitter: { card: "summary_large_image" },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://charlottecarshows.com"),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

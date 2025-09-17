@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import UpcomingSix from '@/components/event/UpcomingSix';
 import { TAGS } from "@/lib/tags";
 
+export const dynamic = "force-dynamic"; // don’t prerender, fetch at request time
 export default function Home() {
   return (
     <div className="space-y-10">
