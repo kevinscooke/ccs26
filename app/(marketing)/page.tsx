@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import UpcomingSix from '@/components/event/UpcomingSix';
+import { TAGS } from "@/lib/tags";
 
 export default function Home() {
   return (
