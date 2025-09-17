@@ -58,31 +58,49 @@ model Venue {
 }
 
 model Series {
-  id       String  @id @default(cuid())
-  title    String
-  slugBase String  @unique // e.g., "cars-and-coffee-concord"
-  cityId   String
-  city     City    @relation(fields: [cityId], references: [id])
-  venueId  String?
-  venue    Venue?  @relation(fields: [venueId], references: [id])
+  id          String  @id @default(cuid())
+  title       String
+  slugBase    String  @unique
+  description String? // ⬅️ optional description
 
-  description String?
-  timeZone    String  @default("America/New_York")
-  // local start time components for the occurrence (24h)
-  startHour   Int     @default(9)
-  startMinute Int     @default(0)
-  durationMin Int     @default(180) // 3 hours
+  cityId  String
+  city    City    @relation(fields: [cityId], references: [id])
+  venueId String?
+  venue   Venue?  @relation(fields: [venueId], references: [id])
 
-  // RRULE compatible string, e.g. "FREQ=MONTHLY;BYDAY=SA;BYSETPOS=3"
-  rrule String
+  timeZone              String    @default("America/New_York")
+  startHour             Int       @default(8)
+  startMinute           Int       @default(0)
+  durationMin           Int       @default(240)
+  rrule                 String
+  generateHorizonMonths Int       @default(6)
+  lastGeneratedThrough  DateTime?
 
-  // housekeeping
-  generateHorizonMonths Int       @default(6) // how far ahead to materialize
-  lastGeneratedThrough  DateTime? // up to what date we generated
+  exceptions SeriesException[]
+  events     Event[]
+}
+
+model SeriesException {
+  id       String @id @default(cuid())
+  seriesId String
+  series   Series @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+
+  /// Local exception date (store at ET midnight or a canonical UTC midnight)
+  date DateTime
+
+  /// Behavior for this date (example fields; keep what you need)
+  // skip       Boolean  @default(true)
+  // newTitle   String?
+  // newHour    Int?
+  // newMinute  Int?
+  // newDurationMin Int?
+  // notes      String?
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  events    Event[]
+
+  // ensure only one exception per series per date
+  @@unique([seriesId, date])
+  @@index([seriesId])
 }
 
 model Event {
@@ -159,14 +177,4 @@ enum InvoiceStatus {
   PAID
   REFUNDED
   FAILED
-}
-
-model SeriesException {
-  id        String   @id @default(cuid())
-  seriesId  String
-  series    Series   @relation(fields: [seriesId], references: [id])
-  date      DateTime // local date (midnight) in TZ
-  action    String   // "SKIP" | "MOVE"
-  newDate   DateTime?
-  note      String?
 }
