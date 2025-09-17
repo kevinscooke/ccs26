@@ -24,6 +24,7 @@
     "date-fns-tz": "^3.2.0",
     "lucide-react": "^0.544.0",
     "next": "14.2.5",
+    "pg": "^8.16.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rrule": "^2.8.1",
@@ -50,9 +51,6 @@
       "@prisma/client",
       "@prisma/engines",
       "prisma",
-      "esbuild"
-    ],
-    "ignoredBuiltDependencies": [
       "esbuild"
     ]
   }
