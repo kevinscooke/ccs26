@@ -53,7 +53,6 @@ export default function Home() {
         </p>
 
         <Suspense fallback={<div className="mt-4 text-zinc-400">Loading events…</div>}>
-          {/* @ts-expect-error Async Server Component */}
           <UpcomingSix />
         </Suspense>
       </section>
