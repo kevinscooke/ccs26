@@ -32,12 +32,6 @@ model Organizer {
   invoices  Invoice[]
 }
 
-enum OrganizerPlan {
-  FREE
-  PLUS
-  PRO
-}
-
 model Venue {
   id        String   @id @default(cuid())
   name      String
@@ -58,63 +52,43 @@ model Venue {
 }
 
 model Series {
-  id          String  @id @default(cuid())
-  title       String
-  slugBase    String  @unique
-  description String? // ⬅️ optional description
-
-  cityId  String
-  city    City    @relation(fields: [cityId], references: [id])
-  venueId String?
-  venue   Venue?  @relation(fields: [venueId], references: [id])
-
-  timeZone              String    @default("America/New_York")
-  startHour             Int       @default(8)
-  startMinute           Int       @default(0)
-  durationMin           Int       @default(240)
+  id                    String            @id @default(cuid())
+  title                 String
+  slugBase              String            @unique
+  cityId                String
+  venueId               String?
+  timeZone              String            @default("America/New_York")
+  startHour             Int               @default(8)
+  startMinute           Int               @default(0)
+  durationMin           Int               @default(240)
   rrule                 String
-  generateHorizonMonths Int       @default(6)
+  generateHorizonMonths Int               @default(6)
   lastGeneratedThrough  DateTime?
-
-  exceptions SeriesException[]
-  events     Event[]
+  description           String?
+  events                Event[]
+  city                  City              @relation(fields: [cityId], references: [id])
+  venue                 Venue?            @relation(fields: [venueId], references: [id])
+  exceptions            SeriesException[]
 }
 
 model SeriesException {
-  id       String @id @default(cuid())
-  seriesId String
-  series   Series @relation(fields: [seriesId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(cuid())
+  seriesId  String
   /// Local exception date (store at ET midnight or a canonical UTC midnight)
-  date DateTime
-
+  date      DateTime
   /// Behavior for this date (example fields; keep what you need)
-  // skip       Boolean  @default(true)
-  // newTitle   String?
-  // newHour    Int?
-  // newMinute  Int?
-  // newDurationMin Int?
-  // notes      String?
-
   createdAt DateTime @default(now())
+  series    Series   @relation(fields: [seriesId], references: [id], onDelete: Cascade)
 
-  // ensure only one exception per series per date
   @@unique([seriesId, date])
   @@index([seriesId])
 }
 
 model Event {
-  id          String     @id @default(cuid())
+  id          String      @id @default(cuid())
   cityId      String
-  city        City       @relation(fields: [cityId], references: [id])
   organizerId String?
-  organizer   Organizer? @relation(fields: [organizerId], references: [id])
   venueId     String?
-  venue       Venue?     @relation(fields: [venueId], references: [id])
-
-  seriesId String?
-  series   Series? @relation(fields: [seriesId], references: [id])
-
   title       String
   slug        String      @unique
   description String?
@@ -126,13 +100,47 @@ model Event {
   price       Int?
   source      String?
   url         String?
-  images      Image[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   publishedAt DateTime?
   flagged     Boolean     @default(false)
+  seriesId    String?
+  city        City        @relation(fields: [cityId], references: [id])
+  organizer   Organizer?  @relation(fields: [organizerId], references: [id])
+  series      Series?     @relation(fields: [seriesId], references: [id])
+  venue       Venue?      @relation(fields: [venueId], references: [id])
+  images      Image[]
 
-  @@index([status, startAt]) // keeps chronological queries fast
+  @@index([status, startAt])
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  eventId   String
+  url       String
+  width     Int?
+  height    Int?
+  alt       String?
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id])
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  organizerId String
+  stripeId    String        @unique
+  amount      Int
+  status      InvoiceStatus @default(PAID)
+  lineItem    String
+  eventId     String?
+  createdAt   DateTime      @default(now())
+  organizer   Organizer     @relation(fields: [organizerId], references: [id])
+}
+
+enum OrganizerPlan {
+  FREE
+  PLUS
+  PRO
 }
 
 enum EventType {
@@ -148,29 +156,6 @@ enum EventStatus {
   APPROVED
   PUBLISHED
   REJECTED
-}
-
-model Image {
-  id        String   @id @default(cuid())
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id])
-  url       String
-  width     Int?
-  height    Int?
-  alt       String?
-  createdAt DateTime @default(now())
-}
-
-model Invoice {
-  id          String        @id @default(cuid())
-  organizerId String
-  organizer   Organizer     @relation(fields: [organizerId], references: [id])
-  stripeId    String        @unique
-  amount      Int
-  status      InvoiceStatus @default(PAID)
-  lineItem    String
-  eventId     String?
-  createdAt   DateTime      @default(now())
 }
 
 enum InvoiceStatus {
