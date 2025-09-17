@@ -1,8 +1,25 @@
-import { handler as run } from "../scripts_runner";
+// netlify/functions/series_generate.ts
+import type { Handler } from "@netlify/functions";
+import { PrismaClient } from "@prisma/client";
 
-export default async () => {
-  // Call the same code as the script; reuse prisma + generator
-  const mod = await import("../../scripts/generate_from_series");
-  await mod.default?.(); // if you export default main()
-  // OR expose a named function and call it here
+// If you need DB access; otherwise remove Prisma entirely.
+const prisma = new PrismaClient();
+
+export const handler: Handler = async () => {
+  try {
+    // TODO: put your series generation logic here.
+    // Example:
+    // await generateNextWeekSeries();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ ok: true, job: "series_generate" }),
+    };
+  } catch (err) {
+    console.error("series_generate error:", err);
+    return { statusCode: 500, body: "series_generate failed" };
+  } finally {
+    // Safe to ignore if you removed Prisma
+    await prisma.$disconnect().catch(() => {});
+  }
 };
