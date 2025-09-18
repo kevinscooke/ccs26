@@ -103,7 +103,6 @@ export default async function EventDetail({ params }: { params: { slug: string }
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
     url: `https://charlottecarshows.com/events/${ev.slug}`,
-    image: ev["ogImageUrl"] || undefined, // map to your field if you add one
     description: ev.description || undefined,
     location: {
       "@type": "Place",
