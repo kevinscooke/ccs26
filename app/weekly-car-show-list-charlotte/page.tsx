@@ -1,9 +1,16 @@
+// app/weekly-car-show-list-charlotte/page.tsx
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getPrisma } from "@/lib/prisma";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 300; // 5 min
 
 /** ---------- ET week helpers (no extra deps) ---------- */
 function nowInET() {
-  return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+  return new Date(
+    new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+  );
 }
 // Monday (0) .. Sunday (6)
 function startOfWeekET(d: Date) {
@@ -26,19 +33,16 @@ function addWeeks(d: Date, w: number) {
   nd.setDate(nd.getDate() + w * 7);
   return nd;
 }
-
 function formatRangeET(start: Date, endExclusive: Date) {
   const fmt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
     timeZone: "America/New_York",
   });
-  // endExclusive is next Monday 00:00; show previous day (Sunday)
   const endShown = new Date(endExclusive);
   endShown.setDate(endShown.getDate() - 1);
   return `${fmt.format(start)} – ${fmt.format(endShown)}`;
 }
-
-function truncate(s: string | null | undefined, n = 180) {
+function truncate(s?: string | null, n = 180) {
   if (!s) return "";
   return s.length <= n ? s : s.slice(0, n).replace(/\s+\S*$/, "") + "…";
 }
@@ -46,23 +50,31 @@ function truncate(s: string | null | undefined, n = 180) {
 /** ---------- Config ---------- */
 const PAGE_SIZE = 10;
 
-export const revalidate = 300; // 5 min
-
-export default async function EventsPage({
+export default async function WeeklyCarShowListPage({
   searchParams,
 }: {
   searchParams?: { [k: string]: string | string[] | undefined };
 }) {
+  const prisma = await getPrisma();
+
   // week offset from current week; integer (… -1 = last week, 0 = current, 1 = next …)
-  const weekOffset = Number(Array.isArray(searchParams?.w) ? searchParams!.w[0] : searchParams?.w ?? "0") || 0;
+  const weekOffset = Number(
+    Array.isArray(searchParams?.w) ? searchParams!.w[0] : searchParams?.w ?? "0"
+  ) || 0;
+
   // page within the selected week (1-based)
-  const page = Math.max(1, Number(Array.isArray(searchParams?.p) ? searchParams!.p[0] : searchParams?.p ?? "1") || 1);
+  const page = Math.max(
+    1,
+    Number(
+      Array.isArray(searchParams?.p) ? searchParams!.p[0] : searchParams?.p ?? "1"
+    ) || 1
+  );
 
   // Compute ET week range for the requested offset
   const nowEt = nowInET();
   const base = addWeeks(nowEt, weekOffset);
   const weekStartEt = startOfWeekET(base); // Monday 00:00 ET
-  const weekEndEt = endOfWeekET(base);     // next Monday 00:00 ET (exclusive)
+  const weekEndEt = endOfWeekET(base); // next Monday 00:00 ET (exclusive)
 
   // Count events in this week (PUBLISHED)
   const where = {
@@ -87,13 +99,13 @@ export default async function EventsPage({
 
   const totalPages = Math.max(1, Math.ceil(totalInWeek / PAGE_SIZE));
 
-  /** Build URLs preserving w/p params */
+  /** Build URLs preserving w/p params for THIS page */
   const urlFor = (w: number, p: number) => {
     const u = new URLSearchParams();
     if (w) u.set("w", String(w));
     if (p > 1) u.set("p", String(p));
     const q = u.toString();
-    return q ? `/events?${q}` : "/events";
+    return q ? `/weekly-car-show-list-charlotte?${q}` : "/weekly-car-show-list-charlotte";
   };
 
   const headingRange = formatRangeET(weekStartEt, weekEndEt);
@@ -110,14 +122,18 @@ export default async function EventsPage({
       <header className="ccs-card">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Charlotte Events</h1>
-            <p className="mt-1 text-sm text-zinc-400">Week of {headingRange} (Mon–Sun, ET)</p>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              Weekly Charlotte Car Shows
+            </h1>
+            <p className="mt-1 text-sm text-zinc-400">
+              Week of {headingRange} (Mon–Sun, ET)
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <Link className="ccs-btn" href={urlFor(weekOffset - 1, 1)} aria-label="Previous week">
               ‹ Prev Week
             </Link>
-            <Link className="ccs-btn" href="/events" aria-label="Current week">
+            <Link className="ccs-btn" href={urlFor(0, 1)} aria-label="This week">
               This Week
             </Link>
             <Link className="ccs-btn" href={urlFor(weekOffset + 1, 1)} aria-label="Next week">

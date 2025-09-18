@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
 export const revalidate = 86400; // 24h
 
 function fmtAddress(v?: {
@@ -15,6 +16,8 @@ function fmtAddress(v?: {
 }
 
 export default async function EventDetail({ params }: { params: { slug: string } }) {
+  const prisma = await getPrisma();
+  const event = await prisma.event.findUnique({ where: { slug: params.slug } });
   const ev = await prisma.event.findFirst({
     where: { slug: params.slug, status: "PUBLISHED" },
     include: { city: true, venue: true }

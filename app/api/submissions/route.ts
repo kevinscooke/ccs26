@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { getPrisma } from "@/lib/prisma";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
+  const prisma = await getPrisma();
   const data = await request.json();
   // Minimal create; in production validate with zod/hcaptcha
   const city = await prisma.city.findFirst({ where: { slug: data.citySlug }});

@@ -1,10 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { prisma } from "@/lib/db";
+import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
 export const revalidate = 300; // 5 min
 
 export const metadata: Metadata = {
@@ -14,8 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsAllPage() {
-  // Show all future published events (adjust take/remove if you want server-side pagination later)
+  const prisma = await getPrisma();
   const now = new Date();
+
   const events = await prisma.event.findMany({
     where: { status: "PUBLISHED", startAt: { gte: now } },
     orderBy: [{ startAt: "asc" }, { title: "asc" }],
@@ -41,7 +41,6 @@ export default async function EventsAllPage() {
         </p>
       </header>
 
-      {/* 1-column list */}
       <div className="space-y-4">
         {events.map((e) => {
           const when = tfmt.format(new Date(e.startAt));
@@ -53,21 +52,18 @@ export default async function EventsAllPage() {
             <article key={e.id} className="ccs-card transition hover:shadow-lg">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  {/* Clickable title */}
                   <h2 className="text-lg font-semibold leading-snug">
                     <Link href={`/events/${e.slug}`} className="hover:underline">
                       {e.title}
                     </Link>
                   </h2>
 
-                  {/* When + venue */}
                   <p className="mt-1 text-sm text-zinc-400">
                     {when}
                     {venueLine ? ` • ${venueLine}` : ""}
                     {e.isFeatured && <span className="ml-2 ccs-badge">Featured</span>}
                   </p>
 
-                  {/* Description */}
                   {e.description && <p className="mt-3 text-zinc-300">{truncate(e.description)}</p>}
                 </div>
 
