@@ -1,19 +1,30 @@
-import { prisma } from '../../lib/db';
-// In a real project, import your email provider SDK (Resend, etc.)
+// netlify/functions/weekly_digest.ts
+import { getPrisma } from "../../lib/prisma";
 
-export default async () => {
+/**
+ * Scheduled function to compile a weekly digest of upcoming events.
+ * Netlify will import and run the default export.
+ */
+export default async function weeklyDigest() {
+  const prisma = await getPrisma();
+
   const now = new Date();
-  const end = new Date(now.getTime() + 5 * 24 * 3600 * 1000);
-  const cities = await prisma.city.findMany();
+  const weekFromNow = new Date(now);
+  weekFromNow.setDate(weekFromNow.getDate() + 7);
 
-  for (const c of cities) {
-    const events = await prisma.event.findMany({
-      where: { cityId: c.id, status: 'PUBLISHED', startAt: { gte: now, lte: end } },
-      orderBy: [{ isFeatured: 'desc' }, { startAt: 'asc' }],
-      take: 50,
-    });
-    if (!events.length) continue;
-    // TODO: send email. For now, just log.
-    console.log(`Weekly digest for ${c.name}: ${events.length} events`);
-  }
-};
+  // Pull next 7 days of published events
+  const events = await prisma.event.findMany({
+    where: {
+      status: "PUBLISHED",
+      startAt: { gte: now, lt: weekFromNow },
+    },
+    orderBy: [{ startAt: "asc" }, { title: "asc" }],
+    include: { city: true, venue: true },
+    take: 200,
+  });
+
+  // TODO: send via your email provider
+  console.log(`[weekly_digest] events found: ${events.length}`);
+
+  return { ok: true, count: events.length };
+}
