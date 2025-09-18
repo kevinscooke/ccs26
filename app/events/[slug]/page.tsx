@@ -4,8 +4,8 @@ import Link from "next/link";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const revalidate = 86400; // 24h
+// Use ISR/SSG instead of force-dynamic so crawlers get full HTML
+export const revalidate = 3600; // 1h; adjust as needed
 
 function fmtAddress(v?: {
   address1?: string | null; address2?: string | null;
@@ -16,6 +16,18 @@ function fmtAddress(v?: {
   return parts.join(", ");
 }
 
+// --- Pre-render all event slugs (SSG) ---
+export async function generateStaticParams() {
+  const prisma = await getPrisma();
+  const events = await prisma.event.findMany({
+    where: { status: "PUBLISHED" },
+    select: { slug: true },
+    take: 5000,
+  });
+  return events.map((e) => ({ slug: e.slug }));
+}
+
+// --- Metadata (OG type stays 'website'; Event details go in JSON-LD) ---
 export async function generateMetadata(
   { params }: { params: { slug: string } }
 ): Promise<Metadata> {
@@ -32,7 +44,9 @@ export async function generateMetadata(
     };
   }
 
-  const cityState = ev.city?.name ? `${ev.city.name}, ${ev.venue?.state ?? "NC"}` : "Charlotte, NC";
+  const cityState = ev.city?.name
+    ? `${ev.city.name}, ${ev.venue?.state ?? "NC"}`
+    : "Charlotte, NC";
   const dateLong = new Intl.DateTimeFormat("en-US", { dateStyle: "long" })
     .format(new Date(ev.startAt));
 
@@ -41,7 +55,6 @@ export async function generateMetadata(
     `${ev.title} in ${cityState} on ${dateLong}. ` +
     `${ev.description?.trim() || "Details, time, venue, and map."}`;
   const description = descBase.slice(0, 155);
-
   const canonical = `https://charlottecarshows.com/events/${params.slug}`;
 
   return {
@@ -49,17 +62,17 @@ export async function generateMetadata(
     description,
     alternates: { canonical },
     openGraph: {
+      type: "website", // ← keep this (Next metadata doesn't support 'event')
       title,
       description: descBase,
       url: canonical,
-      type: "website",
-      // images: [{ url: ev.ogImageUrl, width: 1200, height: 630, alt: title }], // if you add one
+      // images: ev.ogImageUrl ? [{ url: ev.ogImageUrl, width: 1200, height: 630, alt: title }] : undefined,
     },
     twitter: {
+      card: "summary_large_image",
       title,
       description: descBase,
       // images: ev.ogImageUrl ? [ev.ogImageUrl] : undefined,
-      card: "summary_large_image",
     },
   };
 }
@@ -73,24 +86,23 @@ export default async function EventDetail({ params }: { params: { slug: string }
 
   if (!ev) return <p>Event not found.</p>;
 
-  // Prev / Next (strict chronological by startAt)
+  // Prev / Next (chronological by startAt)
   const [prev, next] = await Promise.all([
     prisma.event.findFirst({
       where: { status: "PUBLISHED", startAt: { lt: ev.startAt } },
       orderBy: { startAt: "desc" },
-      select: { slug: true, title: true }
+      select: { slug: true, title: true },
     }),
     prisma.event.findFirst({
       where: { status: "PUBLISHED", startAt: { gt: ev.startAt } },
       orderBy: { startAt: "asc" },
-      select: { slug: true, title: true }
+      select: { slug: true, title: true },
     }),
   ]);
 
   const addr = fmtAddress(ev.venue ?? undefined);
   const mapQuery = addr || ev.city?.name || "Charlotte, NC";
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
-
   const dt = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short" });
 
   // --- Event JSON-LD (rich results) ---
@@ -107,33 +119,37 @@ export default async function EventDetail({ params }: { params: { slug: string }
     location: {
       "@type": "Place",
       name: ev.venue?.name || ev.city?.name || "Charlotte",
-      address: ev.venue ? {
-        "@type": "PostalAddress",
-        streetAddress: [ev.venue.address1, ev.venue.address2].filter(Boolean).join(", "),
-        addressLocality: ev.venue.city || ev.city?.name,
-        addressRegion: ev.venue.state || "NC",
-        postalCode: ev.venue.postal || undefined,
-        addressCountry: "US",
-      } : undefined,
+      address: ev.venue
+        ? {
+            "@type": "PostalAddress",
+            streetAddress: [ev.venue.address1, ev.venue.address2].filter(Boolean).join(", "),
+            addressLocality: ev.venue.city || ev.city?.name,
+            addressRegion: ev.venue.state || "NC",
+            postalCode: ev.venue.postal || undefined,
+            addressCountry: "US",
+          }
+        : undefined,
     },
     organizer: {
       "@type": "Organization",
       name: "Charlotte Car Shows",
       url: "https://charlottecarshows.com",
     },
-    offers: ev.url ? {
-      "@type": "Offer",
-      url: ev.url,
-      price: "0", // update if you track tickets
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-      validFrom: new Date(ev.startAt).toISOString(),
-    } : undefined,
+    offers: ev.url
+      ? {
+          "@type": "Offer",
+          url: ev.url,
+          price: "0", // update if/when you track tickets
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+          validFrom: new Date(ev.startAt).toISOString(),
+        }
+      : undefined,
   };
 
   return (
     <article className="space-y-6">
-      {/* JSON-LD can live anywhere in the page JSX (head or body). Body is fine in App Router. */}
+      {/* JSON-LD can live in body in App Router */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -146,7 +162,9 @@ export default async function EventDetail({ params }: { params: { slug: string }
             <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">{ev.title}</h1>
             <p className="mt-1 text-sm text-zinc-400">
               {(ev.city?.name ? `${ev.city.name} • ` : "")}{dt.format(new Date(ev.startAt))}
-              {ev.endAt ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}` : ""}
+              {ev.endAt
+                ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}`
+                : ""}
             </p>
           </div>
           {ev.isFeatured && <span className="ccs-badge">Featured</span>}
@@ -176,8 +194,10 @@ export default async function EventDetail({ params }: { params: { slug: string }
                 <dt className="text-zinc-400">Time:</dt>
                 <dd>
                   {new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.startAt))}
-                  {ev.endAt ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}` : ""}
-                  &nbsp;ET
+                  {ev.endAt
+                    ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}`
+                    : ""}{" "}
+                  ET
                 </dd>
               </div>
               {ev.type && (
@@ -189,7 +209,11 @@ export default async function EventDetail({ params }: { params: { slug: string }
               {ev.url && (
                 <div>
                   <dt className="text-zinc-400">Official:</dt>
-                  <dd><a className="ccs-btn mt-1 inline-block" href={ev.url} target="_blank" rel="noreferrer">Event Link</a></dd>
+                  <dd>
+                    <a className="ccs-btn mt-1 inline-block" href={ev.url} target="_blank" rel="noreferrer">
+                      Event Link
+                    </a>
+                  </dd>
                 </div>
               )}
             </dl>
@@ -203,7 +227,9 @@ export default async function EventDetail({ params }: { params: { slug: string }
                 <p className="font-medium">{ev.venue.name}</p>
                 <p className="text-zinc-300">{fmtAddress(ev.venue ?? undefined)}</p>
                 <p className="mt-2">
-                  <a className="ccs-btn" href={mapsHref} target="_blank" rel="noreferrer">Open in Google Maps</a>
+                  <a className="ccs-btn" href={mapsHref} target="_blank" rel="noreferrer">
+                    Open in Google Maps
+                  </a>
                 </p>
               </div>
             ) : (
@@ -211,7 +237,7 @@ export default async function EventDetail({ params }: { params: { slug: string }
             )}
           </div>
 
-          {/* Map (Google Maps Embed – no key required) */}
+          {/* Map (no API key required) */}
           <div>
             <h2 className="text-lg font-semibold">Map</h2>
             <div className="mt-2 overflow-hidden rounded-2xl border border-zinc-800">
@@ -239,14 +265,18 @@ export default async function EventDetail({ params }: { params: { slug: string }
               <Link className="ccs-btn" href={`/events/${prev.slug}`} aria-label={`Previous event: ${prev.title}`}>
                 ‹ {prev.title}
               </Link>
-            ) : <span className="text-zinc-600">Start of list</span>}
+            ) : (
+              <span className="text-zinc-600">Start of list</span>
+            )}
           </div>
           <div>
             {next ? (
               <Link className="ccs-btn" href={`/events/${next.slug}`} aria-label={`Next event: ${next.title}`}>
                 {next.title} ›
               </Link>
-            ) : <span className="text-zinc-600">End of list</span>}
+            ) : (
+              <span className="text-zinc-600">End of list</span>
+            )}
           </div>
         </nav>
       )}

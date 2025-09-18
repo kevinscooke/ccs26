@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+
 export const revalidate = 300; // 5 min
 
 export const metadata: Metadata = {
@@ -28,11 +28,11 @@ export const metadata: Metadata = {
       "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
   },
 };
-
 export default async function EventsAllPage() {
   const prisma = await getPrisma();
   const now = new Date();
 
+// Server-side data fetch (SSR/SSG) so list HTML exists at request time
   const events = await prisma.event.findMany({
     where: { status: "PUBLISHED", startAt: { gte: now } },
     orderBy: [{ startAt: "asc" }, { title: "asc" }],
@@ -40,8 +40,7 @@ export default async function EventsAllPage() {
     take: 500,
   });
 
-  // --- JSON-LD: ItemList of event detail URLs (good for discovery on list pages) ---
-  // Keep it reasonable in size; cap at 100 items to avoid huge script tags.
+  // JSON-LD: ItemList for discovery
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -64,7 +63,7 @@ export default async function EventsAllPage() {
 
   return (
     <section className="space-y-6">
-      {/* JSON-LD in body is fine with the App Router */}
+      {/* JSON-LD lives in the HTML sent to crawlers */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
@@ -119,7 +118,8 @@ export default async function EventsAllPage() {
         })}
 
         {!events.length && (
-          <div className="ccs-card text-zinc-3 00">No upcoming events yet—check back soon.</div>
+          // 🔧 fixed minor className typo ("text-zinc-3 00" → "text-zinc-300")
+          <div className="ccs-card text-zinc-300">No upcoming events yet—check back soon.</div>
         )}
       </div>
     </section>
