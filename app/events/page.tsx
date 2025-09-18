@@ -1,3 +1,4 @@
+// app/events/page.tsx  (All events index - 1 column preserved)
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getPrisma } from "@/lib/prisma";
@@ -10,6 +11,22 @@ export const metadata: Metadata = {
   title: "All Charlotte Car Shows | Charlotte Car Shows",
   description:
     "Browse all upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+  alternates: {
+    canonical: "https://charlottecarshows.com/events",
+  },
+  openGraph: {
+    type: "website",
+    title: "All Charlotte Car Shows",
+    description:
+      "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+    url: "https://charlottecarshows.com/events",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All Charlotte Car Shows",
+    description:
+      "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+  },
 };
 
 export default async function EventsAllPage() {
@@ -23,6 +40,19 @@ export default async function EventsAllPage() {
     take: 500,
   });
 
+  // --- JSON-LD: ItemList of event detail URLs (good for discovery on list pages) ---
+  // Keep it reasonable in size; cap at 100 items to avoid huge script tags.
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: events.slice(0, 100).map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://charlottecarshows.com/events/${e.slug}`,
+      name: e.title,
+    })),
+  };
+
   const tfmt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",
     timeStyle: "short",
@@ -34,6 +64,12 @@ export default async function EventsAllPage() {
 
   return (
     <section className="space-y-6">
+      {/* JSON-LD in body is fine with the App Router */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+      />
+
       <header className="ccs-card">
         <h1 className="text-3xl font-semibold tracking-tight">All Charlotte Car Shows</h1>
         <p className="mt-2 text-zinc-300">
@@ -83,7 +119,7 @@ export default async function EventsAllPage() {
         })}
 
         {!events.length && (
-          <div className="ccs-card text-zinc-300">No upcoming events yet—check back soon.</div>
+          <div className="ccs-card text-zinc-3 00">No upcoming events yet—check back soon.</div>
         )}
       </div>
     </section>

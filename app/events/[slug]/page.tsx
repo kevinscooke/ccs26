@@ -1,26 +1,74 @@
+// app/events/[slug]/page.tsx
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
 export const revalidate = 86400; // 24h
 
 function fmtAddress(v?: {
-  address1?: string|null; address2?: string|null;
-  city?: string|null; state?: string|null; postal?: string|null;
+  address1?: string | null; address2?: string | null;
+  city?: string | null; state?: string | null; postal?: string | null;
 }) {
   if (!v) return "";
   const parts = [v.address1, v.address2, v.city, v.state, v.postal].filter(Boolean);
   return parts.join(", ");
 }
 
-export default async function EventDetail({ params }: { params: { slug: string } }) {
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
   const prisma = await getPrisma();
-  const event = await prisma.event.findUnique({ where: { slug: params.slug } });
   const ev = await prisma.event.findFirst({
     where: { slug: params.slug, status: "PUBLISHED" },
-    include: { city: true, venue: true }
+    include: { city: true, venue: true },
+  });
+
+  if (!ev) {
+    return {
+      title: "Event not found",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const cityState = ev.city?.name ? `${ev.city.name}, ${ev.venue?.state ?? "NC"}` : "Charlotte, NC";
+  const dateLong = new Intl.DateTimeFormat("en-US", { dateStyle: "long" })
+    .format(new Date(ev.startAt));
+
+  const title = `${ev.title} – ${cityState} (${dateLong})`;
+  const descBase =
+    `${ev.title} in ${cityState} on ${dateLong}. ` +
+    `${ev.description?.trim() || "Details, time, venue, and map."}`;
+  const description = descBase.slice(0, 155);
+
+  const canonical = `https://charlottecarshows.com/events/${params.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description: descBase,
+      url: canonical,
+      type: "website",
+      // images: [{ url: ev.ogImageUrl, width: 1200, height: 630, alt: title }], // if you add one
+    },
+    twitter: {
+      title,
+      description: descBase,
+      // images: ev.ogImageUrl ? [ev.ogImageUrl] : undefined,
+      card: "summary_large_image",
+    },
+  };
+}
+
+export default async function EventDetail({ params }: { params: { slug: string } }) {
+  const prisma = await getPrisma();
+  const ev = await prisma.event.findFirst({
+    where: { slug: params.slug, status: "PUBLISHED" },
+    include: { city: true, venue: true },
   });
 
   if (!ev) return <p>Event not found.</p>;
@@ -45,8 +93,53 @@ export default async function EventDetail({ params }: { params: { slug: string }
 
   const dt = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short" });
 
+  // --- Event JSON-LD (rich results) ---
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: ev.title,
+    startDate: new Date(ev.startAt).toISOString(),
+    endDate: ev.endAt ? new Date(ev.endAt).toISOString() : new Date(ev.startAt).toISOString(),
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    url: `https://charlottecarshows.com/events/${ev.slug}`,
+    image: ev["ogImageUrl"] || undefined, // map to your field if you add one
+    description: ev.description || undefined,
+    location: {
+      "@type": "Place",
+      name: ev.venue?.name || ev.city?.name || "Charlotte",
+      address: ev.venue ? {
+        "@type": "PostalAddress",
+        streetAddress: [ev.venue.address1, ev.venue.address2].filter(Boolean).join(", "),
+        addressLocality: ev.venue.city || ev.city?.name,
+        addressRegion: ev.venue.state || "NC",
+        postalCode: ev.venue.postal || undefined,
+        addressCountry: "US",
+      } : undefined,
+    },
+    organizer: {
+      "@type": "Organization",
+      name: "Charlotte Car Shows",
+      url: "https://charlottecarshows.com",
+    },
+    offers: ev.url ? {
+      "@type": "Offer",
+      url: ev.url,
+      price: "0", // update if you track tickets
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      validFrom: new Date(ev.startAt).toISOString(),
+    } : undefined,
+  };
+
   return (
     <article className="space-y-6">
+      {/* JSON-LD can live anywhere in the page JSX (head or body). Body is fine in App Router. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Title + meta */}
       <header className="ccs-card">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -60,7 +153,7 @@ export default async function EventDetail({ params }: { params: { slug: string }
           {ev.isFeatured && <span className="ccs-badge">Featured</span>}
         </div>
       </header>
-      
+
       {/* Description */}
       {ev.description && (
         <section className="ccs-card">
@@ -68,7 +161,7 @@ export default async function EventDetail({ params }: { params: { slug: string }
           <p className="mt-2 text-zinc-300">{ev.description}</p>
         </section>
       )}
-      
+
       {/* 3-column block: Details | Venue | Map */}
       <section className="ccs-card">
         <div className="grid gap-6 md:grid-cols-3">
@@ -109,7 +202,7 @@ export default async function EventDetail({ params }: { params: { slug: string }
             {ev.venue ? (
               <div className="mt-2 text-sm">
                 <p className="font-medium">{ev.venue.name}</p>
-                <p className="text-zinc-300">{addr}</p>
+                <p className="text-zinc-300">{fmtAddress(ev.venue ?? undefined)}</p>
                 <p className="mt-2">
                   <a className="ccs-btn" href={mapsHref} target="_blank" rel="noreferrer">Open in Google Maps</a>
                 </p>
@@ -139,8 +232,6 @@ export default async function EventDetail({ params }: { params: { slug: string }
         </div>
       </section>
 
-      
-
       {/* Prev / Next */}
       {(prev || next) && (
         <nav className="ccs-card flex items-center justify-between text-sm">
@@ -163,4 +254,3 @@ export default async function EventDetail({ params }: { params: { slug: string }
     </article>
   );
 }
-

@@ -2,25 +2,36 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import Script from "next/script";
+import type { Metadata } from "next";
 
 import TopNav from "@/components/nav/TopNav";
 import Footer from "@/components/Footer"; // <- your new component
 
-export const metadata = {
-  title: "Charlotte Car Shows | Weekly Events & Cruise-Ins",
-  description:
-    "Updated weekly—find, promote, and enjoy the best car events across Charlotte and surrounding areas. Free submissions, featured listings, and more.",
-  alternates: { canonical: "https://charlottecarshows.com/" },
-  openGraph: {
-    title: "Charlotte Car Shows",
-    description:
-      "Weekly Charlotte-area car shows, meets, cruise-ins, and track events.",
-    url: "https://charlottecarshows.com/",
-    siteName: "Charlotte Car Shows",
-    images: [{ url: "/og/og-default.jpg", width: 1200, height: 630 }],
+export const metadata: Metadata = {
+  metadataBase: new URL("https://charlottecarshows.com"),
+  title: {
+    default: "Charlotte Car Shows",
+    template: "%s | Charlotte Car Shows",
   },
-  twitter: { card: "summary_large_image" },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://charlottecarshows.com"),
+  description:
+    "Weekly-updated list of Charlotte, NC car shows, cruise-ins, and meets. Submit your event and get featured.",
+  applicationName: "Charlotte Car Shows",
+  alternates: {
+    canonical: "https://charlottecarshows.com",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Charlotte Car Shows",
+    url: "https://charlottecarshows.com",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@CharlotteCarShows", // update if you have one
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
