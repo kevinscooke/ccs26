@@ -6,7 +6,7 @@ export const revalidate = 86400;
 
 export async function GET() {
   const prisma = await getPrisma();
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://charlottecarshows.com';
   const lastmod = process.env.LAST_MODIFIED || new Date().toISOString();
   const events = await prisma.event.findMany({ select: { slug: true, updatedAt: true } });
   const urls = events.map(e => `<url><loc>${base}/events/${e.slug}</loc><changefreq>daily</changefreq><lastmod>${e.updatedAt.toISOString()}</lastmod></url>`).join('');
