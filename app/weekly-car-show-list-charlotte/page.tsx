@@ -3,7 +3,6 @@ import Link from "next/link";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 min
 
 /** ---------- ET week helpers (no extra deps) ---------- */
@@ -116,8 +115,24 @@ export default async function WeeklyCarShowListPage({
     timeZone: "America/New_York",
   });
 
+  // JSON-LD for the current week's events as an ItemList
+  const weekItemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: events.map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://charlottecarshows.com/events/${e.slug}`,
+      name: e.title,
+    })),
+  };
+
   return (
     <section className="space-y-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(weekItemList) }}
+      />
       {/* Header + week navigation */}
       <header className="ccs-card">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -153,7 +168,7 @@ export default async function WeeklyCarShowListPage({
 
           return (
             <article key={e.id} className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
-              <div className="flex items-start justify-between gap-6">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
                 <div className="min-w-0 space-y-3">
                   <div>
                     <div className="flex items-start gap-3 flex-wrap">
@@ -196,12 +211,12 @@ export default async function WeeklyCarShowListPage({
                   )}
                 </div>
 
-                <div className="shrink-0 flex flex-col gap-3">
-                  <Link className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform" href={`/events/${e.slug}`}>
+                <div className="shrink-0 flex flex-col gap-3 mt-4 md:mt-0 w-full md:w-auto">
+                  <Link className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" href={`/events/${e.slug}`}>
                     View Details
                   </Link>
                   {e.url && (
-                    <a className="ccs-btn px-5 py-2.5" href={e.url} target="_blank" rel="noreferrer">
+                    <a className="ccs-btn px-5 py-2.5 w-full md:w-auto" href={e.url} target="_blank" rel="noreferrer">
                       Official Site
                     </a>
                   )}

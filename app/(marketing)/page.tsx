@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const revalidate = 600; // 10 minutes ISR for homepage
 export default function Home() {
   return (
     <div className="space-y-16 py-8">

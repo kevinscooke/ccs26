@@ -70,6 +70,35 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             }),
           }}
         />
+
+        {/* Organization JSON-LD for the business */}
+        <Script
+          id="ld-organization"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Charlotte Car Shows",
+              url: "https://charlottecarshows.com/",
+              logo: "https://charlottecarshows.com/images/hero-ccs.jpg",
+              sameAs: [
+                "https://www.instagram.com/charlottecarshows/",
+                "https://www.facebook.com/CharlotteCarShows/"
+              ],
+              contactPoint: [
+                {
+                  "@type": "ContactPoint",
+                  email: "hello@charlottecarshows.com",
+                  contactType: "customer support",
+                  areaServed: "US-NC",
+                  availableLanguage: ["en"]
+                }
+              ]
+            }),
+          }}
+        />
       </body>
     </html>
   );

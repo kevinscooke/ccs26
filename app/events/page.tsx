@@ -4,40 +4,64 @@ import type { Metadata } from "next";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 min
 
-export const metadata: Metadata = {
-  title: "All Charlotte Car Shows | Charlotte Car Shows",
-  description:
-    "Browse all upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-  alternates: {
-    canonical: "https://charlottecarshows.com/events",
-  },
-  openGraph: {
-    type: "website",
-    title: "All Charlotte Car Shows",
-    description:
-      "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-    url: "https://charlottecarshows.com/events",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "All Charlotte Car Shows",
-    description:
-      "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-  },
-};
+export async function generateMetadata(
+  { searchParams }: { searchParams?: { [k: string]: string | string[] | undefined } }
+): Promise<Metadata> {
+  const base = "https://charlottecarshows.com";
+  const pRaw = Array.isArray(searchParams?.p) ? searchParams!.p[0] : searchParams?.p;
+  const page = Math.max(1, Number(pRaw || "1") || 1);
+  const canonical = page > 1 ? `${base}/events?p=${page}` : `${base}/events`;
 
-export default async function EventsAllPage() {
+  return {
+    title: "All Charlotte Car Shows | Charlotte Car Shows",
+    description:
+      "Browse all upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+    alternates: { canonical },
+    openGraph: {
+      type: "website",
+      title: "All Charlotte Car Shows",
+      description:
+        "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+      url: canonical,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "All Charlotte Car Shows",
+      description:
+        "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+    },
+  };
+}
+
+const PAGE_SIZE = 15;
+
+export default async function EventsAllPage({
+  searchParams,
+}: {
+  searchParams?: { [k: string]: string | string[] | undefined };
+}) {
   const prisma = await getPrisma();
   const now = new Date();
 
+  // Determine page from query (?p=)
+  const pRaw = Array.isArray(searchParams?.p) ? searchParams!.p[0] : searchParams?.p;
+  let page = Math.max(1, Number(pRaw || "1") || 1);
+
+  const where = { status: "PUBLISHED" as const, startAt: { gte: now } };
+  const total = await prisma.event.count({ where });
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (page > totalPages) page = totalPages;
+
+  const skip = (page - 1) * PAGE_SIZE;
+
   const events = await prisma.event.findMany({
-    where: { status: "PUBLISHED", startAt: { gte: now } },
+    where,
     orderBy: [{ startAt: "asc" }, { title: "asc" }],
     include: { venue: true, city: true },
-    take: 500,
+    skip,
+    take: PAGE_SIZE,
   });
 
   // --- JSON-LD: ItemList of event detail URLs (good for discovery on list pages) ---
@@ -62,6 +86,14 @@ export default async function EventsAllPage() {
   const truncate = (s?: string | null, n = 220) =>
     !s ? "" : s.length <= n ? s : s.slice(0, n).replace(/\s+\S*$/, "") + "…";
 
+  const urlFor = (p: number) => (p <= 1 ? "/events" : `/events?p=${p}`);
+
+  const monthFmt = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "America/New_York",
+  });
+
   return (
     <section className="max-w-5xl mx-auto px-4 space-y-8">
       {/* JSON-LD in body is fine with the App Router */}
@@ -81,15 +113,29 @@ export default async function EventsAllPage() {
       </header>
 
       <div className="space-y-6">
-        {events.map((e) => {
+        {(() => {
+          let lastMonth: string | null = null;
+          return events.map((e) => {
           const when = tfmt.format(new Date(e.startAt));
           const venueLine = e.venue
             ? [e.venue.name, [e.venue.city, e.venue.state].filter(Boolean).join(", ")].filter(Boolean).join(" • ")
             : e.city?.name || "";
 
+          const monthLabel = monthFmt.format(new Date(e.startAt));
+          const showMonth = monthLabel !== lastMonth;
+          if (showMonth) lastMonth = monthLabel;
+
           return (
-            <article key={e.id} className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
-              <div className="flex items-start justify-between gap-6">
+            <>
+              {showMonth && (
+                <div className="flex items-center gap-3 my-6" key={`m-${monthLabel}`}>
+                  <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                  <div className="text-sm uppercase tracking-wide text-[var(--fg)]/60">{monthLabel}</div>
+                  <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                </div>
+              )}
+              <article key={e.id} className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
                 <div className="min-w-0 space-y-3">
                   <div>
                     <div className="flex items-start gap-3 flex-wrap">
@@ -134,16 +180,16 @@ export default async function EventsAllPage() {
                   )}
                 </div>
 
-                <div className="shrink-0 flex flex-col gap-3">
+                <div className="shrink-0 flex flex-col gap-3 mt-4 md:mt-0 w-full md:w-auto">
                   <Link 
-                    className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform" 
+                    className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" 
                     href={`/events/${e.slug}`}
                   >
                     View Details
                   </Link>
                   {e.url && (
                     <a 
-                      className="ccs-btn px-5 py-2.5" 
+                      className="ccs-btn px-5 py-2.5 w-full md:w-auto" 
                       href={e.url} 
                       target="_blank" 
                       rel="noreferrer"
@@ -154,8 +200,10 @@ export default async function EventsAllPage() {
                 </div>
               </div>
             </article>
+            </>
           );
-        })}
+          });
+        })()}
 
         {!events.length && (
           <div className="ccs-card text-center py-12">
@@ -163,6 +211,32 @@ export default async function EventsAllPage() {
           </div>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <nav className="ccs-card flex items-center justify-between text-sm">
+          <div>
+            {page > 1 ? (
+              <Link className="ccs-btn" href={urlFor(page - 1)} aria-label="Previous page">
+                ‹ Prev Page
+              </Link>
+            ) : (
+              <span className="text-[var(--fg)]/40">Start</span>
+            )}
+          </div>
+          <div className="text-[var(--fg)]/60">
+            Page {page} of {totalPages}
+          </div>
+          <div>
+            {page < totalPages ? (
+              <Link className="ccs-btn" href={urlFor(page + 1)} aria-label="Next page">
+                Next Page ›
+              </Link>
+            ) : (
+              <span className="text-[var(--fg)]/40">End</span>
+            )}
+          </div>
+        </nav>
+      )}
     </section>
   );
 }

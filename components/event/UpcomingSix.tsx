@@ -3,8 +3,6 @@ import Link from "next/link";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const revalidate = 600; // 10 minutes
 
 export default async function UpcomingSix() {
   const prisma = await getPrisma();

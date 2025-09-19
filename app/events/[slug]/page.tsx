@@ -4,7 +4,6 @@ import Link from "next/link";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 export const revalidate = 86400; // 24h
 
 function fmtAddress(v?: {
