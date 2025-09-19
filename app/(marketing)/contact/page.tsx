@@ -1,10 +1,29 @@
+import type { Metadata } from "next";
+
 export const dynamic = "force-static";
+
+export const metadata: Metadata = {
+  title: "Submit Your Event – Charlotte Car Shows",
+  description: "List your car show, meet, or automotive event in Charlotte. Free submissions with quick approval process.",
+  alternates: { canonical: "https://charlottecarshows.com/contact" },
+  openGraph: {
+    title: "Submit Your Car Show – Charlotte Car Shows",
+    description: "Add your automotive event to Charlotte's most comprehensive car show listing platform.",
+    url: "https://charlottecarshows.com/contact",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Submit Your Car Show – Charlotte Car Shows",
+    description: "Add your automotive event to Charlotte's most comprehensive car show listing platform.",
+  },
+};
 
 export default function Contact() {
   return (
     <section className="ccs-card max-w-2xl mx-auto">
       <h1 className="text-3xl font-semibold tracking-tight">Submit Your Event</h1>
-      <p className="mt-2 text-zinc-300">
+      <p className="mt-2 text-darkgrey-300">
         Prefer email? Reach us at <a className="underline" href="mailto:hello@charlottecarshows.com">hello@charlottecarshows.com</a>.
       </p>
 

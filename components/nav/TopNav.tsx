@@ -31,7 +31,7 @@ export default function TopNav() {
   }, []);
 
   return (
-    <header className="border-b border-zinc-800/80 bg-zinc-950/60 backdrop-blur supports-[backdrop-filter]:bg-zinc-950/40 sticky top-0 z-50">
+    <header className="border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 sticky top-0 z-50">
       <div className="container flex h-14 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-lg font-bold tracking-tight">Charlotte Car Shows</span>
@@ -56,12 +56,12 @@ export default function TopNav() {
               <div
                 ref={menuRef}
                 role="menu"
-                className="absolute right-0 mt-2 w-72 rounded-2xl border border-zinc-800 bg-zinc-900/95 shadow-soft p-2"
+                className="absolute right-0 mt-2 w-72 rounded-2xl border border-zinc-200 bg-white shadow-lg p-2"
               >
                 <Link
                   href="/events"
                   role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-zinc-100 hover:bg-zinc-800"
+                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
                   onClick={() => setOpen(false)}
                 >
                   All Charlotte Events
@@ -69,7 +69,7 @@ export default function TopNav() {
                 <Link
                   href="/weekly-car-show-list-charlotte"
                   role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-zinc-100 hover:bg-zinc-800"
+                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
                   onClick={() => setOpen(false)}
                 >
                   Weekly Car Show List (Charlotte)
@@ -96,7 +96,7 @@ export default function TopNav() {
 
       {/* Mobile panel */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-zinc-800 bg-zinc-950/90">
+        <div className="md:hidden border-t border-zinc-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80">
           <nav className="container py-2 flex flex-col gap-2">
             <Link href="/events" className="ccs-btn" onClick={() => setMobileOpen(false)}>
               All Charlotte Events

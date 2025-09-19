@@ -103,7 +103,6 @@ export default async function EventDetail({ params }: { params: { slug: string }
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
     url: `https://charlottecarshows.com/events/${ev.slug}`,
-    image: ev["ogImageUrl"] || undefined, // map to your field if you add one
     description: ev.description || undefined,
     location: {
       "@type": "Place",
@@ -133,7 +132,7 @@ export default async function EventDetail({ params }: { params: { slug: string }
   };
 
   return (
-    <article className="space-y-6">
+    <div className="max-w-5xl mx-auto px-4 space-y-8">
       {/* JSON-LD can live anywhere in the page JSX (head or body). Body is fine in App Router. */}
       <script
         type="application/ld+json"
@@ -141,116 +140,186 @@ export default async function EventDetail({ params }: { params: { slug: string }
       />
 
       {/* Title + meta */}
-      <header className="ccs-card">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">{ev.title}</h1>
-            <p className="mt-1 text-sm text-zinc-400">
-              {(ev.city?.name ? `${ev.city.name} • ` : "")}{dt.format(new Date(ev.startAt))}
-              {ev.endAt ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}` : ""}
-            </p>
+      <header className="text-center space-y-4">
+        {ev.isFeatured && (
+          <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
+            Featured Event
           </div>
-          {ev.isFeatured && <span className="ccs-badge">Featured</span>}
-        </div>
+        )}
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" 
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+          {ev.title}
+        </h1>
+        <p className="text-xl text-[var(--fg)]/70 flex items-center justify-center gap-2">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          {dt.format(new Date(ev.startAt))}
+          {ev.endAt && ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}`}
+          {ev.city?.name && (
+            <>
+              <span className="text-[var(--fg)]/40">•</span>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              {ev.city.name}
+            </>
+          )}
+        </p>
       </header>
+
+      {/* Quick Actions */}
+      <div className="flex justify-center gap-4">
+        {ev.url && (
+          <a className="ccs-btn-primary px-6 py-3 text-lg" href={ev.url} target="_blank" rel="noreferrer">
+            Visit Official Site
+          </a>
+        )}
+        <a className="ccs-btn px-6 py-3 text-lg" href={mapsHref} target="_blank" rel="noreferrer">
+          Get Directions
+        </a>
+      </div>
 
       {/* Description */}
       {ev.description && (
         <section className="ccs-card">
-          <h2 className="text-lg font-semibold">About this event</h2>
-          <p className="mt-2 text-zinc-300">{ev.description}</p>
+          <h2 className="text-2xl font-semibold text-[var(--fg)] mb-4" 
+              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+            About this event
+          </h2>
+          <p className="text-lg text-[var(--fg)]/80 leading-relaxed">{ev.description}</p>
         </section>
       )}
 
-      {/* 3-column block: Details | Venue | Map */}
-      <section className="ccs-card">
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Details */}
-          <div>
-            <h2 className="text-lg font-semibold">Details</h2>
-            <dl className="mt-2 space-y-1 text-sm">
-              <div>
-                <dt className="text-zinc-400">Date:</dt>
-                <dd>{new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(ev.startAt))}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-400">Time:</dt>
-                <dd>
+      {/* Details Grid */}
+      <section className="grid gap-8 md:grid-cols-2">
+        {/* Left: Event Details */}
+        <div className="ccs-card">
+          <h2 className="text-2xl font-semibold text-[var(--fg)] mb-6" 
+              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+            Event Details
+          </h2>
+          <dl className="space-y-4">
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Date & Time</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(ev.startAt))}
+                  <br />
                   {new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.startAt))}
                   {ev.endAt ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}` : ""}
                   &nbsp;ET
+                </span>
+              </dd>
+            </div>
+            {ev.type && (
+              <div className="flex gap-3">
+                <dt className="w-8">
+                  <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                          d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </dt>
+                <dd className="flex-1">
+                  <span className="block text-sm text-[var(--fg)]/60">Event Type</span>
+                  <span className="block text-[var(--fg)] mt-1">
+                    {ev.type.replaceAll("_", " ")}
+                  </span>
                 </dd>
               </div>
-              {ev.type && (
-                <div>
-                  <dt className="text-zinc-400">Type:</dt>
-                  <dd>{ev.type.replaceAll("_", " ")}</dd>
-                </div>
-              )}
-              {ev.url && (
-                <div>
-                  <dt className="text-zinc-400">Official:</dt>
-                  <dd><a className="ccs-btn mt-1 inline-block" href={ev.url} target="_blank" rel="noreferrer">Event Link</a></dd>
-                </div>
-              )}
-            </dl>
-          </div>
-
-          {/* Venue */}
-          <div>
-            <h2 className="text-lg font-semibold">Venue</h2>
-            {ev.venue ? (
-              <div className="mt-2 text-sm">
-                <p className="font-medium">{ev.venue.name}</p>
-                <p className="text-zinc-300">{fmtAddress(ev.venue ?? undefined)}</p>
-                <p className="mt-2">
-                  <a className="ccs-btn" href={mapsHref} target="_blank" rel="noreferrer">Open in Google Maps</a>
-                </p>
-              </div>
-            ) : (
-              <p className="mt-2 text-sm text-zinc-400">Venue details coming soon.</p>
             )}
-          </div>
-
-          {/* Map (Google Maps Embed – no key required) */}
-          <div>
-            <h2 className="text-lg font-semibold">Map</h2>
-            <div className="mt-2 overflow-hidden rounded-2xl border border-zinc-800">
-              <iframe
-                title="Event Map"
-                width="100%"
-                height="220"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
-              />
-            </div>
-            <p className="mt-2 text-xs text-zinc-400">
-              Map centers on the venue address. Always check the event’s official link before traveling.
-            </p>
-          </div>
+          </dl>
         </div>
-      </section>
+
+        {/* Right: Venue & Map */}
+        <div className="ccs-card">
+          <h2 className="text-2xl font-semibold text-[var(--fg)] mb-6" 
+              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+            Location
+          </h2>
+          
+          {ev.venue ? (
+            <div className="space-y-6">
+              <div className="flex gap-3">
+                <div className="w-8">
+                  <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-[var(--fg)]">{ev.venue.name}</h3>
+                  <p className="text-[var(--fg)]/70 mt-1">{fmtAddress(ev.venue ?? undefined)}</p>
+                </div>
+              </div>
+
+              <div className="aspect-[16/9] overflow-hidden rounded-xl border border-zinc-200">
+                <iframe
+                  title="Event Location Map"
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+                />
+              </div>
+              <p className="text-sm text-[var(--fg)]/60">
+                Map centers on the venue address. Always check the event's official link before traveling.
+              </p>
+            </div>
+          ) : (
+            <p className="text-[var(--fg)]/70">Venue details will be announced soon.</p>
+          )}
+        </div>
+            </section>  {/* end: Details Grid */}
 
       {/* Prev / Next */}
       {(prev || next) && (
         <nav className="ccs-card flex items-center justify-between text-sm">
           <div>
-            {prev ? (
-              <Link className="ccs-btn" href={`/events/${prev.slug}`} aria-label={`Previous event: ${prev.title}`}>
-                ‹ {prev.title}
+            {prev && prev.slug && prev.title ? (
+              <Link 
+                className="group flex items-center gap-2 ccs-btn px-4 py-3" 
+                href={`/events/${prev.slug}`}
+              >
+                <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span>{prev.title}</span>
               </Link>
-            ) : <span className="text-zinc-600">Start of list</span>}
+            ) : (
+              <span className="text-[var(--fg)]/40 px-4">Start of list</span>
+            )}
           </div>
           <div>
-            {next ? (
-              <Link className="ccs-btn" href={`/events/${next.slug}`} aria-label={`Next event: ${next.title}`}>
-                {next.title} ›
+            {next && next.slug && next.title ? (
+              <Link 
+                className="group flex items-center gap-2 ccs-btn px-4 py-3" 
+                href={`/events/${next.slug}`}
+              >
+                <span>{next.title}</span>
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
-            ) : <span className="text-zinc-600">End of list</span>}
+            ) : (
+              <span className="text-[var(--fg)]/40 px-4">End of list</span>
+            )}
           </div>
         </nav>
       )}
-    </article>
+    </div>
   );
 }
