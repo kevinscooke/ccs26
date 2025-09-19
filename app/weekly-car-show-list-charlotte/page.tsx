@@ -1,5 +1,6 @@
 // app/weekly-car-show-list-charlotte/page.tsx
 import Link from "next/link";
+import GoogleAd from "@/components/ui/GoogleAd";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
@@ -129,6 +130,18 @@ export default async function WeeklyCarShowListPage({
 
   return (
     <section className="space-y-6">
+      {/* GoogleAd Top Slot */}
+      <GoogleAd slot="1514406406" format="auto" className="mb-8" />
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-2">
+        <ol className="flex items-center gap-2 flex-wrap">
+          <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
+          <li aria-hidden="true">/</li>
+          <li><Link href="/events" className="hover:underline text-[var(--fg)]">All Events</Link></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" className="text-[var(--fg)]/80">Weekly Charlotte Car Shows</li>
+        </ol>
+      </nav>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(weekItemList) }}
@@ -239,7 +252,7 @@ export default async function WeeklyCarShowListPage({
           <div>
             {page > 1 ? (
               <Link className="ccs-btn" href={urlFor(weekOffset, page - 1)} aria-label="Previous page">
-                ‹ Prev Page
+                9 Prev Page
               </Link>
             ) : (
               <span className="text-zinc-600">Start</span>
@@ -251,7 +264,7 @@ export default async function WeeklyCarShowListPage({
           <div>
             {page < totalPages ? (
               <Link className="ccs-btn" href={urlFor(weekOffset, page + 1)} aria-label="Next page">
-                Next Page ›
+                Next Page a
               </Link>
             ) : (
               <span className="text-zinc-600">End</span>
@@ -259,6 +272,8 @@ export default async function WeeklyCarShowListPage({
           </div>
         </nav>
       )}
+      {/* GoogleAd Footer Slot */}
+      <GoogleAd slot="1514406406" format="auto" className="mt-8" />
     </section>
   );
 }

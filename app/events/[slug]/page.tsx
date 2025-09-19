@@ -1,10 +1,25 @@
 // app/events/[slug]/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import GoogleAd from "@/components/ui/GoogleAd";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 export const revalidate = 86400; // 24h
+
+// ET week helpers to align with the weekly list page (Monday-start, ET timezone)
+function nowInET() {
+  return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+}
+function startOfWeekET(base: Date) {
+  const et = nowInET();
+  et.setFullYear(base.getFullYear(), base.getMonth(), base.getDate());
+  const day = et.getDay(); // 0..6 (Sun..Sat)
+  const diffToMonday = (day + 6) % 7; // Sun=>6, Mon=>0, Tue=>1, ...
+  et.setDate(et.getDate() - diffToMonday);
+  et.setHours(0, 0, 0, 0);
+  return et;
+}
 
 function fmtAddress(v?: {
   address1?: string | null; address2?: string | null;
@@ -92,6 +107,14 @@ export default async function EventDetail({ params }: { params: { slug: string }
 
   const dt = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short" });
 
+  // Compute Weekly page link (offset from current ET week)
+  const eventStart = new Date(ev.startAt);
+  const curWeek = startOfWeekET(nowInET());
+  const evWeek = startOfWeekET(eventStart);
+  const diffMs = evWeek.getTime() - curWeek.getTime();
+  const weekOffset = Math.round(diffMs / (7 * 24 * 60 * 60 * 1000));
+  const weeklyHref = weekOffset ? `/weekly-car-show-list-charlotte?w=${weekOffset}` : "/weekly-car-show-list-charlotte";
+
   // --- Event JSON-LD (rich results) ---
   const jsonLd = {
     "@context": "https://schema.org",
@@ -130,8 +153,22 @@ export default async function EventDetail({ params }: { params: { slug: string }
     } : undefined,
   };
 
+  // --- BreadcrumbList JSON-LD ---
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://charlottecarshows.com/" },
+      { "@type": "ListItem", position: 2, name: "All Events", item: "https://charlottecarshows.com/events" },
+      { "@type": "ListItem", position: 3, name: "Weekly Charlotte Car Shows", item: `https://charlottecarshows.com${weeklyHref}` },
+      { "@type": "ListItem", position: 4, name: ev.title, item: `https://charlottecarshows.com/events/${ev.slug}` },
+    ],
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 space-y-8">
+      {/* GoogleAd Top Slot */}
+      <GoogleAd slot="1514406406" format="auto" className="mb-8" />
       {/* JSON-LD can live anywhere in the page JSX (head or body). Body is fine in App Router. */}
       <script
         type="application/ld+json"
@@ -139,7 +176,25 @@ export default async function EventDetail({ params }: { params: { slug: string }
       />
 
       {/* Title + meta */}
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60">
+        <ol className="flex items-center gap-2 flex-wrap">
+          <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
+          <li aria-hidden="true">/</li>
+          <li><Link href="/events" className="hover:underline text-[var(--fg)]">All Events</Link></li>
+          <li aria-hidden="true">/</li>
+          <li><Link href={weeklyHref} className="hover:underline text-[var(--fg)]">Weekly Charlotte Car Shows</Link></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" className="text-[var(--fg)]/80 truncate max-w-[60ch]">{ev.title}</li>
+        </ol>
+      </nav>
+
+      {/* Title + meta */}
       <header className="text-center space-y-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
         {ev.isFeatured && (
           <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
             Featured Event
@@ -149,15 +204,16 @@ export default async function EventDetail({ params }: { params: { slug: string }
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
           {ev.title}
         </h1>
-        <p className="text-xl text-[var(--fg)]/70 flex items-center justify-center gap-2">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          {dt.format(new Date(ev.startAt))}
-          {ev.endAt && ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}`}
+        <div className="text-xl text-[var(--fg)]/70 flex flex-col sm:flex-row items-center justify-center gap-2">
+          <span className="flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>{dt.format(new Date(ev.startAt))}{ev.endAt && ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}`}</span>
+          </span>
           {ev.city?.name && (
-            <>
+            <span className="flex items-center gap-2">
               <span className="text-[var(--fg)]/40">•</span>
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -165,10 +221,10 @@ export default async function EventDetail({ params }: { params: { slug: string }
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              {ev.city.name}
-            </>
+              <span>{ev.city.name}</span>
+            </span>
           )}
-        </p>
+        </div>
       </header>
 
       {/* Quick Actions */}
@@ -319,6 +375,8 @@ export default async function EventDetail({ params }: { params: { slug: string }
           </div>
         </nav>
       )}
+      {/* GoogleAd Footer Slot */}
+      <GoogleAd slot="1514406406" format="auto" className="mt-8" />
     </div>
   );
 }

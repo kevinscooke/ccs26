@@ -1,5 +1,6 @@
 // app/events/page.tsx  (All events index - 1 column preserved)
 import Link from "next/link";
+import GoogleAd from "@/components/ui/GoogleAd";
 import type { Metadata } from "next";
 import { getPrisma } from "@/lib/prisma";
 
@@ -96,6 +97,16 @@ export default async function EventsAllPage({
 
   return (
     <section className="max-w-5xl mx-auto px-4 space-y-8">
+      {/* GoogleAd Top Slot */}
+      <GoogleAd slot="1514406406" format="auto" className="mb-8" />
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-2">
+        <ol className="flex items-center gap-2 flex-wrap">
+          <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" className="text-[var(--fg)]/80">All Events</li>
+        </ol>
+      </nav>
       {/* JSON-LD in body is fine with the App Router */}
       <script
         type="application/ld+json"
@@ -217,7 +228,7 @@ export default async function EventsAllPage({
           <div>
             {page > 1 ? (
               <Link className="ccs-btn" href={urlFor(page - 1)} aria-label="Previous page">
-                ‹ Prev Page
+                9 Prev Page
               </Link>
             ) : (
               <span className="text-[var(--fg)]/40">Start</span>
@@ -229,7 +240,7 @@ export default async function EventsAllPage({
           <div>
             {page < totalPages ? (
               <Link className="ccs-btn" href={urlFor(page + 1)} aria-label="Next page">
-                Next Page ›
+                Next Page a
               </Link>
             ) : (
               <span className="text-[var(--fg)]/40">End</span>
@@ -237,6 +248,8 @@ export default async function EventsAllPage({
           </div>
         </nav>
       )}
+      {/* GoogleAd Footer Slot */}
+      <GoogleAd slot="1514406406" format="auto" className="mt-8" />
     </section>
   );
 }

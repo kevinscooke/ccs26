@@ -111,6 +111,19 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Guide promo */}
+      <section className="ccs-card">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+              New: The Guide to Charlotte Car Shows
+            </h2>
+            <p className="text-gray-600">Monthly staples, annual shows, and local resources—all in one place.</p>
+          </div>
+          <a className="ccs-btn-primary px-5 py-2" href="/guide-to-charlotte-car-shows">Read the Guide</a>
+        </div>
+      </section>
+
       {/* Community Section */}
       <section className="ccs-card text-center">
         <h2 className="text-3xl font-bold text-gray-900 mb-4" 

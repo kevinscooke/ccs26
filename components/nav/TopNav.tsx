@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function TopNav() {
-  const [open, setOpen] = useState(false);
+  // open: false | 'events' | 'resources'
+  const [open, setOpen] = useState<false | 'events' | 'resources'>(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -38,7 +39,7 @@ export default function TopNav() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-2">
+  <nav className="hidden md:flex items-center gap-2">
           {/* Charlotte Events with dropdown */}
           <div className="relative">
             <button
@@ -46,13 +47,13 @@ export default function TopNav() {
               type="button"
               className="ccs-btn"
               aria-haspopup="menu"
-              aria-expanded={open}
-              onClick={() => setOpen(v => !v)}
+              aria-expanded={open === 'events'}
+              onClick={() => setOpen(open === 'events' ? false : 'events')}
             >
               Charlotte Events
               <span className="ml-2 inline-block align-middle">▾</span>
             </button>
-            {open && (
+            {open === 'events' && (
               <div
                 ref={menuRef}
                 role="menu"
@@ -78,7 +79,42 @@ export default function TopNav() {
             )}
           </div>
 
-          <Link href="/resources" className="ccs-btn">Resources</Link>
+          {/* Resources dropdown (button-based, matches Events) */}
+          <div className="relative">
+            <button
+              type="button"
+              className="ccs-btn"
+              aria-haspopup="menu"
+              aria-expanded={open === 'resources'}
+              onClick={() => setOpen(open === 'resources' ? false : 'resources')}
+            >
+              Resources
+              <span className="ml-2 inline-block align-middle">▾</span>
+            </button>
+            {open === 'resources' && (
+              <div
+                role="menu"
+                className="absolute right-0 mt-2 w-80 rounded-2xl border border-zinc-200 bg-white shadow-lg p-2"
+              >
+                <Link
+                  href="/guide-to-charlotte-car-shows"
+                  role="menuitem"
+                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
+                  onClick={() => setOpen(false)}
+                >
+                  Guide to Charlotte Car Shows
+                </Link>
+                <Link
+                  href="/resources"
+                  role="menuitem"
+                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
+                  onClick={() => setOpen(false)}
+                >
+                  All Resources
+                </Link>
+              </div>
+            )}
+          </div>
           <Link href="/pricing" className="ccs-btn">Pricing</Link>
           <Link href="/contact" className="ccs-btn">Contact</Link>
         </nav>
@@ -103,6 +139,9 @@ export default function TopNav() {
             </Link>
             <Link href="/weekly-car-show-list-charlotte" className="ccs-btn" onClick={() => setMobileOpen(false)}>
               Weekly Car Show List (Charlotte)
+            </Link>
+            <Link href="/guide-to-charlotte-car-shows" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+              Guide to Charlotte Car Shows
             </Link>
             <Link href="/resources" className="ccs-btn" onClick={() => setMobileOpen(false)}>Resources</Link>
             <Link href="/pricing" className="ccs-btn" onClick={() => setMobileOpen(false)}>Pricing</Link>

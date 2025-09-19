@@ -13,6 +13,7 @@ export async function GET() {
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url><loc>${base}/</loc></url>
     <url><loc>${base}/events</loc></url>
+    <url><loc>${base}/guide-to-charlotte-car-shows</loc></url>
     ${urls}
   </urlset>`;
   return new NextResponse(xml, { headers: { 'Content-Type': 'application/xml' } });
