@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm build"
+  command = "pnpm build && pnpx prisma generate"
   publish = ".next"
 
 [build.environment]
