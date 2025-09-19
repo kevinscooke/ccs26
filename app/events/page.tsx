@@ -227,8 +227,11 @@ export default async function EventsAllPage({
         <nav className="ccs-card flex items-center justify-between text-sm">
           <div>
             {page > 1 ? (
-              <Link className="ccs-btn" href={urlFor(page - 1)} aria-label="Previous page">
-                9 Prev Page
+              <Link className="ccs-btn flex items-center gap-2" href={urlFor(page - 1)} aria-label="Previous page">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Prev Page
               </Link>
             ) : (
               <span className="text-[var(--fg)]/40">Start</span>
@@ -239,8 +242,11 @@ export default async function EventsAllPage({
           </div>
           <div>
             {page < totalPages ? (
-              <Link className="ccs-btn" href={urlFor(page + 1)} aria-label="Next page">
-                Next Page a
+              <Link className="ccs-btn flex items-center gap-2" href={urlFor(page + 1)} aria-label="Next page">
+                Next Page
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             ) : (
               <span className="text-[var(--fg)]/40">End</span>

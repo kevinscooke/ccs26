@@ -82,10 +82,46 @@ export default async function EventDetail({ params }: { params: { slug: string }
   const prisma = await getPrisma();
   const ev = await prisma.event.findFirst({
     where: { slug: params.slug, status: "PUBLISHED" },
-    include: { city: true, venue: true },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      description: true,
+      startAt: true,
+      endAt: true,
+      type: true,
+      status: true,
+      isFeatured: true,
+      price: true,
+      source: true,
+      url: true,
+      createdAt: true,
+      updatedAt: true,
+      publishedAt: true,
+      flagged: true,
+      seriesId: true,
+      isPaid: true,
+      size: true,
+      isRecurring: true,
+      isSponsored: true,
+      parkingInfo: true,
+      socialLinks: true,
+      city: { select: { id: true, slug: true, name: true, region: true, heroCopy: true, createdAt: true, updatedAt: true } },
+      organizer: { select: { id: true, name: true, email: true, phone: true } },
+      series: { select: { id: true, title: true, slugBase: true } },
+      venue: { select: { id: true, name: true, address1: true, address2: true, city: true, state: true, postal: true, lat: true, lng: true, notes: true } },
+      images: { select: { id: true, url: true, alt: true } },
+    },
   });
 
   if (!ev) return <p>Event not found.</p>;
+  // Provide fallback/default values for new fields
+  const isPaid = typeof ev.isPaid === "boolean" ? ev.isPaid : false;
+  const size = typeof ev.size === "number" ? ev.size : undefined;
+  const isRecurring = typeof ev.isRecurring === "boolean" ? ev.isRecurring : false;
+  const isSponsored = typeof ev.isSponsored === "boolean" ? ev.isSponsored : false;
+  const parkingInfo = typeof ev.parkingInfo === "string" ? ev.parkingInfo : "See event details";
+  const socialLinks = Array.isArray(ev.socialLinks) ? ev.socialLinks : [];
 
   // Prev / Next (strict chronological by startAt)
   const [prev, next] = await Promise.all([
@@ -281,6 +317,100 @@ export default async function EventDetail({ params }: { params: { slug: string }
                   {new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.startAt))}
                   {ev.endAt ? ` – ${new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.endAt))}` : ""}
                   &nbsp;ET
+                </span>
+              </dd>
+            </div>
+            {/* Paid/Free */}
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Admission</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {ev.isPaid ? "Paid" : "Free"}
+                </span>
+              </dd>
+            </div>
+            {/* Estimated Size */}
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <text x="12" y="16" textAnchor="middle" fontSize="12" fill="currentColor">{ev.size || "?"}</text>
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Estimated Size</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {ev.size ? `${ev.size}+` : "Unknown"}
+                </span>
+              </dd>
+            </div>
+            {/* Recurring/One-time */}
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Event Frequency</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {ev.isRecurring ? "Recurring" : "One-time"}
+                </span>
+              </dd>
+            </div>
+            {/* Featured/Sponsored */}
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <polygon points="12,2 15,8 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8" stroke="currentColor" strokeWidth="2" fill="currentColor" />
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Featured/Sponsored</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {ev.isFeatured ? "Featured" : ev.isSponsored ? "Sponsored" : "Standard"}
+                </span>
+              </dd>
+            </div>
+            {/* Parking Info */}
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <text x="12" y="16" textAnchor="middle" fontSize="12" fill="currentColor">P</text>
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Parking</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {ev.parkingInfo || "See event details"}
+                </span>
+              </dd>
+            </div>
+            {/* Social Media/Website */}
+            <div className="flex gap-3">
+              <dt className="w-8">
+                <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h8M12 8v8" />
+                </svg>
+              </dt>
+              <dd className="flex-1">
+                <span className="block text-sm text-[var(--fg)]/60">Social / Website</span>
+                <span className="block text-[var(--fg)] mt-1">
+                  {ev.url ? <a href={ev.url} className="underline text-blue-600" target="_blank" rel="noopener noreferrer">Official Site</a> : "-"}
+                  {ev.socialLinks && ev.socialLinks.length > 0 && ev.socialLinks.map((link: string, i: number) => (
+                    <span key={i} className="ml-2">
+                      <a href={link} className="underline text-blue-600" target="_blank" rel="noopener noreferrer">Social</a>
+                    </span>
+                  ))}
                 </span>
               </dd>
             </div>

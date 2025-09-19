@@ -105,6 +105,12 @@ model Event {
   publishedAt DateTime?
   flagged     Boolean     @default(false)
   seriesId    String?
+  isPaid      Boolean     @default(false)
+  size        Int?
+  isRecurring Boolean     @default(false)
+  isSponsored Boolean     @default(false)
+  parkingInfo String?
+  socialLinks String[]
   city        City        @relation(fields: [cityId], references: [id])
   organizer   Organizer?  @relation(fields: [organizerId], references: [id])
   series      Series?     @relation(fields: [seriesId], references: [id])
