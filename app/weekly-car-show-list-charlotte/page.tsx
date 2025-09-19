@@ -1,3 +1,23 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Charlotte Weekly Car Show List | Charlotte Car Shows",
+  description:
+    "See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets. Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC.",
+  openGraph: {
+    title: "Charlotte Weekly Car Show List",
+    description:
+      "Discover all upcoming Charlotte car shows, meets, and cruise-ins for this week. Find event times, locations, and details for the Charlotte, NC area.",
+    url: "https://charlottecarshows.com/weekly-car-show-list-charlotte",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Charlotte Weekly Car Show List",
+    description:
+      "See this week's Charlotte car shows, meets, and cruise-ins. Updated weekly for car enthusiasts in Charlotte, NC.",
+  },
+};
 // app/weekly-car-show-list-charlotte/page.tsx
 import Link from "next/link";
 import GoogleAd from "@/components/ui/GoogleAd";

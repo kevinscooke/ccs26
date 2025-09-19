@@ -98,9 +98,9 @@ export default async function EventsAllPage({
   return (
     <section className="max-w-5xl mx-auto px-4 space-y-8">
       {/* GoogleAd Top Slot */}
-      <GoogleAd slot="1514406406" format="auto" className="mb-8" />
+      <GoogleAd slot="1514406406" format="auto" className="mb-4" />
       {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-2">
+      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0 mt-[-0.5rem]">
         <ol className="flex items-center gap-2 flex-wrap">
           <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
           <li aria-hidden="true">/</li>

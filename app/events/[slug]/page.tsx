@@ -219,8 +219,6 @@ export default async function EventDetail({ params }: { params: { slug: string }
           <li aria-hidden="true">/</li>
           <li><Link href="/events" className="hover:underline text-[var(--fg)]">All Events</Link></li>
           <li aria-hidden="true">/</li>
-          <li><Link href={weeklyHref} className="hover:underline text-[var(--fg)]">Weekly Charlotte Car Shows</Link></li>
-          <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-[var(--fg)]/80 truncate max-w-[60ch]">{ev.title}</li>
         </ol>
       </nav>
