@@ -28,9 +28,13 @@ export default function SubmitEvent() {
       </p>
       <form
         method="POST"
-        action="/api/submissions"
+        name="submit-event"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
         className="mt-6 space-y-5"
       >
+        <input type="hidden" name="form-name" value="submit-event" />
+        <input type="hidden" name="bot-field" />
         <div className="grid gap-4">
           {/* Name */}
           <label className="flex flex-col gap-2">
