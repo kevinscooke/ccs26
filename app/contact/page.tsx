@@ -24,7 +24,7 @@ export default function Contact() {
     <section className="ccs-card max-w-2xl mx-auto">
       <h1 className="text-3xl font-semibold tracking-tight mb-2 text-zinc-900">Contact Charlotte Car Shows</h1>
       <p className="mb-4 text-zinc-700">
-        Have a question, want to partner, or just want to say hello? Use the form below or email us at <a className="underline text-zinc-900" href="mailto:hello@charlottecarshows.com">hello@charlottecarshows.com</a>.
+        Have a question, want to partner, or just want to say hello? Use the form below.
       </p>
 
       {/* Contact Form */}
