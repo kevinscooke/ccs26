@@ -5,7 +5,7 @@ const footerNav = {
   events: [
     { label: "All Events", href: "/events" },
     { label: "Car Shows Near Me", href: "/events?near=me" },
-    { label: "Charlotte Auto Show", href: "/charlotte-auto-show" },
+    { label: "Charlotte Auto Show", href: "/charlotte-auto-show-2026" },
     { label: "Hornets Nest Auto Fest", href: "/hornets-nest-auto-fest" },
     { label: "Charlotte AutoFair", href: "/charlotte-autofair" },
     { label: "Local Flyers", href: "/local-flyers" },
@@ -21,7 +21,7 @@ const footerNav = {
   ],
   company: [
     { label: "About", href: "/about" },
-    { label: "Promote Your Event", href: "/promote" },
+    { label: "Promote Your Event", href: "/pricing" },
     { label: "Contact", href: "/contact" },
     { label: "Blog", href: "/blog" },
   ],
