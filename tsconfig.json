@@ -23,8 +23,7 @@
       ]
     },
     "types": [
-      "node",
-      "@netlify/functions"
+  "node"
     ],
     "esModuleInterop": true,
     "plugins": [
