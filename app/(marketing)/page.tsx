@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import UpcomingSix from '@/components/event/UpcomingSix';
+import eventsData from '../../public/events.json';
 import { TAGS } from "@/lib/tags";
 import type { Metadata } from "next";
 
@@ -71,9 +71,38 @@ export default function Home() {
           </div>
         </div>
 
-        <Suspense fallback={<div className="mt-4 text-gray-500">Loading events...</div>}>
-      <UpcomingSix />
-  </Suspense>
+        <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {eventsData
+            .filter((e) => e.status === 'PUBLISHED' && new Date(e.startAt) >= new Date())
+            .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
+            .slice(0, 6)
+            .map((e) => (
+              <article key={e.id} className="ccs-card">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-lg font-semibold leading-snug">
+                    <a className="hover:underline" href={`/events/${e.slug}`}>
+                      {e.title}
+                    </a>
+                  </h3>
+                  {e.isFeatured && <span className="ccs-badge">Featured</span>}
+                </div>
+                <p className="mt-1 text-sm text-zinc-400">
+                  {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(e.startAt))}
+                  {e.venue?.name
+                    ? ` 2022 ${e.venue.name}${e.venue.city ? `, ${e.venue.city}${e.venue.state ? `, ${e.venue.state}` : ''}` : ''}`
+                    : e.city?.name
+                    ? ` 2022 ${e.city.name}`
+                    : ''}
+                </p>
+                <div className="mt-4 flex gap-2">
+                  <a className="ccs-btn" href={`/events/${e.slug}`}>Details</a>
+                  {e.url && (
+                    <a className="ccs-btn" href={e.url} target="_blank" rel="noreferrer">Official</a>
+                  )}
+                </div>
+              </article>
+            ))}
+        </section>
 </section>
 
 {/* Value Props */}

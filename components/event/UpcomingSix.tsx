@@ -1,19 +1,15 @@
 // components/event/UpcomingSix.tsx
 import Link from "next/link";
-import { getPrisma } from "@/lib/prisma";
+import eventsData from "../../app/data/events.json";
 
 export const runtime = "nodejs";
 
-export default async function UpcomingSix() {
-  const prisma = await getPrisma();
+export default function UpcomingSix() {
   const now = new Date();
-
-  const events = await prisma.event.findMany({
-    where: { status: "PUBLISHED", startAt: { gte: now } },
-    orderBy: [{ startAt: "asc" }, { title: "asc" }],
-    include: { city: true, venue: true },
-    take: 6,
-  });
+  const events = (eventsData as any[])
+    .filter(e => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
+    .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
+    .slice(0, 6);
 
   if (!events.length) {
     return <p className="mt-4 text-zinc-400">No upcoming events yet.</p>;

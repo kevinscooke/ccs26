@@ -1,75 +1,47 @@
 // app/events/page.tsx  (All events index - 1 column preserved)
+import React from "react";
 import Link from "next/link";
 import GoogleAd from "@/components/ui/GoogleAd";
 import type { Metadata } from "next";
-import { getPrisma } from "@/lib/prisma";
+import eventsData from "../data/events.json";
 
 // Fully static page
 
-export async function generateMetadata(
-  { searchParams }: { searchParams?: { [k: string]: string | string[] | undefined } }
-): Promise<Metadata> {
-  const base = "https://charlottecarshows.com";
-  const pRaw = Array.isArray(searchParams?.p) ? searchParams!.p[0] : searchParams?.p;
-  const page = Math.max(1, Number(pRaw || "1") || 1);
-  const canonical = page > 1 ? `${base}/events?p=${page}` : `${base}/events`;
-
-  return {
-    title: "All Charlotte Car Shows | Charlotte Car Shows",
+export const metadata: Metadata = {
+  title: "All Charlotte Car Shows | Charlotte Car Shows",
+  description:
+    "Browse all upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+  alternates: { canonical: "https://charlottecarshows.com/events" },
+  openGraph: {
+    type: "website",
+    title: "All Charlotte Car Shows",
     description:
-      "Browse all upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-    alternates: { canonical },
-    openGraph: {
-      type: "website",
-      title: "All Charlotte Car Shows",
-      description:
-        "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-      url: canonical,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "All Charlotte Car Shows",
-      description:
-        "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-    },
-  };
-}
+      "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+    url: "https://charlottecarshows.com/events",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All Charlotte Car Shows",
+    description:
+      "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
+  },
+};
 
 const PAGE_SIZE = 15;
 
-export default async function EventsAllPage({
-  searchParams,
-}: {
-  searchParams?: { [k: string]: string | string[] | undefined };
-}) {
-  const prisma = await getPrisma();
+export default function EventsAllPage() {
   const now = new Date();
-
-  // Determine page from query (?p=)
-  const pRaw = Array.isArray(searchParams?.p) ? searchParams!.p[0] : searchParams?.p;
-  let page = Math.max(1, Number(pRaw || "1") || 1);
-
-  const where = { status: "PUBLISHED" as const, startAt: { gte: now } };
-  const total = await prisma.event.count({ where });
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  if (page > totalPages) page = totalPages;
-
-  const skip = (page - 1) * PAGE_SIZE;
-
-  const events = await prisma.event.findMany({
-    where,
-    orderBy: [{ startAt: "asc" }, { title: "asc" }],
-    include: { venue: true, city: true },
-    skip,
-    take: PAGE_SIZE,
-  });
+  type EventType = typeof eventsData[number];
+  const events = (eventsData as EventType[])
+    .filter((e: EventType) => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
+    .sort((a: EventType, b: EventType) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title));
 
   // --- JSON-LD: ItemList of event detail URLs (good for discovery on list pages) ---
   // Keep it reasonable in size; cap at 100 items to avoid huge script tags.
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: events.slice(0, 100).map((e, i) => ({
+  itemListElement: events.slice(0, 100).map((e: EventType, i: number) => ({
       "@type": "ListItem",
       position: i + 1,
       url: `https://charlottecarshows.com/events/${e.slug}`,
@@ -125,62 +97,61 @@ export default async function EventsAllPage({
       <div className="space-y-6">
         {(() => {
           let lastMonth: string | null = null;
-          return events.map((e) => {
-          const when = tfmt.format(new Date(e.startAt));
-          const venueLine = e.venue
-            ? [e.venue.name, [e.venue.city, e.venue.state].filter(Boolean).join(", ")].filter(Boolean).join(" • ")
-            : e.city?.name || "";
+          return events.map((e: EventType) => {
+            const when = tfmt.format(new Date(e.startAt));
+            const venueLine = e.venue
+              ? [e.venue.name, [e.venue.city, e.venue.state].filter(Boolean).join(", ")].filter(Boolean).join(" • ")
+              : e.city?.name || "";
 
-          const monthLabel = monthFmt.format(new Date(e.startAt));
-          const showMonth = monthLabel !== lastMonth;
-          if (showMonth) lastMonth = monthLabel;
+            const monthLabel = monthFmt.format(new Date(e.startAt));
+            const showMonth = monthLabel !== lastMonth;
+            lastMonth = monthLabel;
 
-          return (
-            <>
-              {showMonth && (
-                <div className="flex items-center gap-3 my-6" key={`m-${monthLabel}`}>
-                  <div className="h-px flex-1 bg-[var(--fg)]/10" />
-                  <div className="text-sm uppercase tracking-wide text-[var(--fg)]/60">{monthLabel}</div>
-                  <div className="h-px flex-1 bg-[var(--fg)]/10" />
-                </div>
-              )}
-              <article key={e.id} className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
-              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
-                <div className="min-w-0 space-y-3">
-                  <div>
-                    <div className="flex items-start gap-3 flex-wrap">
-                      <h2 className="text-xl font-semibold text-[var(--fg)]">
-                        <Link href={`/events/${e.slug}`} className="hover:text-green-600 transition-colors">
-                          {e.title}
-                        </Link>
-                      </h2>
-                      {e.isFeatured && (
-                        <span className="ccs-badge">Featured</span>
-                      )}
-                    </div>
-                    <div className="mt-2 border-t border-[var(--fg)]/10" />
-                    <p className="mt-2 pt-2 text-base text-[var(--fg)]/60 flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
-                      <span className="inline-flex items-center gap-2">
-                        <svg className="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span className="whitespace-nowrap">{when}</span>
-                      </span>
-                      {venueLine && (
-                        <span className="inline-flex items-center gap-2">
-                          <span className="hidden md:inline text-[var(--fg)]/40">•</span>
-                          <svg className="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          <span>{venueLine}</span>
-                        </span>
-                      )}
-                      
-                    </p>
+            return (
+              <React.Fragment key={e.id}>
+                {showMonth && (
+                  <div className="flex items-center gap-3 my-6" key={`m-${monthLabel}`}>
+                    <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                    <div className="text-sm uppercase tracking-wide text-[var(--fg)]/60">{monthLabel}</div>
+                    <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                  </div>
+                )}
+                <article className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
+                    <div className="min-w-0 space-y-3">
+                      <div>
+                        <div className="flex items-start gap-3 flex-wrap">
+                          <h2 className="text-xl font-semibold text-[var(--fg)]">
+                            <Link href={`/events/${e.slug}`} className="hover:text-green-600 transition-colors">
+                              {e.title}
+                            </Link>
+                          </h2>
+                          {e.isFeatured && (
+                            <span className="ccs-badge">Featured</span>
+                          )}
+                        </div>
+                        <div className="mt-2 border-t border-[var(--fg)]/10" />
+                        <p className="mt-2 pt-2 text-base text-[var(--fg)]/60 flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
+                          <span className="inline-flex items-center gap-2">
+                            <svg className="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span className="whitespace-nowrap">{when}</span>
+                          </span>
+                          {venueLine && (
+                            <span className="inline-flex items-center gap-2">
+                              <span className="hidden md:inline text-[var(--fg)]/40">•</span>
+                              <svg className="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span>{venueLine}</span>
+                            </span>
+                          )}
+                        </p>
                   </div>
 
                   {e.description && (
@@ -210,7 +181,7 @@ export default async function EventsAllPage({
                 </div>
               </div>
             </article>
-            </>
+            </React.Fragment>
           );
           });
         })()}
@@ -222,37 +193,7 @@ export default async function EventsAllPage({
         )}
       </div>
 
-      {totalPages > 1 && (
-        <nav className="ccs-card flex items-center justify-between text-sm">
-          <div>
-            {page > 1 ? (
-              <Link className="ccs-btn flex items-center gap-2" href={urlFor(page - 1)} aria-label="Previous page">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Prev Page
-              </Link>
-            ) : (
-              <span className="text-[var(--fg)]/40">Start</span>
-            )}
-          </div>
-          <div className="text-[var(--fg)]/60">
-            Page {page} of {totalPages}
-          </div>
-          <div>
-            {page < totalPages ? (
-              <Link className="ccs-btn flex items-center gap-2" href={urlFor(page + 1)} aria-label="Next page">
-                Next Page
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            ) : (
-              <span className="text-[var(--fg)]/40">End</span>
-            )}
-          </div>
-        </nav>
-      )}
+      {/* Pagination fully removed for static rendering */}
       {/* GoogleAd Footer Slot */}
       <GoogleAd slot="1514406406" format="auto" className="mt-8" />
     </section>
