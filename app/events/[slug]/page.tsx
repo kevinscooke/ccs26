@@ -4,7 +4,7 @@ import Link from "next/link";
 import GoogleAd from "@/components/ui/GoogleAd";
 import { getPrisma } from "@/lib/prisma";
 
-export const runtime = "nodejs";
+export const runtime = "force-static";
 export const revalidate = 86400; // 24h
 
 // ET week helpers to align with the weekly list page (Monday-start, ET timezone)

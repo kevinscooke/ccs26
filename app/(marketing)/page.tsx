@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://charlottecarshows.com" },
 };
 
-export const runtime = "nodejs";
+export const dynamic = "force-static";
 export const revalidate = 604800; // 1 week ISR for homepage
 export default function Home() {
   return (

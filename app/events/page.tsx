@@ -4,8 +4,8 @@ import GoogleAd from "@/components/ui/GoogleAd";
 import type { Metadata } from "next";
 import { getPrisma } from "@/lib/prisma";
 
-export const runtime = "nodejs";
-export const revalidate = 86400; // 24h
+export const dynamic = "force-static";
+export const revalidate = 604800; // 1 week ISR for all events
 
 export async function generateMetadata(
   { searchParams }: { searchParams?: { [k: string]: string | string[] | undefined } }
