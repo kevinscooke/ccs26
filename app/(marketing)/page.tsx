@@ -10,8 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://charlottecarshows.com" },
 };
 
-export const dynamic = "force-static";
-export const revalidate = 604800; // 1 week ISR for homepage
+// Fully static page
 export default function Home() {
   return (
     <div className="space-y-16 py-8">

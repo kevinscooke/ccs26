@@ -23,8 +23,7 @@ import Link from "next/link";
 import GoogleAd from "@/components/ui/GoogleAd";
 import { getPrisma } from "@/lib/prisma";
 
-export const dynamic = "force-static";
-export const revalidate = 604800; // 1 week ISR for weekly car show list
+// Fully static page
 
 /** ---------- ET week helpers (no extra deps) ---------- */
 function nowInET() {
