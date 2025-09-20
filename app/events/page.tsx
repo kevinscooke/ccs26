@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const revalidate = 300; // 5 min
+export const revalidate = 86400; // 24h
 
 export async function generateMetadata(
   { searchParams }: { searchParams?: { [k: string]: string | string[] | undefined } }

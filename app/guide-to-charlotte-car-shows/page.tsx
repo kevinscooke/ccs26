@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const runtime = "nodejs";
-export const revalidate = 86400; // daily
+export const revalidate = 604800; // 1 week ISR for guide page
 
 export const metadata: Metadata = {
   title: "The Guide to Charlotte Car Shows | Charlotte Car Shows",

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const revalidate = 86400;
+export const revalidate = 604800; // 1 week ISR for sitemap
 
 export async function GET() {
   const prisma = await getPrisma();

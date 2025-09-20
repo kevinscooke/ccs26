@@ -3,7 +3,7 @@ import Container from "@/components/Container";
 import ResourceCard from "@/components/ResourceCard";
 import { resources } from "./resources.data";
 
-export const revalidate = 3600;
+export const revalidate = 604800; // 1 week ISR for resources
 
 export const metadata: Metadata = {
   title: "Resources – Charlotte Car Shows",

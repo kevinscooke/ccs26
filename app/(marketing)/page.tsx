@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export const runtime = "nodejs";
-export const revalidate = 600; // 10 minutes ISR for homepage
+export const revalidate = 604800; // 1 week ISR for homepage
 export default function Home() {
   return (
     <div className="space-y-16 py-8">
@@ -47,7 +47,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Value Props */}
+      {/* Upcoming Events */}
+      <section className="ccs-card">
+        <div className="flex items-center justify-between md:flex-nowrap flex-wrap gap-4 mb-6">
+          {/* Left: heading/intro */}
+          <div className="min-w-0">
+            <h2
+              className="text-3xl font-bold text-gray-900 mb-2"
+              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+            >
+              This Week's Events
+            </h2>
+            <p className="text-gray-600">
+              Curated listings across the greater Charlotte area
+            </p>
+          </div>
+
+          {/* Right: buttons grouped & right-aligned on desktop */}
+          <div className="w-full md:w-auto md:ml-auto flex justify-start md:justify-end items-center gap-3">
+            <a className="ccs-btn px-6 py-3" href="/events">View All Events</a>
+            <a className="ccs-btn-primary px-6 py-3" href="/weekly-car-show-list-charlotte">
+              Events this Week!
+            </a>
+          </div>
+        </div>
+
+        <Suspense fallback={<div className="mt-4 text-gray-500">Loading events...</div>}>
+      <UpcomingSix />
+  </Suspense>
+</section>
+
+{/* Value Props */}
       <section className="grid gap-8 md:grid-cols-3">
         {[
           {
@@ -72,25 +102,6 @@ export default function Home() {
             <p className="text-gray-600 leading-relaxed">{prop.description}</p>
           </div>
         ))}
-      </section>
-
-      {/* Upcoming Events */}
-      <section className="ccs-card">
-        <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2" 
-                style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-              This Week's Events
-            </h2>
-            <p className="text-gray-600">
-              Curated listings across the greater Charlotte area
-            </p>
-          </div>
-          <a className="ccs-btn-primary px-5 py-2" href="/events">View All Events</a>
-        </div>
-        <Suspense fallback={<div className="mt-4 text-gray-500">Loading events...</div>}>
-          <UpcomingSix />
-        </Suspense>
       </section>
 
       {/* Featured Locations */}

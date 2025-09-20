@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 86400;
+export const revalidate = 604800; // 1 week ISR for robots.txt
 
 export function GET() {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';

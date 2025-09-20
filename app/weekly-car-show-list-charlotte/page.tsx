@@ -24,7 +24,7 @@ import GoogleAd from "@/components/ui/GoogleAd";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
-export const revalidate = 300; // 5 min
+export const revalidate = 604800; // 1 week ISR for weekly car show list
 
 /** ---------- ET week helpers (no extra deps) ---------- */
 function nowInET() {
