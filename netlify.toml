@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm build && pnpm next export"
+  command = "pnpm build"
   publish = "out"
 
 [build.environment]
