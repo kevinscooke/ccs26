@@ -62,17 +62,25 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
             <div className="space-y-4">
               {upcoming.map((e: any) => (
                 <article key={e.id} className="ccs-card">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-semibold truncate">
                         <Link href={`/events/${e.slug}`} className="hover:underline">
                           {e.title}
                         </Link>
                       </h3>
                       <p className="text-sm text-zinc-500 mt-1">{fmt.format(new Date(e.startAt))}</p>
                     </div>
-                    <div className="text-sm text-zinc-400">
+
+                    <div className="flex flex-col items-end gap-2 text-sm">
                       {e.isFeatured && <span className="ccs-badge">Featured</span>}
+                      <Link
+                        href={`/events/${e.slug}`}
+                        aria-label={`View details for ${e.title}`}
+                        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 text-white text-sm font-medium px-3 py-1.5 rounded-md"
+                      >
+                        Event Details
+                      </Link>
                     </div>
                   </div>
                 </article>

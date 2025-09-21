@@ -1,0 +1,11 @@
+const events = require('../app/data/events.json');
+const venues = require('../app/data/venues.json');
+const base = 'https://charlottecarshows.com';
+const PAGE_SIZE = 15;
+const now = new Date();
+const eventsFiltered = events.filter(e => e.status === 'PUBLISHED' && new Date(e.startAt) >= now);
+const eventUrls = eventsFiltered.map(e => `<url><loc>${base}/events/${e.slug}</loc></url>`).join('\n');
+const totalPages = Math.max(1, Math.ceil(eventsFiltered.length / PAGE_SIZE));
+const paginated = Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => `<url><loc>${base}/events/page/${i + 2}</loc></url>`).join('\n');
+const venueUrls = venues.map(v => `<url><loc>${base}/venues/${v.slug}</loc></url>`).join('\n');
+console.log(['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', `<url><loc>${base}/</loc></url>`, `<url><loc>${base}/events</loc></url>`, eventUrls, paginated, venueUrls, '</urlset>'].join('\n'));

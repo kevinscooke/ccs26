@@ -32,12 +32,12 @@ export default function Home() {
             </div>
           </div>
           <div className="md:w-2/5">
-            <div className="relative rounded-xl shadow-lg overflow-hidden">
-              <div className="aspect-[16/9]">
+            <div className="rounded-xl shadow-lg overflow-hidden">
+              <div className="relative aspect-[16/9]">
                 <Image
                   src="/images/hero-ccs.jpg"
                   alt="Charlotte car show—rows of cars with spectators"
-                  className="h-full w-full object-cover"
+                  className="object-cover"
                   fill
                   priority
                   sizes="(min-width: 768px) 40vw, 100vw"

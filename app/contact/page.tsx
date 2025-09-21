@@ -32,6 +32,7 @@ export default function Contact() {
   method="POST"
   name="contact"
   className="space-y-5 mb-8"
+  netlify
       >
         <input type="hidden" name="form-name" value="contact" />
   {/* <input type="hidden" name="bot-field" /> */}
