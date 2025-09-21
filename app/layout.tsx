@@ -131,6 +131,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             gtag('config', 'G-ECG2CKEFSG', { 'send_page_view': true });
           `}
         </Script>
+
+        {/* Google Ads (AdSense) - load async with crossorigin anonymous */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );
