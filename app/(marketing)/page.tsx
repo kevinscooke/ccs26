@@ -90,11 +90,31 @@ export default function Home() {
                 </div>
                 <p className="mt-1 text-sm text-zinc-400">
                   {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(e.startAt))}
-                  {e.venue?.name
-                    ? ` 2022 ${e.venue.name}${e.venue.city ? `, ${e.venue.city}${e.venue.state ? `, ${e.venue.state}` : ''}` : ''}`
-                    : e.city?.name
-                    ? ` 2022 ${e.city.name}`
-                    : ''}
+                    {(() => {
+                      function clean(str?: string | null) {
+                        if (!str) return "";
+                        return (
+                          str
+                            .replace(/[\x00-\x1F\x7F]+/g, " ")
+                            .replace(/\b(19\d{2}|20\d{2})\b/g, " ")
+                            .replace(/\s+/g, " ")
+                            .trim()
+                        );
+                      }
+
+                      if (e.venue?.name) {
+                        const venue = clean(e.venue.name);
+                        const city = clean(e.venue.city);
+                        const state = clean(e.venue.state);
+                        const parts = [venue, city, state].filter(Boolean);
+                        return parts.length ? ` • ${parts.join(", ")}` : "";
+                      } else if (e.city?.name) {
+                        const c = clean(e.city.name);
+                        return c ? ` • ${c}` : "";
+                      } else {
+                        return "";
+                      }
+                    })()}
                 </p>
                 <div className="mt-4 flex gap-2">
                   <a className="ccs-btn" href={`/events/${e.slug}`}>Details</a>
