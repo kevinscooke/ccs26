@@ -132,11 +132,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           `}
         </Script>
 
-        {/* Google Ads (AdSense) - load async with crossorigin anonymous */}
-        <Script
+        {/* Google Ads (AdSense) - raw script tag so AdSense doesn't warn about data-nscript */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
-          strategy="lazyOnload"
           crossOrigin="anonymous"
+          async
         />
       </body>
     </html>
