@@ -3,6 +3,7 @@ const nextConfig = {
   output: 'export',
   reactStrictMode: true,
   experimental: {
+    cache: true,
     serverActions: { allowedOrigins: ['localhost:3000', 'charlottecarshows.com'] },
   },
   images: {
