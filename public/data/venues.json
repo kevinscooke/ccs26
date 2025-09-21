@@ -11,6 +11,72 @@
     "updated_at": "2025-09-21T16:31:42.576"
   },
   {
+    "id": "6c74bc72-3787-41f2-a269-ddb8c205ef79",
+    "name": "Southern Touch Bakery",
+    "slug": "southern-touch-bakery-york-sc",
+    "address1": "25 Congress St S",
+    "city": "York",
+    "state": "SC",
+    "postal": "29745-1834",
+    "created_at": "2025-09-21T19:46:14.191",
+    "updated_at": "2025-09-21T19:46:14.191"
+  },
+  {
+    "id": "2c12db2e-2aeb-4735-a6e3-178f83fe05d6",
+    "name": "Harris Teeter (Waxhaw)",
+    "slug": "harris-teeter-waxhaw-nc",
+    "address1": "8157 Kensington Dr",
+    "city": "Waxhaw",
+    "state": "NC",
+    "postal": "28173-0103",
+    "created_at": "2025-09-21T19:46:14.191",
+    "updated_at": "2025-09-21T19:46:14.191"
+  },
+  {
+    "id": "e6c879e5-79df-4e54-9cde-9813ce07a8f6",
+    "name": "Mint Hill Festival Shopping Center",
+    "slug": "mint-hill-festival-shopping-center-mint-hill-nc",
+    "address1": "6930 Matthews Mint Hill Rd",
+    "city": "Mint Hill",
+    "state": "NC",
+    "postal": "28227-7901",
+    "created_at": "2025-09-21T19:46:14.191",
+    "updated_at": "2025-09-21T19:46:14.191"
+  },
+  {
+    "id": "45eb379e-2d29-4cc9-8e5c-d4f37d8efc4e",
+    "name": "Downtown York – Congress St N",
+    "slug": "downtown-york-congress-st-n-york-sc",
+    "address1": "108 Congress St N",
+    "city": "York",
+    "state": "SC",
+    "postal": "29745-1531",
+    "created_at": "2025-09-21T19:46:14.191",
+    "updated_at": "2025-09-21T19:46:14.191"
+  },
+  {
+    "id": "cmfrbu1820001ug14s3ovvb1y",
+    "name": "Sun Valley Commons",
+    "slug": "sun-valley-commons-indian-trail",
+    "address1": "6467 Old Monroe Rd",
+    "city": "Indian Trail",
+    "state": "NC",
+    "postal": "",
+    "created_at": "2025-09-19T21:03:28.946",
+    "updated_at": "2025-09-21T19:58:36.2"
+  },
+  {
+    "id": "d6fb9a15-28aa-4fec-982d-40dfb9959970",
+    "name": "Trane Technologies",
+    "slug": "trane-technologies-davidson-nc",
+    "address1": "800 Beaty St",
+    "city": "Davidson",
+    "state": "NC",
+    "postal": "28036",
+    "created_at": "2025-09-21T19:58:36.2",
+    "updated_at": "2025-09-21T19:58:36.2"
+  },
+  {
     "id": "cmfn7nkqe000030mi5grdy5uk",
     "name": "Late Apex Storage Condos",
     "slug": "late-apex-storage-condos-mooresville",
@@ -130,17 +196,6 @@
     "postal": "",
     "created_at": "2025-09-19T21:01:43.617",
     "updated_at": "2025-09-19T21:00:58.827"
-  },
-  {
-    "id": "cmfrbu1820001ug14s3ovvb1y",
-    "name": "Sun Valley Commons",
-    "slug": "sun-valley-commons-indian-trail",
-    "address1": "6467 Old Monroe Rd",
-    "city": "Indian Trail",
-    "state": "NC",
-    "postal": "",
-    "created_at": "2025-09-19T21:03:28.946",
-    "updated_at": "2025-09-19T21:03:06.667"
   },
   {
     "id": "cmfrc41lt0001ug4aozzyvd7h",
