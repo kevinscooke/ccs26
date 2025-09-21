@@ -111,6 +111,7 @@ export default function EventsPage({ params }: { params: { page: string } }) {
         {pageNum > 1 && (
           <Link href={pageNum === 2 ? "/events" : `/events/page/${pageNum - 1}`} className="ccs-btn px-4 py-2">Previous</Link>
         )}
+        <Link href="/events/past" className="ccs-btn px-4 py-2">Previous events</Link>
         {Array.from({ length: totalPages }, (_, i) => (
           <Link
             key={i + 1}

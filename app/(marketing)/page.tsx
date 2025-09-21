@@ -16,32 +16,30 @@ export default function Home() {
   return (
     <div className="space-y-16 py-8">
       {/* Hero Section */}
-      <section className="ccs-card relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-center gap-8">
-          <div className="flex-1 space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900" 
-                style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-              Find Your Next Car Show in Charlotte
-            </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              The most comprehensive source for car shows, Cars & Coffee meetups, and automotive events across the Charlotte area. Join thousands of local enthusiasts.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-2">
-              <a className="ccs-btn-primary px-6 py-3 text-lg" href="/events">Browse Events</a>
-              <a className="ccs-btn px-6 py-3 text-lg" href="/pricing">Feature Your Event</a>
-            </div>
+      <section className="relative overflow-hidden">
+        <div className="relative rounded-xl overflow-hidden shadow-lg">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/hero-ccs.jpg"
+              alt="Charlotte car show—rows of cars with spectators"
+              className="object-cover"
+              fill
+              priority
+              sizes="(min-width: 768px) 60vw, 100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20" />
           </div>
-          <div className="md:w-2/5">
-            <div className="rounded-xl shadow-lg overflow-hidden">
-              <div className="relative aspect-[16/9]">
-                <Image
-                  src="/images/hero-ccs.jpg"
-                  alt="Charlotte car show—rows of cars with spectators"
-                  className="object-cover"
-                  fill
-                  priority
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                />
+          <div className="relative z-10 px-6 py-12 md:py-20 md:px-12">
+            <div className="max-w-3xl">
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-lg" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+                Find Your Next Car Show in Charlotte
+              </h1>
+              <p className="mt-4 text-lg md:text-xl text-white/90 leading-relaxed">
+                The most comprehensive source for car shows, Cars & Coffee meetups, and automotive events across the Charlotte area.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a className="ccs-btn-primary px-6 py-3 text-lg shadow-lg" href="/events">Browse Events</a>
+                <a className="ccs-btn px-5 py-3 text-lg bg-white/90 text-[var(--fg)] hover:bg-white" href="/pricing">Feature Your Event</a>
               </div>
             </div>
           </div>
@@ -73,23 +71,22 @@ export default function Home() {
           </div>
         </div>
 
-        <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="mt-4 grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
           {eventsData
             .filter((e) => e.status === 'PUBLISHED' && new Date(e.startAt) >= new Date())
             .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
             .slice(0, 6)
             .map((e) => (
-              <article key={e.id} className="ccs-card">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-lg font-semibold leading-snug">
-                    <a className="hover:underline" href={`/events/${e.slug}`}>
-                      {e.title}
-                    </a>
-                  </h3>
-                  {e.isFeatured && <span className="ccs-badge">Featured</span>}
-                </div>
-                <p className="mt-1 text-sm text-zinc-400">
-                  {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(e.startAt))}
+              <article key={e.id} className="flex items-start gap-4 p-4 rounded-lg bg-white/5 shadow-sm">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-lg font-semibold leading-snug truncate">
+                      <a className="hover:underline" href={`/events/${e.slug}`}>{e.title}</a>
+                    </h3>
+                    {e.isFeatured && <span className="ccs-badge">Featured</span>}
+                  </div>
+                  <p className="mt-1 text-sm text-zinc-400">
+                    {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(e.startAt))}
                     {(() => {
                       function clean(str?: string | null) {
                         if (!str) return "";
@@ -115,12 +112,10 @@ export default function Home() {
                         return "";
                       }
                     })()}
-                </p>
-                <div className="mt-4 flex gap-2">
+                  </p>
+                </div>
+                <div className="ml-auto flex gap-2">
                   <a className="ccs-btn" href={`/events/${e.slug}`}>Details</a>
-                  {e.url && (
-                    <a className="ccs-btn" href={e.url} target="_blank" rel="noreferrer">Official</a>
-                  )}
                 </div>
               </article>
             ))}

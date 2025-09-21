@@ -189,6 +189,7 @@ export default function EventsAllPage() {
       </div>
       {/* Pagination Controls */}
       <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
+        <Link href="/events/past" className="ccs-btn px-4 py-2">Previous events</Link>
         <Link href="/events/page/2" className="ccs-btn px-4 py-2">Next Page</Link>
       </nav>
       {/* GoogleAd Footer Slot */}
