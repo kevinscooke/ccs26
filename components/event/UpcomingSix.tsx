@@ -34,16 +34,29 @@ export default function UpcomingSix() {
             {e.isFeatured && <span className="ccs-badge">Featured</span>}
           </div>
 
-          <p className="mt-1 text-sm text-zinc-400">
-            {fmt.format(new Date(e.startAt))}
-            {e.venue?.name
-              ? ` • ${e.venue.name}${
-                  e.venue.city ? `, ${e.venue.city}${e.venue.state ? `, ${e.venue.state}` : ""}` : ""
-                }`
-              : e.city?.name
-              ? ` • ${e.city.name}`
-              : ""}
-          </p>
+                <p className="mt-1 text-sm text-zinc-400">
+                  {fmt.format(new Date(e.startAt))}
+                  {/* Sanitize venue fields to remove control chars and stray '2022' */}
+                  {(() => {
+                    function clean(str?: string | null) {
+                      if (!str) return "";
+                      return str.replace(/[\u0000-\u001F\u007F]|2022/g, "").trim();
+                    }
+                    if (e.venue?.name) {
+                      let venue = clean(e.venue.name);
+                      let city = clean(e.venue.city);
+                      let state = clean(e.venue.state);
+                      let parts = [venue];
+                      if (city) parts.push(city);
+                      if (state) parts.push(state);
+                      return ` • ${parts.filter(Boolean).join(", ")}`;
+                    } else if (e.city?.name) {
+                      return ` • ${clean(e.city.name)}`;
+                    } else {
+                      return "";
+                    }
+                  })()}
+                </p>
 
           <div className="mt-4 flex gap-2">
             <Link className="ccs-btn" href={`/events/${e.slug}`}>

@@ -5,7 +5,7 @@ import Script from "next/script";
 import type { Metadata } from "next";
 
 import TopNav from "@/components/nav/TopNav";
-import Footer from "@/components/Footer"; // <- your new component
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://charlottecarshows.com"),
@@ -26,30 +26,41 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@CharlotteCarShows", // update if you have one
+    site: "@CharlotteCarShows",
   },
   robots: {
     index: true,
     follow: true,
+  },
+  themeColor: "#ffffff",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192.png", sizes: "192x192" },
+      { url: "/icon-512.png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Small perf wins for GA and images */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+      </head>
       <body className="bg-bg text-text">
-        {/* Page wrapper keeps footer at bottom and main content flexible */}
         <div className="min-h-dvh flex flex-col">
           <TopNav />
-
-          {/* MAIN stays constrained to your container */}
           <main className="container flex-1 py-8">{children}</main>
-
-          {/* Site-wide footer */}
           <Footer />
         </div>
 
-        {/* JSON-LD moved into the tree via next/script */}
+        {/* CollectionPage JSON-LD */}
         <Script
           id="ld-collection"
           type="application/ld+json"
@@ -71,7 +82,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
 
-        {/* Organization JSON-LD for the business */}
+        {/* Organization JSON-LD */}
         <Script
           id="ld-organization"
           type="application/ld+json"
@@ -85,7 +96,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               logo: "https://charlottecarshows.com/images/hero-ccs.jpg",
               sameAs: [
                 "https://www.instagram.com/charlottecarshows/",
-                "https://www.facebook.com/CharlotteCarShows/"
+                "https://www.facebook.com/CharlotteCarShows/",
               ],
               contactPoint: [
                 {
@@ -93,12 +104,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   email: "hello@charlottecarshows.com",
                   contactType: "customer support",
                   areaServed: "US-NC",
-                  availableLanguage: ["en"]
-                }
-              ]
+                  availableLanguage: ["en"],
+                },
+              ],
             }),
           }}
         />
+
         {/* Google Analytics 4 (GA4) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-ECG2CKEFSG"
@@ -109,9 +121,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-ECG2CKEFSG', {
-              'stream_id': '3474476847'
-            });
+            gtag('config', 'G-ECG2CKEFSG', { 'send_page_view': true });
           `}
         </Script>
       </body>

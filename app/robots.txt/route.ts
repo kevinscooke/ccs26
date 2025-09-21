@@ -1,10 +1,24 @@
-import { NextResponse } from 'next/server';
+// app/robots.txt/route.ts
+import { NextResponse } from "next/server";
 
-export const revalidate = 604800; // 1 week ISR for robots.txt
+export async function GET() {
+  const body = [
+    "User-agent: *",
+    "Allow: /",
+    "",
+    // Disallow typical non-content paths if you have them:
+    // "Disallow: /search/",
+    // "Disallow: /assets/",
+    "",
+    "Sitemap: https://charlottecarshows.com/sitemap.xml",
+    "",
+  ].join("\n");
 
-export function GET() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  return new NextResponse(`User-agent: *\nAllow: /\nSitemap: ${base}/sitemap.xml`, {
-    headers: { 'Content-Type': 'text/plain' },
+  return new NextResponse(body, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=3600, must-revalidate",
+    },
   });
 }
