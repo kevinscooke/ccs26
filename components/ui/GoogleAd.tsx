@@ -31,16 +31,36 @@ export default function GoogleAd({ slot, format = "auto", className = "my-8" }: 
     const tryPush = () => {
       if (pushedRef.current) return;
       // @ts-ignore
-      if (typeof window !== "undefined" && (window as any).adsbygoogle) {
+      const ads = typeof window !== "undefined" ? (window as any).adsbygoogle : undefined;
+      if (ads) {
         try {
-          // @ts-ignore
-          (window as any).adsbygoogle.push({});
+          ads.push({});
           pushedRef.current = true;
         } catch (err) {
-          // Avoid breaking the app if push throws
           console.warn("adsbygoogle.push failed:", err);
         }
+        return;
       }
+
+      // If the ads script hasn't finished loading yet, poll briefly (safe, short-lived)
+      let attempts = 0;
+      const maxAttempts = 8; // ~800ms polling
+      const interval = setInterval(() => {
+        // @ts-ignore
+        const adsNow = (window as any).adsbygoogle;
+        attempts += 1;
+        if (adsNow) {
+          try {
+            adsNow.push({});
+            pushedRef.current = true;
+          } catch (err) {
+            console.warn("adsbygoogle.push failed on poll:", err);
+          }
+          clearInterval(interval);
+        } else if (attempts >= maxAttempts) {
+          clearInterval(interval);
+        }
+      }, 100);
     };
 
     // If IntersectionObserver not available, push immediately.

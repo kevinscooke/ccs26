@@ -137,6 +137,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
           strategy="afterInteractive"
           crossOrigin="anonymous"
+          onLoad={() => {
+            try {
+              // mark that the ads script loaded
+              // @ts-ignore
+              (window as any).__adsbygoogleLoaded = true;
+            } catch (e) {
+              // ignore
+            }
+          }}
         />
       </body>
     </html>
