@@ -99,8 +99,8 @@ export default function EventsAllPage() {
             const when = tfmt.format(new Date(e.startAt));
             // Sanitize venueLine to remove control chars and stray '2022'
             let venueLine = e.venue
-              ? [e.venue.name, [e.venue.city, e.venue.state].filter(Boolean).join(", ")].filter(Boolean).join(" • ")
-              : e.city?.name || "";
+              ? [(e.venue as any).name, [(e.venue as any).city, (e.venue as any).state].filter(Boolean).join(", ")].filter(Boolean).join(" • ")
+              : (e.city as any)?.name || "";
             if (venueLine) {
               venueLine = venueLine.replace(/[\u0000-\u001F\u007F]+/g, "").replace(/\b2022\b/g, "").trim();
             }
