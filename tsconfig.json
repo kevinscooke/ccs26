@@ -38,7 +38,7 @@
     "**/*.tsx",
     "netlify/**/*.ts",
     ".next/types/**/*.ts"
-  ],
+, "scripts/export-json.mjs", "scripts/export-json.mjs"  ],
   "exclude": [
     "node_modules"
   ]

@@ -1,3 +1,8 @@
+export function generateViewport() {
+  return {
+    themeColor: "#ffffff"
+  };
+}
 import type { Metadata } from "next";
 // ...existing code...
 

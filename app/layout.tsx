@@ -32,7 +32,8 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  themeColor: "#ffffff",
+  // themeColor moved to generateViewport
+  // Next.js viewport themeColor
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -42,6 +43,12 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png" }],
   },
 };
+
+export function generateViewport() {
+  return {
+    themeColor: "#ffffff"
+  };
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

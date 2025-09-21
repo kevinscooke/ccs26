@@ -99,9 +99,13 @@ export default function EventsAllPage() {
           let lastMonth: string | null = null;
           return events.map((e: EventType) => {
             const when = tfmt.format(new Date(e.startAt));
-            const venueLine = e.venue
+            // Sanitize venueLine to remove control chars and stray '2022'
+            let venueLine = e.venue
               ? [e.venue.name, [e.venue.city, e.venue.state].filter(Boolean).join(", ")].filter(Boolean).join(" • ")
               : e.city?.name || "";
+            if (venueLine) {
+              venueLine = venueLine.replace(/[\u0000-\u001F\u007F]+/g, "").replace(/\b2022\b/g, "").trim();
+            }
 
             const monthLabel = monthFmt.format(new Date(e.startAt));
             const showMonth = monthLabel !== lastMonth;

@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import eventsData from '../../public/events.json';
+import Image from "next/image";
 import { TAGS } from "@/lib/tags";
 import type { Metadata } from "next";
 
@@ -33,11 +34,12 @@ export default function Home() {
           <div className="md:w-2/5">
             <div className="relative rounded-xl shadow-lg overflow-hidden">
               <div className="aspect-[16/9]">
-                <img
+                <Image
                   src="/images/hero-ccs.jpg"
                   alt="Charlotte car show—rows of cars with spectators"
                   className="h-full w-full object-cover"
-                  loading="eager"
+                  fill
+                  priority
                   sizes="(min-width: 768px) 40vw, 100vw"
                 />
               </div>
