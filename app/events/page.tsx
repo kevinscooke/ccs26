@@ -26,9 +26,6 @@ export const metadata: Metadata = {
       "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
   },
 };
-
-const PAGE_SIZE = 15;
-
 export default function EventsAllPage() {
   const now = new Date();
   type EventType = typeof eventsData[number];
@@ -58,13 +55,16 @@ export default function EventsAllPage() {
   const truncate = (s?: string | null, n = 220) =>
     !s ? "" : s.length <= n ? s : s.slice(0, n).replace(/\s+\S*$/, "") + "…";
 
-  const urlFor = (p: number) => (p <= 1 ? "/events" : `/events?p=${p}`);
+  const urlFor = (p: number) => (p <= 1 ? "/events" : `/events/page/${p}`);
 
   const monthFmt = new Intl.DateTimeFormat("en-US", {
     month: "long",
     year: "numeric",
     timeZone: "America/New_York",
   });
+
+  // track last rendered month when mapping events
+  let lastMonth: string | null = null;
 
   return (
     <section className="max-w-5xl mx-auto px-4 space-y-8">
@@ -95,9 +95,7 @@ export default function EventsAllPage() {
       </header>
 
       <div className="space-y-6">
-        {(() => {
-          let lastMonth: string | null = null;
-          return events.map((e: EventType) => {
+        {events.slice(0, 15).map((e: EventType) => {
             const when = tfmt.format(new Date(e.startAt));
             // Sanitize venueLine to remove control chars and stray '2022'
             let venueLine = e.venue
@@ -185,19 +183,14 @@ export default function EventsAllPage() {
                 </div>
               </div>
             </article>
-            </React.Fragment>
-          );
-          });
-        })()}
-
-        {!events.length && (
-          <div className="ccs-card text-center py-12">
-            <p className="text-lg text-[var(--fg)]/70">No upcoming events yet—check back soon.</p>
-          </div>
-        )}
+          </React.Fragment>
+        );
+      })}
       </div>
-
-      {/* Pagination fully removed for static rendering */}
+      {/* Pagination Controls */}
+      <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
+        <Link href="/events/page/2" className="ccs-btn px-4 py-2">Next Page</Link>
+      </nav>
       {/* GoogleAd Footer Slot */}
       <GoogleAd slot="1514406406" format="auto" className="mt-8" />
     </section>
