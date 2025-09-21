@@ -1,170 +1,167 @@
 [
   {
+    "id": "fc80c7fb-1172-4cc1-a220-b0dea2a64e94",
+    "name": "Jet's Pizza (Matthews, NC)",
+    "slug": "jet-s-pizza-matthews-nc-matthews-nc",
+    "address1": "920 Park Center Dr",
+    "city": "Matthews",
+    "state": "NC",
+    "postal": "28105",
+    "created_at": "2025-09-21T16:31:42.576",
+    "updated_at": "2025-09-21T16:31:42.576"
+  },
+  {
     "id": "cmfn7nkqe000030mi5grdy5uk",
-    "slug": "late-apex-storage-condos-mooresville",
     "name": "Late Apex Storage Condos",
+    "slug": "late-apex-storage-condos-mooresville",
     "address1": "149 Cayuga Drive",
     "city": "Mooresville",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-16T23:55:24.471",
+    "updated_at": "2025-09-16T23:54:50.538"
   },
   {
     "id": "cmfn8o61r000011ymmqyef2e3",
-    "slug": "charlotte-motor-speedway-concord",
     "name": "Charlotte Motor Speedway",
+    "slug": "charlotte-motor-speedway-concord",
     "address1": "5555 Concord Pkwy S",
     "city": "Concord",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "28107",
+    "created_at": "2025-09-17T00:23:51.711",
+    "updated_at": "2025-09-17T00:24:00.855"
   },
   {
     "id": "cmfndetaz0000izdko2bedz6i",
-    "slug": "lake-norman-brewery-denver",
     "name": "Lake Norman Brewery",
+    "slug": "lake-norman-brewery-denver",
     "address1": "1753 Triangle Cir",
     "city": "Denver",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:36:33.371",
+    "updated_at": "2025-09-17T02:35:44.486"
   },
   {
     "id": "cmfndvzbh0001127pjz5wegno",
-    "slug": "gateway-classic-cars-concord",
     "name": "Gateway Classic Cars",
+    "slug": "gateway-classic-cars-concord",
     "address1": "7045 Aviation Blvd",
     "city": "Concord",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:49:54.316",
+    "updated_at": "2025-09-17T02:48:51.747"
   },
   {
     "id": "cmfndvzbl0002127px2vitl6x",
-    "slug": "martha-rivers-park-gastonia",
     "name": "Martha Rivers Park",
+    "slug": "martha-rivers-park-gastonia",
     "address1": "Neal Hawkins Road",
     "city": "Gastonia",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:49:54.316",
+    "updated_at": "2025-09-17T02:49:18.272"
   },
   {
     "id": "cmfndxd9c0003127p8ahtqigj",
-    "slug": "kostas-kitchen-charlotte",
     "name": "Kostas Kitchen",
+    "slug": "kostas-kitchen-charlotte",
     "address1": "2925 Yorkmont Road",
     "city": "Charlotte",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:50:59.04",
+    "updated_at": "2025-09-17T02:50:08.388"
   },
   {
     "id": "cmfndxd9d0004127pgx12acn3",
-    "slug": "historic-downtown-monroe-monroe",
     "name": "Historic Downtown Monroe",
+    "slug": "historic-downtown-monroe-monroe",
     "address1": "Main Street",
     "city": "Monroe",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:50:59.04",
+    "updated_at": "2025-09-17T02:50:24.472"
   },
   {
     "id": "cmfndxz8y0006127pprqeammk",
-    "slug": "hendrick-porsche-charlotte",
     "name": "Hendrick Porsche",
+    "slug": "hendrick-porsche-charlotte",
     "address1": "6800 E Independence Blvd",
     "city": "Charlotte",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:51:27.538",
+    "updated_at": "2025-09-17T02:51:11.756"
   },
   {
     "id": "cmfndfjk30001izdk3ubrkl0s",
-    "slug": "poplin-place-shopping-center-monroe",
     "name": "Poplin Place Shopping Center",
+    "slug": "poplin-place-shopping-center-monroe",
     "address1": "2889 W Highway 74",
     "city": "Monroe",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
-  },
-  {
-    "id": "cmfndxd9e0005127plris3v6j",
-    "slug": "lamborghini-charlotte-charlotte",
-    "name": "Lamborghini Charlotte",
-    "address1": "6500 E Independence Blvd",
-    "city": "Charlotte",
-    "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:37:07.395",
+    "updated_at": "2025-09-17T02:51:27.538"
   },
   {
     "id": "cmfndyykw0007127p4uq7aqvl",
-    "slug": "charlotte-convention-center-charlotte",
     "name": "Charlotte Convention Center",
+    "slug": "charlotte-convention-center-charlotte",
     "address1": "501 S College St",
     "city": "Charlotte",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-17T02:52:13.329",
+    "updated_at": "2025-09-17T02:51:59.408"
   },
   {
     "id": "cmfrbrry80000ug14mg5nryrf",
-    "slug": "brooklyns-pizzeria-concord",
     "name": "Brooklyn's Pizzeria",
+    "slug": "brooklyns-pizzeria-concord",
     "address1": "3481 US-601",
     "city": "Concord",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-19T21:01:43.617",
+    "updated_at": "2025-09-19T21:00:58.827"
   },
   {
     "id": "cmfrbu1820001ug14s3ovvb1y",
-    "slug": "sun-valley-commons-indian-trail",
     "name": "Sun Valley Commons",
+    "slug": "sun-valley-commons-indian-trail",
     "address1": "6467 Old Monroe Rd",
     "city": "Indian Trail",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "",
+    "created_at": "2025-09-19T21:03:28.946",
+    "updated_at": "2025-09-19T21:03:06.667"
   },
   {
     "id": "cmfrc41lt0001ug4aozzyvd7h",
-    "slug": "victory-youth-building-charlotte",
     "name": "Victory Youth Building",
+    "slug": "victory-youth-building-charlotte",
     "address1": "7224 Old Pineville Road",
     "city": "Charlotte",
     "state": "NC",
-    "postal_code": null,
-    "url": null,
-    "lat": null,
-    "lng": null
+    "postal": "28217",
+    "created_at": "2025-09-19T21:11:16.001",
+    "updated_at": "2025-09-19T21:10:52.509"
+  },
+  {
+    "id": "cmfndxd9e0005127plris3v6j",
+    "name": "Lamborghini Charlotte",
+    "slug": "lamborghini-charlotte",
+    "address1": "6500 E Independence Blvd",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "",
+    "created_at": "2025-09-17T02:50:59.04",
+    "updated_at": "2025-09-17T02:51:27.538"
   }
 ]
