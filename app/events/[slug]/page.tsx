@@ -236,9 +236,8 @@ export default function EventDetail({
 
   return (
     <div className="max-w-5xl mx-auto px-4 space-y-8">
-      <GoogleAd slot="1514406406" format="auto" className="mb-8" />
 
-      {/* JSON-LD blocks */}
+  {/* JSON-LD blocks */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

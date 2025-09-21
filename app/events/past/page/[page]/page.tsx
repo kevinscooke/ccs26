@@ -40,7 +40,7 @@ export default function PastEventsPage({ params }: { params: { page: string } })
 
   return (
     <section className="max-w-5xl mx-auto px-4 space-y-8">
-      <GoogleAd slot="1514406406" format="auto" className="mb-4" />
+  {/* Top ad intentionally removed to avoid reserved space above hero */}
       <header className="text-center space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
           Past Charlotte Car Shows
