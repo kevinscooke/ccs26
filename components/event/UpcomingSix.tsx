@@ -31,7 +31,7 @@ export default function UpcomingSix() {
             <div className="text-lg leading-none">{new Date(e.startAt).getDate()}</div>
           </div>
 
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 order-1">
             <div className="flex items-start gap-3">
               <h3 className="text-lg font-semibold leading-snug truncate">
                 <Link className="hover:underline" href={`/events/${e.slug}`}>
@@ -76,8 +76,12 @@ export default function UpcomingSix() {
             </p>
           </div>
 
-          <div className="mt-3 sm:mt-0 sm:ml-4 sm:flex-shrink-0">
-            <Link className="ccs-btn" href={`/events/${e.slug}`}>
+          {/* Make the details button full-width on small screens to avoid overflow/viewport issues
+              and switch to auto width on sm+ so it sits inline on desktop. */}
+          {/* Ensure the Details button appears below the event info on small screens
+              (order-2), but returns to inline/side position on sm+ displays. */}
+          <div className="order-2 mt-3 sm:mt-0 sm:ml-4 sm:flex-shrink-0 w-full sm:w-auto sm:order-none sm:self-start">
+            <Link className="ccs-btn w-full sm:w-auto justify-center" href={`/events/${e.slug}`}>
               Details
             </Link>
           </div>

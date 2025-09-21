@@ -77,8 +77,8 @@ export default function Home() {
             .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
             .slice(0, 6)
             .map((e) => (
-              <article key={e.id} className="flex items-start gap-4 p-4 rounded-lg bg-white/5 shadow-sm">
-                <div className="min-w-0">
+              <article key={e.id} className="flex flex-col sm:flex-row items-start gap-4 p-4 rounded-lg bg-white/5 shadow-sm">
+                <div className="min-w-0 order-1">
                   <div className="flex items-center gap-3">
                     <h3 className="text-lg font-semibold leading-snug truncate">
                       <a className="hover:underline" href={`/events/${e.slug}`}>{e.title}</a>
@@ -114,8 +114,8 @@ export default function Home() {
                     })()}
                   </p>
                 </div>
-                <div className="ml-auto flex gap-2">
-                  <a className="ccs-btn" href={`/events/${e.slug}`}>Details</a>
+                <div className="order-2 mt-3 sm:mt-0 ml-0 sm:ml-auto flex gap-2 w-full sm:w-auto">
+                  <a className="ccs-btn w-full sm:w-auto justify-center" href={`/events/${e.slug}`}>Details</a>
                 </div>
               </article>
             ))}
