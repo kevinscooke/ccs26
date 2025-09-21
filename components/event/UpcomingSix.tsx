@@ -1,13 +1,38 @@
 // components/event/UpcomingSix.tsx
 import Link from "next/link";
-import eventsData from "../../app/data/events.json";
+import fs from "fs";
+import path from "path";
 
 export const runtime = "nodejs";
 
+function loadEventsSync(): any[] {
+  // Try public/data/events.json, then app/data/events.json, then public/events.json
+  const candidates = [
+    path.join(process.cwd(), "public", "data", "events.json"),
+    path.join(process.cwd(), "app", "data", "events.json"),
+    path.join(process.cwd(), "public", "events.json"),
+  ];
+
+  for (const p of candidates) {
+    try {
+      if (fs.existsSync(p)) {
+        const raw = fs.readFileSync(p, "utf8");
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (err) {
+      // ignore and try next
+    }
+  }
+
+  return [];
+}
+
 export default function UpcomingSix() {
   const now = new Date();
+  const eventsData = loadEventsSync();
   const events = (eventsData as any[])
-    .filter(e => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
+    .filter((e) => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
     .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
     .slice(0, 6);
 
