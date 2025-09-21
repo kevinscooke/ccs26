@@ -38,20 +38,30 @@ export default function UpcomingSix() {
                   {fmt.format(new Date(e.startAt))}
                   {/* Sanitize venue fields to remove control chars and stray '2022' */}
                   {(() => {
+                    // Remove C0 control chars, DEL, and any standalone 4-digit year between 1900-2099
                     function clean(str?: string | null) {
                       if (!str) return "";
-                      return str.replace(/[\u0000-\u001F\u007F]|2022/g, "").trim();
+                      return (
+                        str
+                          // strip control chars (0x00-0x1F) and DEL (0x7F)
+                          .replace(/[\x00-\x1F\x7F]+/g, " ")
+                          // remove standalone years like 2022, 1999, 2030
+                          .replace(/\b(19\d{2}|20\d{2})\b/g, " ")
+                          // collapse whitespace and trim
+                          .replace(/\s+/g, " ")
+                          .trim()
+                      );
                     }
+
                     if (e.venue?.name) {
                       let venue = clean(e.venue.name);
                       let city = clean(e.venue.city);
                       let state = clean(e.venue.state);
-                      let parts = [venue];
-                      if (city) parts.push(city);
-                      if (state) parts.push(state);
-                      return ` • ${parts.filter(Boolean).join(", ")}`;
+                      const parts = [venue, city, state].filter(Boolean);
+                      return parts.length ? ` • ${parts.join(", ")}` : "";
                     } else if (e.city?.name) {
-                      return ` • ${clean(e.city.name)}`;
+                      const c = clean(e.city.name);
+                      return c ? ` • ${c}` : "";
                     } else {
                       return "";
                     }

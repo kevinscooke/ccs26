@@ -38,7 +38,7 @@ export default function SubmitEventPage() {
   method="POST"
   name="submit-event"
   className="mt-6 space-y-5"
-  netlify
+  data-netlify="true"
       >
         <input type="hidden" name="form-name" value="submit-event" />
   {/* <input type="hidden" name="bot-field" /> */}
