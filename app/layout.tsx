@@ -135,7 +135,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Google Ads (AdSense) - load async with crossorigin anonymous */}
         <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           crossOrigin="anonymous"
         />
       </body>
