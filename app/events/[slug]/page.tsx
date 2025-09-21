@@ -30,6 +30,7 @@ export async function generateMetadata({
   const cityState = `${city}, ${state}`;
   const dateLong = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
+    timeZone: "America/New_York",
   }).format(new Date(ev.startAt));
 
   const title = `${ev.title} – ${cityState} (${dateLong})`;
@@ -141,6 +142,7 @@ export default function EventDetail({
   const dt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
     timeStyle: "short",
+    timeZone: "America/New_York",
   });
 
   // Weekly page link (offset from current ET week)
@@ -283,7 +285,7 @@ export default function EventDetail({
         </h1>
         <div className="text-xl text-[var(--fg)]/70 flex flex-col sm:flex-row items-center justify-center gap-2">
           <span className="flex items-center gap-2 text-base md:text-xl">
-            <span>{dt.format(new Date(ev.startAt))}{ev.endAt && ` – ${new Intl.DateTimeFormat('en-US', { timeStyle: 'short' }).format(new Date(ev.endAt))}`}</span>
+            <span>{dt.format(new Date(ev.startAt))}{ev.endAt && ` – ${new Intl.DateTimeFormat('en-US', { timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(ev.endAt))}`}</span>
           </span>
           {ev.city?.name && (
             <span className="flex items-center gap-2 text-base md:text-xl">
@@ -344,13 +346,14 @@ export default function EventDetail({
                 <span className="block text-sm text-[var(--fg)]/60">
                   Date &amp; Time
                 </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(ev.startAt))}
+                  <span className="block text-[var(--fg)] mt-1">
+                  {new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "America/New_York" }).format(new Date(ev.startAt))}
                   <br />
-                  {new Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(new Date(ev.startAt))}
+                  {new Intl.DateTimeFormat("en-US", { timeStyle: "short", timeZone: "America/New_York" }).format(new Date(ev.startAt))}
                   {ev.endAt
                     ? ` – ${new Intl.DateTimeFormat("en-US", {
                         timeStyle: "short",
+                        timeZone: "America/New_York",
                       }).format(new Date(ev.endAt))}`
                     : ""}{" "}
                   ET
