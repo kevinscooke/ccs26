@@ -18,7 +18,7 @@ export default function EventsPage({ params }: { params: { page: string } }) {
   const totalPages = Math.ceil(events.length / PAGE_SIZE);
 
   return (
-    <section className="max-w-5xl mx-auto px-4 space-y-8">
+    <section className="max-w-7xl mx-auto px-2 md:px-6 space-y-8">
       <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0 mt-[-0.5rem]">
         <ol className="flex items-center gap-2 flex-wrap">
           <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>

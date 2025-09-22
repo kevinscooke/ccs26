@@ -22,17 +22,17 @@ export default async function UpcomingSix() {
   });
 
   return (
-    <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full">
       {events.map((e) => (
-        <article key={e.id} className="ccs-card flex flex-col items-stretch gap-3">
-          <div className="min-w-0">
-            <h3 className="text-base font-semibold leading-snug truncate text-center sm:text-left">
+        <article key={e.id} className="ccs-card flex flex-col gap-3 w-full max-w-md mx-auto">
+          <div className="min-w-0 break-words w-full">
+            <h3 className="text-base font-semibold leading-snug text-center sm:text-left break-words">
               <Link className="hover:underline" href={`/events/${e.slug}/`}>
                 {e.title}
               </Link>
             </h3>
 
-            <p className="mt-2 text-sm text-zinc-500 flex items-center justify-center gap-2 sm:justify-start sm:text-left">
+            <p className="mt-2 text-sm text-zinc-500 flex items-center justify-center gap-2 sm:justify-start sm:text-left break-words">
               <Calendar className="w-4 h-4 text-zinc-400" />
               <span>{fmt.format(new Date(e.startAt))}</span>
             </p>
@@ -49,7 +49,7 @@ export default async function UpcomingSix() {
               const parts = [venueName, cityName].filter(Boolean);
               if (parts.length) {
                 return (
-                  <p className="mt-1 text-sm text-zinc-500 flex items-center justify-center gap-2 sm:justify-start sm:text-left">
+                  <p className="mt-1 text-sm text-zinc-500 flex items-center justify-center gap-2 sm:justify-start sm:text-left break-words">
                     <MapPin className="w-4 h-4 text-zinc-400" />
                     <span>{parts.join(', ')}</span>
                   </p>
@@ -72,14 +72,14 @@ export default async function UpcomingSix() {
               const raw = clean(e.description || e.summary || e.excerpt || "");
               if (!raw) return null;
               return (
-                <p className="mt-2 text-sm text-zinc-500 text-center sm:text-left">{truncate(raw, 140)}</p>
+                <p className="mt-2 text-sm text-zinc-500 text-center sm:text-left break-words">{truncate(raw, 140)}</p>
               );
             })()}
           </div>
 
-          <div className="mt-3">
+          <div className="mt-3 flex justify-center">
             <Link
-              className="ccs-btn w-full justify-center block text-center"
+              className="ccs-btn px-4 py-2 w-full max-w-xs text-center"
               href={`/events/${e.slug}/`}
             >
               Details
