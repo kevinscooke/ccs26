@@ -4,14 +4,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const body = [
     "User-agent: *",
+    "Disallow: /*?w=",
     "Allow: /",
-    "",
-    // Disallow typical non-content paths if you have them:
-    // "Disallow: /search/",
-    // "Disallow: /assets/",
-    "",
-    "Sitemap: https://charlottecarshows.com/sitemap.xml",
-    "",
+    "Sitemap: https://charlottecarshows.com/sitemap.xml"
   ].join("\n");
 
   return new NextResponse(body, {
