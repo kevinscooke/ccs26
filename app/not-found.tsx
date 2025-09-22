@@ -4,7 +4,7 @@ import UpcomingSix from "@/components/event/UpcomingSix";
 
 export default function NotFound() {
   return (
-    <main className="px-4 py-6 max-w-5xl mx-auto">
+    <main className="w-full px-4 md:px-12 max-w-7xl mx-auto py-6">
       {/* instrumentation */}
       <NotFoundClient />
 

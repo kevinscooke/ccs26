@@ -34,7 +34,7 @@ html, body {
 @layer components {
   /* Cards: white background, light border, readable text */
   .ccs-card {
-    @apply bg-white text-zinc-800 border border-zinc-200 rounded-2xl p-5 shadow;
+    @apply bg-white text-zinc-800 border border-zinc-200 rounded-2xl p-4 md:p-5 shadow;
   }
 
   /* Neutral button (non-primary): subtle gray */
@@ -61,5 +61,13 @@ html, body {
            bg-zinc-100 text-zinc-700
            border border-zinc-200
            px-2.5 py-1 text-xs font-medium;
+  }
+
+  /* Make AdSense / adsbygoogle responsive and avoid forcing large reserved blocks */
+  .adsbygoogle {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
   }
 }

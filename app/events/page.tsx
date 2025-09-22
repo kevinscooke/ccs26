@@ -85,7 +85,7 @@ export default async function EventsAllPage() {
       />
 
   <header className="text-center space-y-2 mt-1">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" 
+        <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" 
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
           All Charlotte Car Shows
         </h1>
@@ -165,7 +165,7 @@ export default async function EventsAllPage() {
 
                 <div className="shrink-0 flex flex-col gap-2 mt-4 md:mt-0 w-full md:w-auto">
                   <Link 
-                    className="ccs-btn-primary px-4 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" 
+                    className="ccs-btn-primary px-4 py-2 group-hover:scale-105 transition-transform w-full md:w-auto" 
                     href={`/events/${e.slug}/`}
                   >
                     View Details

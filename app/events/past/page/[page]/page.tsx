@@ -39,9 +39,9 @@ export default function PastEventsPage({ params }: { params: { page: string } })
   });
 
   return (
-    <section className="max-w-5xl mx-auto px-4 space-y-8">
+    <section className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-12 py-6">
   {/* Top ad intentionally removed to avoid reserved space above hero */}
-      <header className="text-center space-y-4">
+      <header className="text-center space-y-2 mt-1">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
           Past Charlotte Car Shows
         </h1>

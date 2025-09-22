@@ -277,7 +277,7 @@ export default function EventDetail({
           </div>
         )}
         <h1
-          className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]"
+          className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--fg)]"
           style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
         >
           {ev.title}
@@ -298,7 +298,7 @@ export default function EventDetail({
   <div className="flex justify-center gap-3 mt-1">
         {ev.url && (
           <a
-            className="ccs-btn-primary px-6 py-3 text-lg"
+            className="ccs-btn-primary px-4 py-2 text-base"
             href={ev.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -307,7 +307,7 @@ export default function EventDetail({
           </a>
         )}
         <a
-          className="ccs-btn px-6 py-3 text-lg"
+          className="ccs-btn px-4 py-2 text-base"
           href={mapsHref}
           target="_blank"
           rel="noopener noreferrer"
