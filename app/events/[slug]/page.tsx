@@ -235,7 +235,7 @@ export default function EventDetail({
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 space-y-8">
+    <div className="w-full px-2 md:px-4 max-w-5xl mx-auto space-y-6">
 
   {/* JSON-LD blocks */}
       <script
@@ -295,7 +295,7 @@ export default function EventDetail({
         </div>
       </header>
 
-      <div className="flex justify-center gap-4">
+  <div className="flex justify-center gap-3">
         {ev.url && (
           <a
             className="ccs-btn-primary px-6 py-3 text-lg"
@@ -317,7 +317,7 @@ export default function EventDetail({
       </div>
 
       {ev.description && (
-        <section className="ccs-card">
+        <section className="ccs-card w-full">
           <h2
             className="text-2xl font-semibold text-[var(--fg)] mb-4"
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
@@ -330,8 +330,8 @@ export default function EventDetail({
         </section>
       )}
 
-      <section className="grid gap-8 md:grid-cols-2">
-        <div className="ccs-card">
+  <section className="grid gap-6 md:grid-cols-2">
+  <div className="ccs-card w-full">
           <h2
             className="text-2xl font-semibold text-[var(--fg)] mb-6"
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
@@ -476,7 +476,7 @@ export default function EventDetail({
           </dl>
         </div>
 
-        <div className="ccs-card">
+  <div className="ccs-card w-full">
           <h2
             className="text-2xl font-semibold text-[var(--fg)] mb-6"
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
