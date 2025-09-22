@@ -64,10 +64,5 @@ html, body {
   }
 
   /* Make AdSense / adsbygoogle responsive and avoid forcing large reserved blocks */
-  .adsbygoogle {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    min-height: 0;
-  }
+  /* Ads removed: ad-specific styles deleted */
 }

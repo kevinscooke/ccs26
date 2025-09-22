@@ -1,7 +1,6 @@
 // app/events/page.tsx  (All events index - 1 column preserved)
 import React from "react";
 import Link from "next/link";
-import GoogleAd from "@/components/ui/GoogleAd";
 import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
 
@@ -192,8 +191,7 @@ export default async function EventsAllPage() {
   <Link href="/events/past/" className="ccs-btn px-4 py-2">Previous events</Link>
   <Link href="/events/page/2/" className="ccs-btn px-4 py-2">Next Page</Link>
       </nav>
-      {/* GoogleAd Footer Slot */}
-      <GoogleAd slot="1514406406" format="auto" className="mt-8" />
+  {/* Ads removed: previously had a GoogleAd footer slot */}
     </section>
   );
 }

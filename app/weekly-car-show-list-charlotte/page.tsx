@@ -48,7 +48,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 import React from "react";
 import Link from "next/link";
-import GoogleAd from "@/components/ui/GoogleAd";
 import eventsData from "../data/events.json";
 // For static import compatibility, update to:
 // import eventsData from "../../data/events.json";
@@ -190,7 +189,7 @@ export default function WeeklyCarShowListPage() {
           <div className="ccs-card text-[var(--fg)]/70">No events in this week.</div>
         )}
       </div>
-      <GoogleAd slot="1514406406" format="auto" className="mt-8" />
+  {/* Ads removed: previously had a GoogleAd footer slot */}
     </section>
   );
 }

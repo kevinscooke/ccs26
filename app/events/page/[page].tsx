@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import GoogleAd from "@/components/ui/GoogleAd";
 import eventsData from "../../data/events.json";
 
 const PAGE_SIZE = 15;

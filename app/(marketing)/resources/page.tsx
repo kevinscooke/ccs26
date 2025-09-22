@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 };
 
 import Link from "next/link";
-import GoogleAd from "@/components/ui/GoogleAd";
 
 export default function ResourcesPage() {
   return (
@@ -67,8 +66,7 @@ export default function ResourcesPage() {
           </div>
         </div>
       </section>
-      {/* Google Ad between sections */}
-      <GoogleAd slot="1234567890" format="auto" className="my-8" />
+  {/* Ads removed: previously had an inline GoogleAd */}
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Local Resources</h2>

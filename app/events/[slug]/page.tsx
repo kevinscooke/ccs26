@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
-import GoogleAd from "@/components/ui/GoogleAd";
 import eventsData from "../../data/events.json";
 
 export const dynamic = "force-static";
@@ -557,7 +556,7 @@ export default function EventDetail({
         </nav>
       )}
 
-      <GoogleAd slot="1514406406" format="auto" className="mt-8" />
+  {/* Ads removed: previously had a GoogleAd footer slot */}
     </div>
   );
 }
