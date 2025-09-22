@@ -68,10 +68,10 @@ export default async function EventsAllPage() {
   let lastMonth: string | null = null;
 
   return (
-  <section className="w-full px-2 md:px-6 max-w-5xl mx-auto space-y-6">
+  <section className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-12 py-6">
   {/* Top ad intentionally removed to avoid reserved space above hero */}
-      {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0 mt-[-0.5rem]">
+    {/* Breadcrumbs */}
+    <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0">
         <ol className="flex items-center gap-2 flex-wrap">
           <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
           <li aria-hidden="true">/</li>
@@ -84,12 +84,12 @@ export default async function EventsAllPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
       />
 
-      <header className="text-center space-y-4">
+  <header className="text-center space-y-2 mt-1">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" 
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
           All Charlotte Car Shows
         </h1>
-        <p className="text-xl text-[var(--fg)]/70 max-w-2xl mx-auto">
+        <p className="text-lg text-[var(--fg)]/70 max-w-2xl mx-auto">
           Browse upcoming Cars &amp; Coffee, meets, cruise-ins, and automotive events across the Charlotte area.
         </p>
       </header>

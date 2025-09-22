@@ -235,7 +235,7 @@ export default function EventDetail({
   };
 
   return (
-    <div className="w-full px-2 md:px-4 max-w-5xl mx-auto space-y-6">
+    <div className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-8 py-6">
 
   {/* JSON-LD blocks */}
       <script
@@ -247,7 +247,7 @@ export default function EventDetail({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
-      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60">
+  <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0">
         <ol className="flex items-center gap-2 flex-wrap">
           <li>
             <Link href="/" className="hover:underline text-[var(--fg)]">
@@ -270,7 +270,7 @@ export default function EventDetail({
         </ol>
       </nav>
 
-      <header className="text-center space-y-4">
+  <header className="text-center space-y-2 mt-1">
         {ev.isFeatured && (
           <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
             Featured Event
@@ -295,7 +295,7 @@ export default function EventDetail({
         </div>
       </header>
 
-  <div className="flex justify-center gap-3">
+  <div className="flex justify-center gap-3 mt-1">
         {ev.url && (
           <a
             className="ccs-btn-primary px-6 py-3 text-lg"
