@@ -10,7 +10,7 @@ export default function NotFound() {
 
       <section className="text-center">
         <h1 className="text-2xl md:text-3xl font-bold">Page not found</h1>
-        <p className="mt-2 text-sm text-[var(--fg)]/70">We couldn't find the page you requested. We recently launched a new site. Try one of the quick links below.</p>
+  <p className="mt-2 text-sm text-[var(--fg)]/70">We could not find the page you requested. We recently launched a new site. Try one of the quick links below.</p>
 
         <div className="mt-3 flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/events/" className="ccs-btn-secondary px-4 py-2 w-full sm:w-auto text-center">All Events</Link>
