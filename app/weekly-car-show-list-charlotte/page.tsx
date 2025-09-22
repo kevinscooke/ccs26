@@ -29,6 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Charlotte Weekly Car Show List | Charlotte Car Shows",
     description: `See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets for ${headingRange}. Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC.`,
+    alternates: {
+      canonical: 'https://charlottecarshows.com/weekly-car-show-list-charlotte',
+    },
     openGraph: {
       title: "Charlotte Weekly Car Show List",
       description: `Discover all upcoming Charlotte car shows, meets, and cruise-ins for this week (${headingRange}). Find event times, locations, and details for the Charlotte, NC area.`,
