@@ -14,11 +14,10 @@ export default function AdSense({ adSlot = "1234567890", className = "", style }
     try {
       const el = adRef.current?.querySelector('ins.adsbygoogle') as HTMLElement | null;
       if (el && !el.dataset.adsPlaced) {
-        // mark this element so we don't push again for it
-        el.dataset.adsPlaced = '1';
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+  // mark this element so we don't push again for it
+  el.dataset.adsPlaced = '1';
+  // @ts-ignore - adsbygoogle global provided by external script
+  (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch (e) {
       // ignore errors in static export / test environments

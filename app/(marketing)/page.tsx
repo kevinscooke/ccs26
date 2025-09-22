@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import eventsData from '../../public/events.json';
+import UpcomingSix from '@/components/event/UpcomingSix';
 import Image from "next/image";
 import { TAGS } from "@/lib/tags";
 import type { Metadata } from "next";
@@ -51,11 +51,11 @@ export default function Home() {
         <div className="flex items-center justify-between md:flex-nowrap flex-wrap gap-4 mb-6">
           {/* Left: heading/intro */}
           <div className="min-w-0">
-            <h2
+              <h2
               className="text-3xl font-bold text-gray-900 mb-2"
               style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
             >
-              This Week's Events
+              This Week&apos;s Events
             </h2>
             <p className="text-gray-600">
               Curated listings across the greater Charlotte area
@@ -71,54 +71,13 @@ export default function Home() {
           </div>
         </div>
 
-        <section className="mt-4 grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
-          {eventsData
-            .filter((e) => e.status === 'PUBLISHED' && new Date(e.startAt) >= new Date())
-            .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
-            .slice(0, 6)
-            .map((e) => (
-              <article key={e.id} className="flex flex-col sm:flex-row items-start gap-4 p-4 rounded-lg bg-white/5 shadow-sm">
-                <div className="min-w-0 order-1">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-lg font-semibold leading-snug truncate">
-                      <a className="hover:underline" href={`/events/${e.slug}`}>{e.title}</a>
-                    </h3>
-                    {e.isFeatured && <span className="ccs-badge">Featured</span>}
-                  </div>
-                  <p className="mt-1 text-sm text-zinc-400">
-                    {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(e.startAt))}
-                    {(() => {
-                      function clean(str?: string | null) {
-                        if (!str) return "";
-                        return (
-                          str
-                            .replace(/[\x00-\x1F\x7F]+/g, " ")
-                            .replace(/\b(19\d{2}|20\d{2})\b/g, " ")
-                            .replace(/\s+/g, " ")
-                            .trim()
-                        );
-                      }
-
-                      if (e.venue?.name) {
-                        const venue = clean(e.venue.name);
-                        const city = clean(e.venue.city);
-                        const state = clean(e.venue.state);
-                        const parts = [venue, city, state].filter(Boolean);
-                        return parts.length ? ` • ${parts.join(", ")}` : "";
-                      } else if (e.city?.name) {
-                        const c = clean(e.city.name);
-                        return c ? ` • ${c}` : "";
-                      } else {
-                        return "";
-                      }
-                    })()}
-                  </p>
-                </div>
-                <div className="order-2 mt-3 sm:mt-0 ml-0 sm:ml-auto flex gap-2 w-full sm:w-auto">
-                  <a className="ccs-btn w-full sm:w-auto justify-center" href={`/events/${e.slug}`}>Details</a>
-                </div>
-              </article>
-            ))}
+        <section className="mt-4">
+          <Suspense>
+            {/* UpcomingSix is an async Server Component that uses the runtime loader
+                so it shows the same merged events as /events (loadEvents()). */}
+            {/* It returns the same 6-item grid UI. */}
+            <UpcomingSix />
+          </Suspense>
         </section>
 </section>
 
@@ -160,8 +119,8 @@ export default function Home() {
         </div>
         <div className="ccs-card">
           <h3 className="text-2xl font-semibold text-gray-900 mb-3">Major Shows</h3>
-          <p className="text-gray-600 mb-4 leading-relaxed">
-            Don't miss Charlotte's biggest automotive events, including AutoFair, Charlotte Auto Show, and special exhibitions.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+            Don&apos;t miss Charlotte&apos;s biggest automotive events, including AutoFair, Charlotte Auto Show, and special exhibitions.
           </p>
           <a className="ccs-btn inline-block" href="/events">See Major Events</a>
         </div>

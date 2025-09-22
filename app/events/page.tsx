@@ -3,9 +3,9 @@ import React from "react";
 import Link from "next/link";
 import GoogleAd from "@/components/ui/GoogleAd";
 import type { Metadata } from "next";
-import eventsData from "../data/events.json";
+import { loadEvents } from "@/lib/data";
 
-// Fully static page
+// Use runtime loader so /events stays in sync with V2 JSON (no rebuild needed)
 
 export const metadata: Metadata = {
   title: "All Charlotte Car Shows | Charlotte Car Shows",
@@ -26,8 +26,9 @@ export const metadata: Metadata = {
       "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
   },
 };
-export default function EventsAllPage() {
+export default async function EventsAllPage() {
   const now = new Date();
+  const eventsData = await loadEvents();
   type EventType = typeof eventsData[number];
   const events = (eventsData as EventType[])
     .filter((e: EventType) => e.status === "PUBLISHED" && new Date(e.startAt) >= now)

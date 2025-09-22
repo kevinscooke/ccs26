@@ -16,10 +16,9 @@ export default function GoogleAd({ slot, format = "auto", className = "my-8" }: 
     try {
       const el = adRef.current?.querySelector('ins.adsbygoogle') as HTMLElement | null;
       if (el && !el.dataset.adsPlaced) {
-        el.dataset.adsPlaced = '1';
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+  el.dataset.adsPlaced = '1';
+  // @ts-ignore - adsbygoogle global provided by external script
+  (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch (e) {
       // ignore in static export or test envs

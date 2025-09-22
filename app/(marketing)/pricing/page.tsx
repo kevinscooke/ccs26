@@ -129,7 +129,7 @@ export default function Pricing() {
               Our platform connects thousands of car lovers with local events every month.
             </p>
             <p>
-              Whether you're organizing a casual cars &amp; coffee or a major auto show, 
+              Whether you&apos;re organizing a casual cars &amp; coffee or a major auto show, 
               our targeted audience ensures your event reaches the right people at the right time.
             </p>
           </div>
@@ -174,7 +174,7 @@ export default function Pricing() {
             </p>
           </div>
           <div className="ccs-card">
-            <h3 className="text-lg font-semibold text-[var(--fg)]">What's included in social promotion?</h3>
+            <h3 className="text-lg font-semibold text-[var(--fg)]">What&apos;s included in social promotion?</h3>
             <p className="mt-2 text-[var(--fg)] leading-relaxed">
               Featured events receive dedicated posts on our Instagram and Facebook channels, reaching thousands of local car enthusiasts.
             </p>
