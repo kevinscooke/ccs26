@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   title: "All Charlotte Car Shows | Charlotte Car Shows",
   description:
     "Browse all upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-  alternates: { canonical: "https://charlottecarshows.com/events" },
+  alternates: { canonical: "https://charlottecarshows.com/events/" },
   openGraph: {
     type: "website",
     title: "All Charlotte Car Shows",
     description:
       "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
-    url: "https://charlottecarshows.com/events",
+  url: "https://charlottecarshows.com/events/",
   },
   twitter: {
     card: "summary_large_image",
@@ -56,7 +56,7 @@ export default async function EventsAllPage() {
   const truncate = (s?: string | null, n = 220) =>
     !s ? "" : s.length <= n ? s : s.slice(0, n).replace(/\s+\S*$/, "") + "…";
 
-  const urlFor = (p: number) => (p <= 1 ? "/events" : `/events/page/${p}`);
+  const urlFor = (p: number) => (p <= 1 ? "/events/" : `/events/page/${p}/`);
 
   const monthFmt = new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -189,8 +189,8 @@ export default async function EventsAllPage() {
       </div>
       {/* Pagination Controls */}
       <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
-        <Link href="/events/past" className="ccs-btn px-4 py-2">Previous events</Link>
-        <Link href="/events/page/2" className="ccs-btn px-4 py-2">Next Page</Link>
+  <Link href="/events/past/" className="ccs-btn px-4 py-2">Previous events</Link>
+  <Link href="/events/page/2/" className="ccs-btn px-4 py-2">Next Page</Link>
       </nav>
       {/* GoogleAd Footer Slot */}
       <GoogleAd slot="1514406406" format="auto" className="mt-8" />

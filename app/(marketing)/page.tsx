@@ -38,7 +38,7 @@ export default function Home() {
                 The most comprehensive source for car shows, Cars & Coffee meetups, and automotive events across the Charlotte area.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a className="ccs-btn-primary px-6 py-3 text-lg shadow-lg" href="/events">Browse Events</a>
+                <a className="ccs-btn-primary px-6 py-3 text-lg shadow-lg" href="/events/">Browse Events</a>
                 <a className="ccs-btn px-5 py-3 text-lg bg-white/90 text-[var(--fg)] hover:bg-white" href="/pricing">Feature Your Event</a>
               </div>
             </div>
@@ -64,8 +64,8 @@ export default function Home() {
 
           {/* Right: buttons grouped & right-aligned on desktop */}
           <div className="w-full md:w-auto md:ml-auto flex justify-start md:justify-end items-center gap-3">
-            <a className="ccs-btn px-6 py-3" href="/events">View All Events</a>
-            <a className="ccs-btn-primary px-6 py-3" href="/weekly-car-show-list-charlotte">
+            <a className="ccs-btn px-6 py-3" href="/events/">View All Events</a>
+            <a className="ccs-btn-primary px-6 py-3" href="/weekly-car-show-list-charlotte/">
               Events this Week!
             </a>
           </div>
@@ -115,14 +115,14 @@ export default function Home() {
           <p className="text-gray-600 mb-4 leading-relaxed">
             Join hundreds of enthusiasts at Charlotte Motor Speedway every third Saturday. Free admission, family-friendly atmosphere, and amazing vehicles.
           </p>
-          <a className="ccs-btn inline-block" href="/events">View Schedule</a>
+          <a className="ccs-btn inline-block" href="/events/">View Schedule</a>
         </div>
         <div className="ccs-card">
           <h3 className="text-2xl font-semibold text-gray-900 mb-3">Major Shows</h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
             Don&apos;t miss Charlotte&apos;s biggest automotive events, including AutoFair, Charlotte Auto Show, and special exhibitions.
           </p>
-          <a className="ccs-btn inline-block" href="/events">See Major Events</a>
+          <a className="ccs-btn inline-block" href="/events/">See Major Events</a>
         </div>
       </section>
 

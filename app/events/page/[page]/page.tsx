@@ -109,13 +109,13 @@ export default function EventsPage({ params }: { params: { page: string } }) {
       {/* Pagination Controls */}
       <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
         {pageNum > 1 && (
-          <Link href={pageNum === 2 ? "/events" : `/events/page/${pageNum - 1}`} className="ccs-btn px-4 py-2">Previous</Link>
+          <Link href={pageNum === 2 ? "/events/" : `/events/page/${pageNum - 1}/`} className="ccs-btn px-4 py-2">Previous</Link>
         )}
-        <Link href="/events/past" className="ccs-btn px-4 py-2">Previous events</Link>
+  <Link href="/events/past/" className="ccs-btn px-4 py-2">Previous events</Link>
         {Array.from({ length: totalPages }, (_, i) => (
           <Link
             key={i + 1}
-            href={i === 0 ? "/events" : `/events/page/${i + 1}`}
+            href={i === 0 ? "/events/" : `/events/page/${i + 1}/`}
             className={`ccs-btn px-4 py-2${i + 1 === pageNum ? " ccs-btn-primary" : ""}`}
             aria-current={i + 1 === pageNum ? "page" : undefined}
           >

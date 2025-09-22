@@ -90,7 +90,7 @@ export default function GuidePage() {
           annual highlights, and helpful resources across the greater Charlotte area.
           For up-to-date dates and times, always check the
           {" "}
-          <Link className="underline hover:text-green-700" href="/events">events calendar</Link>.
+          <Link className="underline hover:text-green-700" href="/events/">events calendar</Link>.
         </p>
       </header>
 
@@ -201,7 +201,7 @@ export default function GuidePage() {
                 New-model showcase from 30+ manufacturers with hands-on product demos and ride & drive opportunities.
               </Item>
             </div>
-            <p className="text-sm text-[var(--fg)]/60 mt-3">Always verify dates and details on the event’s official site or on our <Link href="/events" className="underline">events page</Link>.</p>
+            <p className="text-sm text-[var(--fg)]/60 mt-3">Always verify dates and details on the event’s official site or on our <Link href="/events/" className="underline">events page</Link>.</p>
           </Section>
 
           <Section id="local-resources" title="Local Resources">

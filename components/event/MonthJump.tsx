@@ -72,7 +72,7 @@ export default function MonthJump({ currentWeekOffset = 0 }: { currentWeekOffset
     if (found && found.weekOffset) u.set("w", String(found.weekOffset));
     if (page > 1) u.set("p", "1"); // reset page on month jump
     const q = u.toString();
-    router.push(q ? `/events?${q}` : "/events");
+  router.push(q ? `/events?${q}` : "/events/");
   }
 
   return (

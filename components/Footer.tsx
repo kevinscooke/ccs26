@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const footerNav = {
   events: [
-    { label: "All Events", href: "/events" },
+  { label: "All Events", href: "/events/" },
     { label: "Car Shows Near Me", href: "/events?near=me" },
     { label: "Charlotte Auto Show", href: "/charlotte-auto-show-2026" },
     { label: "Hornets Nest Auto Fest", href: "/hornets-nest-auto-fest" },

@@ -18,3 +18,12 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# Redirect non-file paths without trailing slash to trailing-slash version
+# Evaluate after any specific redirects; Netlify processes redirects top-to-bottom.
+[[redirects]]
+  from = "/:splat"
+  to = "/:splat/"
+  status = 301
+  force = false
+  conditions = { Country = [] }

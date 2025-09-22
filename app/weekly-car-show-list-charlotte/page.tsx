@@ -112,7 +112,7 @@ export default function WeeklyCarShowListPage() {
         <ol className="flex items-center gap-2 flex-wrap">
           <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
           <li aria-hidden="true">/</li>
-          <li><Link href="/events" className="hover:underline text-[var(--fg)]">All Events</Link></li>
+          <li><Link href="/events/" className="hover:underline text-[var(--fg)]">All Events</Link></li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-[var(--fg)]/80">Weekly Charlotte Car Shows</li>
         </ol>

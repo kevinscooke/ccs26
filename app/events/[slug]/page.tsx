@@ -38,7 +38,7 @@ export async function generateMetadata({
     (ev.description || "Details, time, venue, and map.").trim()
   }`.replace(/\s+/g, " ");
   const description = descBase.slice(0, 155);
-  const canonical = `https://charlottecarshows.com/events/${params.slug}`;
+  const canonical = `https://charlottecarshows.com/events/${params.slug}/`;
 
   const image =
     ev.imageUrl ||
@@ -153,7 +153,7 @@ export default function EventDetail({
   const weekOffset = Math.round(diffMs / (7 * 24 * 60 * 60 * 1000));
   const weeklyHref = weekOffset
     ? `/weekly-car-show-list-charlotte?w=${weekOffset}`
-    : "/weekly-car-show-list-charlotte";
+    : `/weekly-car-show-list-charlotte/`;
 
   // --- Event JSON-LD ---
   const jsonLd = {
@@ -166,7 +166,7 @@ export default function EventDetail({
       : new Date(ev.startAt).toISOString(),
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
-    url: `https://charlottecarshows.com/events/${ev.slug}`,
+  url: `https://charlottecarshows.com/events/${ev.slug}/`,
     description: ev.description || undefined,
     image: ev.imageUrl ? [ev.imageUrl] : undefined,
     location: {
@@ -217,7 +217,7 @@ export default function EventDetail({
         "@type": "ListItem",
         position: 2,
         name: "All Events",
-        item: "https://charlottecarshows.com/events",
+    item: "https://charlottecarshows.com/events/",
       },
       {
         "@type": "ListItem",
@@ -229,7 +229,7 @@ export default function EventDetail({
         "@type": "ListItem",
         position: 4,
         name: ev.title,
-        item: `https://charlottecarshows.com/events/${ev.slug}`,
+  item: `https://charlottecarshows.com/events/${ev.slug}/`,
       },
     ],
   };
@@ -256,7 +256,7 @@ export default function EventDetail({
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link href="/events" className="hover:underline text-[var(--fg)]">
+            <Link href="/events/" className="hover:underline text-[var(--fg)]">
               All Events
             </Link>
           </li>

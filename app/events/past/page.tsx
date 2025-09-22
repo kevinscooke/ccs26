@@ -60,7 +60,7 @@ function RedirectToFirstPastPage() {
 
       <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
         {totalPages > 1 && (
-          <Link href="/events/past/page/2" className="ccs-btn px-4 py-2">Next</Link>
+          <Link href="/events/past/page/2/" className="ccs-btn px-4 py-2">Next</Link>
         )}
       </nav>
     </section>

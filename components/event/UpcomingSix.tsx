@@ -27,7 +27,7 @@ export default async function UpcomingSix() {
         <article key={e.id} className="ccs-card flex flex-col items-stretch gap-3">
           <div className="min-w-0">
             <h3 className="text-base font-semibold leading-snug truncate text-center sm:text-left">
-              <Link className="hover:underline" href={`/events/${e.slug}`}>
+              <Link className="hover:underline" href={`/events/${e.slug}/`}>
                 {e.title}
               </Link>
             </h3>
@@ -80,7 +80,7 @@ export default async function UpcomingSix() {
           <div className="mt-3">
             <Link
               className="ccs-btn w-full justify-center block text-center"
-              href={`/events/${e.slug}`}
+              href={`/events/${e.slug}/`}
             >
               Details
             </Link>
