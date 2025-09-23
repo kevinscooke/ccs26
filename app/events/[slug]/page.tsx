@@ -578,7 +578,18 @@ export default function EventDetail({
         </nav>
       )}
 
-  {/* Ads removed: previously had a GoogleAd footer slot */}
+        {/* Google Ad markup intentionally preserved — render as raw HTML to
+            avoid JSX/TSX parsing issues while keeping the snippet untouched */}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
+<!-- CCS-2026 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+`
+          }}
+        />
       </div>
     </Container>
   );

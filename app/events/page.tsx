@@ -193,7 +193,16 @@ export default async function EventsAllPage() {
   <Link href="/events/past/" className="ccs-btn px-4 py-2">Previous events</Link>
   <Link href="/events/page/2/" className="ccs-btn px-4 py-2">Next Page</Link>
       </nav>
-  {/* Ads removed: previously had a GoogleAd footer slot */}
+  <div
+          dangerouslySetInnerHTML={{
+            __html: `
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
+<!-- CCS-2026 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+`
+          }}
+        />
       </section>
     </Container>
   );
