@@ -3,18 +3,52 @@ import UpcomingSix from '@/components/event/UpcomingSix';
 import Image from "next/image";
 import { TAGS } from "@/lib/tags";
 import type { Metadata } from "next";
+import Container from '@/components/Container';
 
 export const metadata: Metadata = {
   title: "Charlotte Car Shows – Weekly Event Listings & Automotive Community",
   description:
     "Discover the best car shows in Charlotte, NC and the surrounding area. Updated weekly with event listings, featured shows, and resources for enthusiasts and organizers.",
   alternates: { canonical: "https://charlottecarshows.com" },
+  openGraph: {
+    title: "Charlotte Car Shows – Weekly Event Listings & Automotive Community",
+    description:
+      "Discover the best car shows in Charlotte, NC and the surrounding area. Updated weekly with event listings, featured shows, and resources for enthusiasts and organizers.",
+    url: "https://charlottecarshows.com",
+    type: "website",
+    images: [
+      {
+        url: "https://charlottecarshows.com/images/hero-ccs.jpg",
+        alt: "Charlotte car show—rows of cars with spectators",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Charlotte Car Shows",
+    description:
+      "Weekly-updated listings of Charlotte-area car shows, Cars & Coffee, and automotive community resources.",
+    images: ["https://charlottecarshows.com/images/hero-ccs.jpg"],
+  },
+  authors: [{ name: "Charlotte Car Shows", url: "https://charlottecarshows.com" }],
+  keywords: [
+    "Charlotte car shows",
+    "Cars & Coffee",
+    "Charlotte events",
+    "car meetups",
+    "Charlotte NC",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 // Fully static page
 export default function Home() {
   return (
-    <div className="space-y-16 py-8">
+    <Container>
+      <div className="space-y-16 py-8">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="relative rounded-xl overflow-hidden shadow-lg">
@@ -163,7 +197,8 @@ export default function Home() {
           </a>
         </div>
       </section>
-    </div>
+      </div>
+    </Container>
   );
 }
 

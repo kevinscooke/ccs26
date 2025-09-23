@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
+import Container from '@/components/Container';
 
 // Use runtime loader so /events stays in sync with V2 JSON (no rebuild needed)
 
@@ -67,7 +68,8 @@ export default async function EventsAllPage() {
   let lastMonth: string | null = null;
 
   return (
-  <section className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-12 py-6">
+    <Container>
+      <section className="w-full space-y-12">
   {/* Top ad intentionally removed to avoid reserved space above hero */}
     {/* Breadcrumbs */}
     <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0">
@@ -192,6 +194,7 @@ export default async function EventsAllPage() {
   <Link href="/events/page/2/" className="ccs-btn px-4 py-2">Next Page</Link>
       </nav>
   {/* Ads removed: previously had a GoogleAd footer slot */}
-    </section>
+      </section>
+    </Container>
   );
 }

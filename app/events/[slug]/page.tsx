@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import eventsData from "../../data/events.json";
 import venuesData from "../../data/venues.json";
+import Container from '@/components/Container';
 
 export const dynamic = "force-static";
 
@@ -243,7 +244,8 @@ export default function EventDetail({
   };
 
   return (
-    <div className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-8 py-6">
+    <Container>
+      <div className="w-full space-y-8 py-6">
 
   {/* JSON-LD blocks */}
       <script
@@ -577,6 +579,7 @@ export default function EventDetail({
       )}
 
   {/* Ads removed: previously had a GoogleAd footer slot */}
-    </div>
+      </div>
+    </Container>
   );
 }

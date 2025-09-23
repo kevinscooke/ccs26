@@ -5,6 +5,7 @@
 import Link from 'next/link';
 import venuesData from '../../data/venues.json';
 import eventsData from '../../data/events.json';
+import Container from '@/components/Container';
 
 export function generateStaticParams() {
   const venues = (venuesData as any[]) || [];
@@ -40,7 +41,8 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
   const mapQuery = [venue.address1, venue.city, venue.state].filter(Boolean).join(', ') || venue.name || 'Charlotte, NC';
 
   return (
-    <main className="max-w-6xl mx-auto p-4 space-y-6">
+    <Container>
+      <main className="max-w-6xl space-y-6">
       <header className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">{venue.name}</h1>
         {venue.description && <p className="text-lg text-[var(--fg)]/80">{venue.description}</p>}
@@ -105,6 +107,7 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
           </div>
         </aside>
       </section>
-    </main>
+      </main>
+    </Container>
   );
 }
