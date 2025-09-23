@@ -55,6 +55,17 @@
     "updated_at": "2025-09-21T19:46:14.191"
   },
   {
+    "id": "953a2d28-291e-423d-930a-b110bba71baa",
+    "name": "Downtown Oakboro",
+    "slug": "downtown-oakboro-nc",
+    "address1": "3rd and College",
+    "city": "Oakboro",
+    "state": "NC",
+    "postal": "28219",
+    "created_at": "2025-09-23T11:34:27.255",
+    "updated_at": "2025-09-23T11:34:27.255"
+  },
+  {
     "id": "cmfrbu1820001ug14s3ovvb1y",
     "name": "Sun Valley Commons",
     "slug": "sun-valley-commons-indian-trail",
@@ -75,6 +86,39 @@
     "postal": "28036",
     "created_at": "2025-09-21T19:58:36.2",
     "updated_at": "2025-09-21T19:58:36.2"
+  },
+  {
+    "id": "349b368e-c8e7-47da-8ff2-b54159869c3e",
+    "name": "Murto Made Mooresville",
+    "slug": "murto-made-mooresville-nc",
+    "address1": "166 N Main St",
+    "city": "Mooresville",
+    "state": "NC",
+    "postal": "28115",
+    "created_at": "2025-09-23T01:32:12.046",
+    "updated_at": "2025-09-23T01:32:12.046"
+  },
+  {
+    "id": "26a9202a-687f-479d-9cba-79298154e237",
+    "name": "Craft Burger n' Tap",
+    "slug": "craft-burger-n-tap-denver-nc",
+    "address1": "547 Brentwood Rd",
+    "city": "Denver",
+    "state": "NC",
+    "postal": "28037",
+    "created_at": "2025-09-23T01:32:12.046",
+    "updated_at": "2025-09-23T01:32:12.046"
+  },
+  {
+    "id": "83362e22-7fa0-4b20-9804-18155c87557b",
+    "name": "Knowledge Perk Coffee",
+    "slug": "knowledge-perk-coffee-rock-hill-sc",
+    "address1": "130 W White St",
+    "city": "Rock Hill",
+    "state": "SC",
+    "postal": "29730",
+    "created_at": "2025-09-23T11:28:46.434",
+    "updated_at": "2025-09-23T11:28:46.434"
   },
   {
     "id": "cmfn7nkqe000030mi5grdy5uk",
@@ -218,5 +262,38 @@
     "postal": "",
     "created_at": "2025-09-17T02:50:59.04",
     "updated_at": "2025-09-17T02:51:27.538"
+  },
+  {
+    "id": "8c4e1811-44e5-4955-b193-f82d5c96f13c",
+    "name": "Blackstone Shooting Sports",
+    "slug": "blackstone-shooting-sports-charlotte-nc",
+    "address1": "2001 Wilkinson Blvd",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "28208",
+    "created_at": "2025-09-23T11:34:27.255",
+    "updated_at": "2025-09-23T11:34:27.255"
+  },
+  {
+    "id": "e80ab1a4-a58f-4fa6-a073-faa7fddcd140",
+    "name": "Brooklyns Pizzeria Concord",
+    "slug": "brooklyns-pizzeria-concord-nc",
+    "address1": "3481 US-601",
+    "city": "Concord",
+    "state": "NC",
+    "postal": "28025",
+    "created_at": "2025-09-23T11:34:27.255",
+    "updated_at": "2025-09-23T11:34:27.255"
+  },
+  {
+    "id": "af1ecbe5-82ec-4450-8541-c40db903b2c0",
+    "name": "Crossroads Ford Indian Trail",
+    "slug": "crossroads-ford-indian-trail-nc",
+    "address1": "88 Dale Jarrett Blvd",
+    "city": "Indian Trail",
+    "state": "NC",
+    "postal": "28079",
+    "created_at": "2025-09-23T11:34:27.255",
+    "updated_at": "2025-09-23T11:34:27.255"
   }
 ]
