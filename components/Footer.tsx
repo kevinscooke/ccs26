@@ -16,8 +16,7 @@ const footerNav = {
     { label: "Charlotte Trailer Rental", href: "https://clttrailerrental.com", external: true },
     { label: "Peoples Golf", href: "https://peoples.golf", external: true },
     { label: "Raleigh Car Shows", href: "https://raleighcarshows.com", external: true },
-    { label: "Atlanta Car Shows", href: "https://charlottecarshows.com" /* placeholder if ATL site not live yet */, external: true },
-    { label: "Redfin Blog", href: "https://www.redfin.com", external: true },
+    { label: "Atlanta Car Shows (FOR SALE)", href: "https://charlottecarshows.com" /* placeholder if ATL site not live yet */, external: true },
   ],
   company: [
     { label: "About", href: "/about" },

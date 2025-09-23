@@ -107,7 +107,7 @@ export default function Pricing() {
                       ? "ccs-btn-primary" 
                       : "ccs-btn"
                   }`}
-                  href="#"
+                  href="/contact/"
                 >
                   {t.cta}
                 </a>

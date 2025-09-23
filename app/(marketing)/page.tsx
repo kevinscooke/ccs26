@@ -45,9 +45,44 @@ export const metadata: Metadata = {
 };
 
 // Fully static page
-export default function Home() {
+export default function MarketingHomePage() {
   return (
     <Container>
+      {/* Organization JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: `{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"Charlotte Car Shows",
+  "url":"https://charlottecarshows.com",
+  "logo":"https://charlottecarshows.com/icon-512x512.png",
+  "sameAs":[
+    "https://www.instagram.com/charlottecarshows/",
+    "https://www.facebook.com/CharlotteCarShows/"
+  ]
+}`
+        }}
+      />
+
+      {/* WebSite + SearchAction JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: `{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "url":"https://charlottecarshows.com",
+  "potentialAction":{
+    "@type":"SearchAction",
+    "target":"https://charlottecarshows.com/search?q={query}",
+    "query-input":"required name=query"
+  }
+}`
+        }}
+      />
+
       <div className="space-y-16 py-8">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
