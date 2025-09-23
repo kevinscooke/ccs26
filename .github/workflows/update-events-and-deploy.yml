@@ -48,6 +48,10 @@ jobs:
       # Option A: rely on push -> Netlify Build (if Netlify auto-deploy is set)
       # Option B: Or call a Netlify build hook directly:
       - name: Trigger Netlify deploy hook (optional)
-        if: ${{ secrets.NETLIFY_DEPLOY_HOOK != '' }}
         run: |
-          curl -sS -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}" || true
+          if [ -n "${{ secrets.NETLIFY_DEPLOY_HOOK }}" ]; then
+            echo "Triggering Netlify deploy hook..."
+            curl -sS -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}" || true
+          else
+            echo "No NETLIFY_DEPLOY_HOOK secret configured — skipping deploy hook."
+          fi

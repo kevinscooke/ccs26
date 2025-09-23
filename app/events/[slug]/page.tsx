@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
 import eventsData from "../../data/events.json";
+import venuesData from "../../data/venues.json";
 
 export const dynamic = "force-static";
 
@@ -137,6 +138,14 @@ export default function EventDetail({
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     mapQuery
   )}`;
+
+  // Try to resolve a venue slug from our venues dataset so the venue
+  // name can link to the canonical venue detail page when available.
+  const venues = (venuesData as any[]) || [];
+  const matchedVenue = venues.find(
+    (v) => v.id === ev.venue?.id || v.id === ev.venueId
+  );
+  const venueSlug = matchedVenue?.slug;
 
   const dt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
@@ -488,9 +497,20 @@ export default function EventDetail({
               <div className="flex gap-3">
                 <div className="w-8" aria-hidden="true">📍</div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-[var(--fg)]">
-                    {ev.venue.name}
-                  </h3>
+                  {venueSlug ? (
+                    <h3 className="font-semibold text-[var(--fg)]">
+                      <Link
+                        href={`/venues/${venueSlug}/`}
+                        className="hover:underline"
+                      >
+                        {ev.venue.name}
+                      </Link>
+                    </h3>
+                  ) : (
+                    <h3 className="font-semibold text-[var(--fg)]">
+                      {ev.venue.name}
+                    </h3>
+                  )}
                   <p className="text-[var(--fg)]/70 mt-1">
                     {fmtAddress(ev.venue ?? undefined)}
                   </p>
