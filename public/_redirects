@@ -1,2 +1,7 @@
-^/events/(list|map)(/.*)?$  /events/  301!
-^/(event|events)/[^/]+/[0-9]{4}-[0-9]{2}-[0-9]{2}(/.*)?$  /events/  301!
+# Redirect tribe list/map pages to /events
+/events/list/*  /events/  301!
+/events/map/*   /events/  301!
+
+# Redirect old dated event URLs (slug + date) to /events
+/event/*/*      /events/  301!
+/events/*/*     /events/  301!
