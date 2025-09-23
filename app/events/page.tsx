@@ -171,16 +171,18 @@ export default async function EventsAllPage() {
                   >
                     View Details
                   </Link>
-                  {e.url && (
-                    <a 
-                      className="ccs-btn px-4 py-2.5 w-full md:w-auto" 
-                      href={e.url} 
-                      target="_blank" 
-                      rel="noreferrer"
-                    >
-                      Official Site
-                    </a>
-                  )}
+                  {typeof e.url === "string" &&
+                    e.url.trim() !== "" &&
+                    !/^null$/i.test(e.url.trim()) && (
+                      <a
+                        className="ccs-btn px-4 py-2.5 w-full md:w-auto"
+                        href={e.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        Official Site
+                      </a>
+                    )}
                 </div>
               </div>
             </article>

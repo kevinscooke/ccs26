@@ -93,13 +93,21 @@ function formatRangeET(start: Date, endExclusive: Date) {
   return `${fmt.format(start)} – ${fmt.format(endShown)}`;
 }
 
+// Helper: treat "null", empty, non-string as absent URL
+function isValidUrl(u: any): u is string {
+  return typeof u === "string" && u.trim() !== "" && !/^null$/i.test(u.trim());
+}
+
 export default function WeeklyCarShowListPage() {
   const nowEt = nowInET();
   const weekStartEt = startOfWeekET(nowEt);
   const weekEndEt = endOfWeekET(nowEt);
   const events = (eventsData as any[])
     .filter(e => e.status === "PUBLISHED" && new Date(e.startAt) >= weekStartEt && new Date(e.startAt) < weekEndEt)
-    .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title));
+    .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
+    // sanitize URL field so downstream rendering can rely on truthiness
+    .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
+
   const headingRange = formatRangeET(weekStartEt, weekEndEt);
   const tfmt = new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",

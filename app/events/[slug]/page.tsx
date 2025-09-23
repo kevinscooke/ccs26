@@ -306,25 +306,27 @@ export default function EventDetail({
       </header>
 
   <div className="flex justify-center gap-3 mt-1">
-        {ev.url && (
-          <a
-            className="ccs-btn-primary px-4 py-2 text-base"
-            href={ev.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Visit Official Site
-          </a>
-        )}
-        <a
-          className="ccs-btn px-4 py-2 text-base"
-          href={mapsHref}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Get Directions
-        </a>
-      </div>
+        {typeof ev.url === "string" &&
+          ev.url.trim() !== "" &&
+          !/^null$/i.test(ev.url.trim()) && (
+            <a
+              className="ccs-btn-primary px-4 py-2 text-base"
+              href={ev.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit Official Site
+            </a>
+          )}
+         <a
+           className="ccs-btn px-4 py-2 text-base"
+           href={mapsHref}
+           target="_blank"
+           rel="noopener noreferrer"
+         >
+           Get Directions
+         </a>
+       </div>
 
       {ev.description && (
         <section className="ccs-card w-full">
@@ -441,7 +443,9 @@ export default function EventDetail({
                   Social / Website
                 </span>
                 <span className="block text-[var(--fg)] mt-1">
-                  {ev.url ? (
+                  {typeof ev.url === "string" &&
+                  ev.url.trim() !== "" &&
+                  !/^null$/i.test(ev.url.trim()) ? (
                     <a
                       href={ev.url}
                       className="underline"
@@ -453,22 +457,22 @@ export default function EventDetail({
                   ) : (
                     "-"
                   )}
-                  {socialLinks.length > 0 &&
-                    socialLinks.map((link: string, i: number) => (
-                      <span key={i} className="ml-2">
-                        <a
-                          href={link}
-                          className="underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Social
-                        </a>
-                      </span>
-                    ))}
-                </span>
-              </dd>
-            </div>
+                   {socialLinks.length > 0 &&
+                     socialLinks.map((link: string, i: number) => (
+                       <span key={i} className="ml-2">
+                         <a
+                           href={link}
+                           className="underline"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                         >
+                           Social
+                         </a>
+                       </span>
+                     ))}
+                 </span>
+               </dd>
+             </div>
 
             {ev.type && (
               <div className="flex gap-3">
