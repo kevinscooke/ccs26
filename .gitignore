@@ -51,3 +51,7 @@ uploads/
 
 # === Misc build tooling ===
 .turbo/
+
+# === Netlify ===
+# keep public directory ignored but allow the Netlify redirects file
+!public/_redirects
