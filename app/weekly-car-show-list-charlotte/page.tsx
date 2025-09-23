@@ -12,8 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const weekStartEt = (() => {
     const et = new Date(nowEt);
     const day = et.getDay();
-    const diffToMonday = (day + 6) % 7;
-    et.setDate(et.getDate() - diffToMonday);
+    // If today is Sunday (0) treat the week as starting tomorrow (Monday).
+    if (day === 0) {
+      et.setDate(et.getDate() + 1);
+    } else {
+      const diffToMonday = (day + 6) % 7;
+      et.setDate(et.getDate() - diffToMonday);
+    }
     et.setHours(0, 0, 0, 0);
     return et;
   })();
@@ -59,11 +64,16 @@ function nowInET() {
 }
 function startOfWeekET(d: Date) {
   // Create a Date object normalized to ET for the provided date, then
-  // roll back to Monday (so week runs Monday -> Sunday).
+  // return the Monday that defines the week. If the date is Sunday, move
+  // to the next day (Monday) so the week is Monday->Sunday.
   const et = new Date(new Date(d).toLocaleString("en-US", { timeZone: "America/New_York" }));
   const day = et.getDay();
-  const diffToMonday = (day + 6) % 7;
-  et.setDate(et.getDate() - diffToMonday);
+  if (day === 0) {
+    et.setDate(et.getDate() + 1);
+  } else {
+    const diffToMonday = (day + 6) % 7;
+    et.setDate(et.getDate() - diffToMonday);
+  }
   et.setHours(0, 0, 0, 0);
   return et;
 }
