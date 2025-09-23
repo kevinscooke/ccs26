@@ -27,3 +27,15 @@
   status = 301
   force = false
   conditions = { Country = [] }
+
+[[redirects]]
+  from = "^/events/(list|map)(/.*)?$"
+  to = "/events/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "^/(event|events)/[^/]+/[0-9]{4}-[0-9]{2}-[0-9]{2}(/.*)?$"
+  to = "/events/"
+  status = 301
+  force = true
