@@ -26,13 +26,22 @@ export const metadata: Metadata = {
       "All upcoming Charlotte-area car shows, Cars & Coffee, meets, cruise-ins, and track nights.",
   },
 };
+function isValidUrl(u: any): u is string {
+  return typeof u === "string" && /^\s*https?:\/\//i.test(u.trim());
+}
+
 export default async function EventsAllPage() {
   const now = new Date();
   const eventsData = await loadEvents();
   type EventType = typeof eventsData[number];
   const events = (eventsData as EventType[])
     .filter((e: EventType) => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
-    .sort((a: EventType, b: EventType) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title));
+    .sort((a: EventType, b: EventType) =>
+      new Date(a.startAt).getTime() - new Date(b.startAt).getTime() ||
+      a.title.localeCompare(b.title)
+    )
+    // sanitize URL field so a non-http value won't render as a site link
+    .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
 
   // --- JSON-LD: ItemList of event detail URLs (good for discovery on list pages) ---
   // Keep it reasonable in size; cap at 100 items to avoid huge script tags.

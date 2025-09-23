@@ -101,6 +101,10 @@ function fmtAddress(v?: {
   return parts.join(", ");
 }
 
+function isValidUrl(u: any): u is string {
+  return typeof u === "string" && /^\s*https?:\/\//i.test(u.trim());
+}
+
 export default function EventDetail({
   params,
 }: {
@@ -243,6 +247,8 @@ export default function EventDetail({
     ],
   };
 
+  const siteUrl = isValidUrl(ev.url) ? ev.url.trim() : null;
+
   return (
     <Container>
       <div className="w-full space-y-8 py-6">
@@ -306,18 +312,16 @@ export default function EventDetail({
       </header>
 
   <div className="flex justify-center gap-3 mt-1">
-        {typeof ev.url === "string" &&
-          ev.url.trim() !== "" &&
-          !/^null$/i.test(ev.url.trim()) && (
-            <a
-              className="ccs-btn-primary px-4 py-2 text-base"
-              href={ev.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Visit Official Site
-            </a>
-          )}
+        {siteUrl && (
+          <a
+            className="ccs-btn-primary px-4 py-2 text-base"
+            href={siteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit Official Site
+          </a>
+        )}
          <a
            className="ccs-btn px-4 py-2 text-base"
            href={mapsHref}
@@ -443,17 +447,8 @@ export default function EventDetail({
                   Social / Website
                 </span>
                 <span className="block text-[var(--fg)] mt-1">
-                  {typeof ev.url === "string" &&
-                  ev.url.trim() !== "" &&
-                  !/^null$/i.test(ev.url.trim()) ? (
-                    <a
-                      href={ev.url}
-                      className="underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Official Site
-                    </a>
+                  {siteUrl ? (
+                    <a href={siteUrl} className="underline" target="_blank" rel="noopener noreferrer">Official Site</a>
                   ) : (
                     "-"
                   )}
