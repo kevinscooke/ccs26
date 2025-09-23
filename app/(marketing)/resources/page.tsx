@@ -84,6 +84,16 @@ export default function ResourcesPage() {
         <h2 className="text-xl font-semibold mb-2">Want to be listed?</h2>
         <p className="text-zinc-700">Don’t see your business listed? <Link href="/contact" className="underline">Send us a message</Link> and we’ll get it added for free.</p>
       </section>
+      <div
+          dangerouslySetInnerHTML={{
+            __html: `
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
+<!-- CCS-2026 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+`
+          }}
+        />
     </main>
   );
 }

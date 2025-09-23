@@ -112,7 +112,9 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
             />
           </div>
         </aside>
-        <div
+        
+      </section>
+      <div
           dangerouslySetInnerHTML={{
             __html: `
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
@@ -122,7 +124,6 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
 `
           }}
         />
-      </section>
     </main>
   );
 }
