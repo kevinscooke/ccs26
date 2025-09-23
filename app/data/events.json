@@ -1767,37 +1767,6 @@
     "organizerId": null
   },
   {
-    "id": "ca7a431f-6ac4-48fa-9c22-6ea79e4fd348",
-    "title": "Throttle Thursdays – Murto Made Mooresville",
-    "slug": "throttle-thursdays-murto-made-mooresville-2025-09-25",
-    "description": "Bike night & cruise-in—ride ’em or drive ’em. Live music, a rotating food truck lineup, and a motorcycle-forward meet that still welcomes everything from exotics to hot rods. Last Thursday nights, April–October.",
-    "url": "Manual",
-    "startAt": "2025-09-25T21:00:00",
-    "endAt": "2025-09-26T01:00:00",
-    "createdAt": "2025-09-23T01:32:12.046",
-    "updatedAt": "2025-09-23T01:32:12.046",
-    "publishedAt": null,
-    "status": "PUBLISHED",
-    "isFeatured": false,
-    "price": null,
-    "type": "MEET",
-    "size": 300,
-    "isRecurring": false,
-    "socialLinks": [],
-    "city": null,
-    "venue": {
-      "id": "349b368e-c8e7-47da-8ff2-b54159869c3e",
-      "name": "Murto Made Mooresville",
-      "address1": "166 N Main St",
-      "city": "Mooresville",
-      "state": "NC"
-    },
-    "seriesId": null,
-    "cityId": null,
-    "venueId": "349b368e-c8e7-47da-8ff2-b54159869c3e",
-    "organizerId": null
-  },
-  {
     "id": "e703619d-384e-44cc-904e-bb7c6c2b6181",
     "title": "Throttle Thursdays – Murto Made Mooresville",
     "slug": "throttle-thursdays-murto-made-mooresville-2025-10-30",

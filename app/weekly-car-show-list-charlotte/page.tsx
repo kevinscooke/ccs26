@@ -58,8 +58,9 @@ function nowInET() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
 }
 function startOfWeekET(d: Date) {
-  const et = nowInET();
-  et.setFullYear(d.getFullYear(), d.getMonth(), d.getDate());
+  // Create a Date object normalized to ET for the provided date, then
+  // roll back to Monday (so week runs Monday -> Sunday).
+  const et = new Date(new Date(d).toLocaleString("en-US", { timeZone: "America/New_York" }));
   const day = et.getDay();
   const diffToMonday = (day + 6) % 7;
   et.setDate(et.getDate() - diffToMonday);
