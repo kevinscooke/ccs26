@@ -1,11 +1,2 @@
-# Redirect tribe list/map pages to /events
 ^/events/(list|map)(/.*)?$  /events/  301!
-
-# Redirect old dated event URLs to /events
-^/(event|events)/[^/]+/[0-9]{4}-[0-9]{2}-[0-9]{2}(/.*)?$  /events/  301!
-```// filepath: /public/_redirects
-# Redirect tribe list/map pages to /events
-^/events/(list|map)(/.*)?$  /events/  301!
-
-# Redirect old dated event URLs to /events
 ^/(event|events)/[^/]+/[0-9]{4}-[0-9]{2}-[0-9]{2}(/.*)?$  /events/  301!
