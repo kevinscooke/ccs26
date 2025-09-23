@@ -8,7 +8,6 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Caching headers
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
@@ -19,8 +18,6 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# Redirect non-file paths without trailing slash to trailing-slash version
-# Evaluate after any specific redirects; Netlify processes redirects top-to-bottom.
 [[redirects]]
   from = "^/events/(list|map)(/.*)?$"
   to = "/events/"
