@@ -14,5 +14,16 @@ const nextConfig = {
       { protocol: 'https', hostname: 'pub-*.supabase.co' },
     ],
   },
+  async redirects() {
+    return [
+      // tribe list/map pages
+      { source: '/events/list/:rest*', destination: '/events/', permanent: true },
+      { source: '/events/map/:rest*', destination: '/events/', permanent: true },
+
+      // old dated event URLs (both /event/... and /events/...)
+      { source: '/event/:slug/:date/:rest*', destination: '/events/', permanent: true },
+      { source: '/events/:slug/:date/:rest*', destination: '/events/', permanent: true }
+    ];
+  },
 };
 export default nextConfig;

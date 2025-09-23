@@ -22,13 +22,6 @@
 # Redirect non-file paths without trailing slash to trailing-slash version
 # Evaluate after any specific redirects; Netlify processes redirects top-to-bottom.
 [[redirects]]
-  from = "/:splat"
-  to = "/:splat/"
-  status = 301
-  force = false
-  conditions = { Country = [] }
-
-[[redirects]]
   from = "^/events/(list|map)(/.*)?$"
   to = "/events/"
   status = 301
@@ -39,3 +32,11 @@
   to = "/events/"
   status = 301
   force = true
+
+# generic trailing-slash redirect (keep last)
+[[redirects]]
+  from = "/:splat"
+  to = "/:splat/"
+  status = 301
+  force = false
+  conditions = { Country = [] }
