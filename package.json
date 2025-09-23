@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "mkdir -p out && cp public/_redirects out/_redirects || true",
     "start": "next start",
     "lint": "next lint",
     "export:json": "node scripts/export-json.mjs"
