@@ -91,10 +91,13 @@ export default function MarketingHomePage() {
             <Image
               src="/images/hero-ccs.jpg"
               alt="Charlotte car show—rows of cars with spectators"
-              className="object-cover"
-              fill
+              className="object-cover w-full h-full"
+              width={2000}   // replace with the actual image pixel width if known
+              height={900}   // replace with the actual image pixel height if known
               priority
+              loading="eager"
               sizes="(min-width: 768px) 60vw, 100vw"
+              style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20" />
           </div>
