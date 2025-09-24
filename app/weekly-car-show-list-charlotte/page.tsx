@@ -7,30 +7,11 @@ import type { Metadata } from "next";
 // ...existing code...
 
 export async function generateMetadata(): Promise<Metadata> {
-  // Compute ET week range for SEO
-  const nowEt = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-  const weekStartEt = (() => {
-    const et = new Date(nowEt);
-    const day = et.getDay();
-    // If today is Sunday (0) treat the week as starting tomorrow (Monday).
-    if (day === 0) {
-      et.setDate(et.getDate() + 1);
-    } else {
-      const diffToMonday = (day + 6) % 7;
-      et.setDate(et.getDate() - diffToMonday);
-    }
-    et.setHours(0, 0, 0, 0);
-    return et;
-  })();
-  const weekEndEt = (() => {
-    const end = new Date(weekStartEt);
-    end.setDate(end.getDate() + 7);
-    return end;
-  })();
-  const fmt = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "America/New_York" });
-  const endShown = new Date(weekEndEt);
-  endShown.setDate(endShown.getDate() - 1);
-  const headingRange = `${fmt.format(weekStartEt)} – ${fmt.format(endShown)}`;
+  // reuse the same helpers used by the page so metadata and visible heading match
+  const nowEt = nowInET();
+  const weekStartEt = startOfWeekET(nowEt);
+  const weekEndEt = endOfWeekET(nowEt);
+  const headingRange = formatRangeET(weekStartEt, weekEndEt);
   return {
     title: "Charlotte Weekly Car Show List | Charlotte Car Shows",
     description: `See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets for ${headingRange}. Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC.`,
@@ -54,10 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 import React from "react";
 import Link from "next/link";
 import eventsData from "../data/events.json";
-// For static import compatibility, update to:
-// import eventsData from "../../data/events.json";
-// If build fails, use:
-// import eventsData from "@/app/data/events.json";
+import AdSlot from "@/components/AdSlot";
 
 function nowInET() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
@@ -208,16 +186,8 @@ export default function WeeklyCarShowListPage() {
           <div className="ccs-card text-[var(--fg)]/70">No events in this week.</div>
         )}
       </div>
-<div
-          dangerouslySetInnerHTML={{
-            __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-          }}
-        />
+      {/* Ad loads after LCP/hydration via client AdSlot to avoid blocking LCP */}
+      <AdSlot />
     </section>
   );
 }
