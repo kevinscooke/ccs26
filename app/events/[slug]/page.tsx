@@ -5,6 +5,8 @@ import Link from "next/link";
 import eventsData from "../../data/events.json";
 import venuesData from "../../data/venues.json";
 import Container from '@/components/Container';
+import { toEtDate, formatDateET, formatTimeET } from "@/lib/et";
+import { notFound } from "next/navigation";
 
 export const dynamic = "force-static";
 
@@ -29,10 +31,7 @@ export async function generateMetadata({
     ev.city?.name || ev.venue?.city || "Charlotte";
   const state = ev.venue?.state || "NC";
   const cityState = `${city}, ${state}`;
-  const dateLong = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-    timeZone: "America/New_York",
-  }).format(new Date(ev.startAt));
+  const dateLong = formatDateET(ev.startAt);
 
   const title = `${ev.title} – ${cityState} (${dateLong})`;
   const descBase = `${ev.title} in ${cityState} on ${dateLong}. ${
@@ -73,20 +72,8 @@ export function generateStaticParams() {
     .map((e) => ({ slug: e.slug }));
 }
 
-function nowInET() {
-  return new Date(
-    new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
-  );
-}
-function startOfWeekET(base: Date) {
-  const et = nowInET();
-  et.setFullYear(base.getFullYear(), base.getMonth(), base.getDate());
-  const day = et.getDay();
-  const diffToMonday = (day + 6) % 7;
-  et.setDate(et.getDate() - diffToMonday);
-  et.setHours(0, 0, 0, 0);
-  return et;
-}
+// use centralized ET helpers (toEtDate/formatDateET/formatTimeET) from lib/et
+
 function fmtAddress(v?: {
   address1?: string | null;
   address2?: string | null;
@@ -105,149 +92,72 @@ function isValidUrl(u: any): u is string {
   return typeof u === "string" && /^\s*https?:\/\//i.test(u.trim());
 }
 
-export default function EventDetail({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function EventPage({ params }: { params: { slug: string } }) {
   const events = (eventsData as any[]) || [];
-  const ev = events.find(
-    (e) => e.slug === params.slug && e.status === "PUBLISHED"
-  );
-  if (!ev) return <p>Event not found.</p>;
+  const ev = events.find((e) => e.slug === params.slug && e.status === "PUBLISHED");
+  if (!ev) return notFound();
 
-  // New fields w/ safe fallbacks
-  const isPaid = typeof ev.isPaid === "boolean" ? ev.isPaid : false;
-  const size = typeof ev.size === "number" ? ev.size : undefined;
-  const isRecurring =
-    typeof ev.isRecurring === "boolean" ? ev.isRecurring : false;
-  const isSponsored =
-    typeof ev.isSponsored === "boolean" ? ev.isSponsored : false;
-  const parkingInfo =
-    typeof ev.parkingInfo === "string" ? ev.parkingInfo : "See event details";
-  const socialLinks = Array.isArray(ev.socialLinks) ? ev.socialLinks : [];
+  // --- build derived vars used in JSX and JSON-LD ---
+  const canonical = `https://charlottecarshows.com/events/${params.slug}/`;
+  const image = ev.imageUrl || "/images/hero-ccs.jpg";
 
-  // Prev/Next by startAt
-  const sortedEvents = events
-    .filter((e) => e.status === "PUBLISHED")
-    .sort(
-      (a, b) =>
-        new Date(a.startAt).getTime() - new Date(b.startAt).getTime()
-    );
-  const idx = sortedEvents.findIndex((e) => e.slug === params.slug);
-  const prev = idx > 0 ? sortedEvents[idx - 1] : null;
-  const next = idx < sortedEvents.length - 1 ? sortedEvents[idx + 1] : null;
-
-  const addr = fmtAddress(ev.venue ?? undefined);
-  const mapQuery = addr || ev.city?.name || "Charlotte, NC";
-  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    mapQuery
-  )}`;
-
-  // Try to resolve a venue slug from our venues dataset so the venue
-  // name can link to the canonical venue detail page when available.
-  const venues = (venuesData as any[]) || [];
-  const matchedVenue = venues.find(
-    (v) => v.id === ev.venue?.id || v.id === ev.venueId
-  );
-  const venueSlug = matchedVenue?.slug;
-
-  const dt = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-    timeStyle: "short",
-    timeZone: "America/New_York",
-  });
-
-  // Weekly page link (offset from current ET week)
-  const eventStart = new Date(ev.startAt);
-  const curWeek = startOfWeekET(nowInET());
-  const evWeek = startOfWeekET(eventStart);
-  const diffMs = evWeek.getTime() - curWeek.getTime();
-  const weekOffset = Math.round(diffMs / (7 * 24 * 60 * 60 * 1000));
-  const weeklyHref = weekOffset
-    ? `/weekly-car-show-list-charlotte?w=${weekOffset}`
-    : `/weekly-car-show-list-charlotte/`;
-
-  // --- Event JSON-LD ---
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Event",
     name: ev.title,
-    startDate: new Date(ev.startAt).toISOString(),
-    endDate: ev.endAt
-      ? new Date(ev.endAt).toISOString()
-      : new Date(ev.startAt).toISOString(),
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    eventStatus: "https://schema.org/EventScheduled",
-  url: `https://charlottecarshows.com/events/${ev.slug}/`,
+    startDate: toEtDate(ev.startAt)?.toISOString() ?? ev.startAt,
+    ...(ev.endAt ? { endDate: toEtDate(ev.endAt)?.toISOString() ?? ev.endAt } : {}),
     description: ev.description || undefined,
-    image: ev.imageUrl ? [ev.imageUrl] : undefined,
-    location: {
-      "@type": "Place",
-      name: ev.venue?.name || ev.city?.name || "Charlotte",
-      address: ev.venue
-        ? {
-            "@type": "PostalAddress",
-            streetAddress: [ev.venue.address1, ev.venue.address2]
-              .filter(Boolean)
-              .join(", "),
-            addressLocality: ev.venue.city || ev.city?.name,
-            addressRegion: ev.venue.state || "NC",
-            postalCode: ev.venue.postal || undefined,
-            addressCountry: "US",
-          }
-        : undefined,
-    },
-    organizer: {
-      "@type": "Organization",
-      name: "Charlotte Car Shows",
-      url: "https://charlottecarshows.com",
-    },
-    offers: ev.url
+    url: canonical,
+    image,
+    location: ev.venue
       ? {
-          "@type": "Offer",
-          url: ev.url,
-          price: "0",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-          validFrom: new Date(ev.startAt).toISOString(),
+          "@type": "Place",
+          name: ev.venue.name,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: ev.venue.address1 || undefined,
+            addressLocality: ev.venue.city || ev.city?.name || undefined,
+            addressRegion: ev.venue.state || undefined,
+            postalCode: ev.venue.postal || undefined,
+          },
         }
       : undefined,
   };
 
-  // --- BreadcrumbList JSON-LD ---
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://charlottecarshows.com/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "All Events",
-    item: "https://charlottecarshows.com/events/",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Weekly Charlotte Car Shows",
-        item: `https://charlottecarshows.com${weeklyHref}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 4,
-        name: ev.title,
-  item: `https://charlottecarshows.com/events/${ev.slug}/`,
-      },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://charlottecarshows.com/" },
+      { "@type": "ListItem", position: 2, name: "All Events", item: "https://charlottecarshows.com/events/" },
+      { "@type": "ListItem", position: 3, name: ev.title, item: canonical },
     ],
   };
 
-  const siteUrl = isValidUrl(ev.url) ? ev.url.trim() : null;
+  const siteUrl = isValidUrl(ev.url || ev.website || ev.siteUrl || ev.externalUrl)
+    ? (ev.url || ev.website || ev.siteUrl || ev.externalUrl).trim()
+    : null;
+  const mapQuery = ev.venue ? fmtAddress(ev.venue) : `${ev.title} ${ev.city?.name ?? ""}`;
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+  const isPaid = Boolean(ev.price) || ev.admission === "paid" || !!ev.paid;
+  const size = ev.size || ev.estimatedAttendance || null;
+  const isRecurring = !!ev.recurrence || !!ev.isRecurring || !!ev.frequency;
+  const isSponsored = !!ev.isSponsored;
+  const parkingInfo = ev.venue?.parking || ev.parking || "Unknown";
+  const socialLinks = Array.isArray(ev.social) ? ev.social : ev.social ? [ev.social] : [];
+  const venueSlug = ev.venue?.slug || null;
+
+  const idx = events.findIndex((e) => e.slug === params.slug);
+  const prevEvent = idx > 0 ? events[idx - 1] : null;
+  const nextEvent = idx >= 0 && idx < events.length - 1 ? events[idx + 1] : null;
+  const prev: { slug: string; title: string } | null = prevEvent
+    ? { slug: String(prevEvent.slug ?? ""), title: String(prevEvent.title ?? prevEvent.slug ?? "") }
+    : null;
+  const next: { slug: string; title: string } | null = nextEvent
+    ? { slug: String(nextEvent.slug ?? ""), title: String(nextEvent.title ?? nextEvent.slug ?? "") }
+    : null;
+  // --- end derived vars ---
 
   return (
     <Container>
@@ -300,7 +210,7 @@ export default function EventDetail({
         </h1>
         <div className="text-xl text-[var(--fg)]/70 flex flex-col sm:flex-row items-center justify-center gap-2">
           <span className="flex items-center gap-2 text-base md:text-xl">
-            <span>{dt.format(new Date(ev.startAt))}{ev.endAt && ` – ${new Intl.DateTimeFormat('en-US', { timeStyle: 'short', timeZone: 'America/New_York' }).format(new Date(ev.endAt))}`}</span>
+            <span>{formatDateET(ev.startAt)}{ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""}</span>
           </span>
           {ev.city?.name && (
             <span className="flex items-center gap-2 text-base md:text-xl">
@@ -362,19 +272,13 @@ export default function EventDetail({
                   Date &amp; Time
                 </span>
                   <span className="block text-[var(--fg)] mt-1">
-                  {new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "America/New_York" }).format(new Date(ev.startAt))}
-                  <br />
-                  {new Intl.DateTimeFormat("en-US", { timeStyle: "short", timeZone: "America/New_York" }).format(new Date(ev.startAt))}
-                  {ev.endAt
-                    ? ` – ${new Intl.DateTimeFormat("en-US", {
-                        timeStyle: "short",
-                        timeZone: "America/New_York",
-                      }).format(new Date(ev.endAt))}`
-                    : ""}{" "}
-                  ET
-                </span>
-              </dd>
-            </div>
+                    {formatDateET(ev.startAt)}
+                    <br />
+                    {formatTimeET(ev.startAt)}
+                    {ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""} ET
+                  </span>
+                 </dd>
+               </div>
 
             <div className="flex gap-3">
               <dt className="w-8" aria-hidden="true">🎟️</dt>
@@ -545,7 +449,7 @@ export default function EventDetail({
       {(prev || next) && (
         <nav className="ccs-card flex items-center justify-between text-sm">
           <div>
-            {prev && prev.slug && prev.title ? (
+            {prev ? (
               <Link
                 className="group flex items-center gap-2 ccs-btn px-4 py-3"
                 href={`/events/${prev.slug}`}
@@ -560,7 +464,7 @@ export default function EventDetail({
             )}
           </div>
           <div>
-            {next && next.slug && next.title ? (
+            {next ? (
               <Link
                 className="group flex items-center gap-2 ccs-btn px-4 py-3"
                 href={`/events/${next.slug}`}

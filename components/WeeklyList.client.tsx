@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "@/components/Weekly.module.css";
 import EventCard from "@/components/EventCard";
 import { getEventSlug } from "@/lib/eventSlug";
+import { formatDateET } from "@/lib/formatET";
 
 function toEtDay(iso: string) {
   const d = new Date(new Date(String(iso)).toLocaleString("en-US", { timeZone: "America/New_York" }));

@@ -15,40 +15,8 @@ import heroStyles from "@/components/HomeHero.module.css";
 import eventsData from "../data/events.json";
 import { getEventSlug } from "@/lib/eventSlug";
 import HomeHero from "@/components/HomeHero";
-
-function nowInET() {
-  return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-}
-function startOfWeekET(d: Date) {
-  // Create a Date object normalized to ET for the provided date, then
-  // return the Monday that defines the week. If the date is Sunday, move
-  // to the next day (Monday) so the week is Monday->Sunday.
-  const et = new Date(new Date(d).toLocaleString("en-US", { timeZone: "America/New_York" }));
-  const day = et.getDay();
-  if (day === 0) {
-    et.setDate(et.getDate() + 1);
-  } else {
-    const diffToMonday = (day + 6) % 7;
-    et.setDate(et.getDate() - diffToMonday);
-  }
-  et.setHours(0, 0, 0, 0);
-  return et;
-}
-function endOfWeekET(d: Date) {
-  const start = startOfWeekET(d);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 7);
-  return end;
-}
-function formatRangeET(start: Date, endExclusive: Date) {
-  const fmt = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-    timeZone: "America/New_York",
-  });
-  const endShown = new Date(endExclusive);
-  endShown.setDate(endShown.getDate() - 1);
-  return `${fmt.format(start)} – ${fmt.format(endShown)}`;
-}
+import { nowInET, startOfWeekET, endOfWeekET, formatRangeET, toEtDate } from "@/lib/et";
+// local helper implementations removed — use shared helpers from lib/et
 
 // Helper: treat "null", empty, non-string as absent URL
 function isValidUrl(u: any): u is string {
@@ -86,8 +54,12 @@ export default function DailyPage() {
   const weekStartEt = startOfWeekET(nowEt);
   const weekEndEt = endOfWeekET(nowEt);
   const events = (eventsData as any[])
-    .filter(e => e.status === "PUBLISHED" && new Date(e.startAt) >= weekStartEt && new Date(e.startAt) < weekEndEt)
-    .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
+    .filter(e => {
+      if (e.status !== "PUBLISHED") return false;
+      const dt = toEtDate(e.startAt);
+      return !!dt && dt >= weekStartEt && dt < weekEndEt;
+    })
+    .sort((a, b) => (toEtDate(a.startAt)?.getTime() ?? 0) - (toEtDate(b.startAt)?.getTime() ?? 0) || a.title.localeCompare(b.title))
     // sanitize URL field so downstream rendering can rely on truthiness
     .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
 
@@ -102,15 +74,6 @@ export default function DailyPage() {
   // Only include events that start within the current ET week (Monday -> Sunday).
   const weekStart = startOfWeekET(nowInET());
   const weekEnd = endOfWeekET(nowInET()); // exclusive
-
-  function toEtDate(value: any): Date | null {
-    if (!value) return null;
-    try {
-      return new Date(new Date(String(value)).toLocaleString("en-US", { timeZone: "America/New_York" }));
-    } catch {
-      return null;
-    }
-  }
 
   const eventsForClient = (eventsData as any[] || [])
     .map((e) => {

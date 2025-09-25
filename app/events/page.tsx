@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
+import { toEtDate, nowInET, formatDateET, formatTimeET } from "@/lib/et";
 import Container from '@/components/Container';
 import EventCard from "@/components/EventCard";
 import WeeklyControls from "@/components/WeeklyControls.client";
@@ -35,15 +36,21 @@ function isValidUrl(u: any): u is string {
 }
 
 export default async function EventsAllPage() {
-  const now = new Date();
-  const eventsData = await loadEvents();
-  type EventType = typeof eventsData[number];
-  const events = (eventsData as EventType[])
-    .filter((e: EventType) => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
-    .sort((a: EventType, b: EventType) =>
-      new Date(a.startAt).getTime() - new Date(b.startAt).getTime() ||
-      a.title.localeCompare(b.title)
-    )
+  // use ET-normalized "now" so comparisons match displayed ET times
+  const now = nowInET();
+   const eventsData = await loadEvents();
+   type EventType = typeof eventsData[number];
+   const events = (eventsData as EventType[])
+    .filter((e: EventType) => {
+      if (e.status !== "PUBLISHED") return false;
+      const dt = toEtDate(e.startAt);
+      return !!dt && dt.getTime() >= now.getTime();
+    })
+    .sort((a: EventType, b: EventType) => {
+      const ta = toEtDate(a.startAt)?.getTime() ?? 0;
+      const tb = toEtDate(b.startAt)?.getTime() ?? 0;
+      return ta - tb || a.title.localeCompare(b.title);
+    })
     // sanitize URL field so a non-http value won't render as a site link
     .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
 
@@ -59,15 +66,6 @@ export default async function EventsAllPage() {
       name: e.title,
     })),
   };
-
-  const tfmt = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "America/New_York",
-  });
-
-  const truncate = (s?: string | null, n = 220) =>
-    !s ? "" : s.length <= n ? s : s.slice(0, n).replace(/\s+\S*$/, "") + "…";
 
   const urlFor = (p: number) => (p <= 1 ? "/events/" : `/events/page/${p}/`);
 
@@ -108,7 +106,7 @@ export default async function EventsAllPage() {
 
       <div className="space-y-6">
         {events.slice(0, 15).map((e: EventType) => {
-            const monthLabel = monthFmt.format(new Date(e.startAt));
+            const monthLabel = monthFmt.format(toEtDate(e.startAt) ?? new Date(e.startAt));
             const showMonth = monthLabel !== lastMonth;
             lastMonth = monthLabel;
 
@@ -117,14 +115,20 @@ export default async function EventsAllPage() {
                 {showMonth && (
                   <div className="flex items-center gap-3 my-6" key={`m-${monthLabel}`}>
                     <div className="h-px flex-1 bg-[var(--fg)]/10" />
-                    <div className="text-sm uppercase tracking-wide text-[var(--fg)]/60">{monthLabel}</div>
+                    <div className="text-sm text-[var(--fg)]/70">
+                      {monthLabel}
+                    </div>
                     <div className="h-px flex-1 bg-[var(--fg)]/10" />
                   </div>
                 )}
+                {/* ensure the event list shows date + time */}
                 <EventCard event={e} />
-              </React.Fragment>
-            );
-      })}
+                {/* if you render date/time inline here instead of EventCard, use:
+                  {formatDateET(e.startAt)} {formatTimeET(e.startAt)}{e.endAt ? ` – ${formatTimeET(e.endAt)}` : ""} ET
+                */}
+               </React.Fragment>
+             );
+       })}
       </div>
       {/* Pagination Controls */}
       <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
