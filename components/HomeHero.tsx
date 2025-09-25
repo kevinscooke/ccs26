@@ -1,21 +1,23 @@
 import React from "react";
-import heroStyles from "@/components/HomeHero.module.css";
-import weeklyStyles from "@/components/Weekly.module.css";
+
+type HomeHeroProps = {
+  title: string;
+  lead: React.ReactNode;
+  range?: string | null;
+  className?: string;
+};
 
 export default function HomeHero({
   title,
   lead,
   range,
-}: {
-  title: string;
-  lead: React.ReactNode;
-  range?: string | null;
-}) {
+  className = "",
+}: HomeHeroProps) {
   return (
-    <div className={heroStyles.hero}>
-      <h1 className={heroStyles.heroTitle}>{title}</h1>
-      <p className={heroStyles.heroLead}>{lead}</p>
-      {range ? <div className={weeklyStyles.range} aria-hidden>{range}</div> : null}
-    </div>
+    <header className={`ccs-hero ${className}`}>
+      <h1 className="ccs-hero__title">{title}</h1>
+      <p className="ccs-hero__lead">{lead}</p>
+      {range ? <div className="ccs-weekly__range" aria-hidden>{range}</div> : null}
+    </header>
   );
 }

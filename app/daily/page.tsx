@@ -1,8 +1,3 @@
-export function generateViewport() {
-  return {
-    themeColor: "#ffffff"
-  };
-}
 import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -16,6 +11,13 @@ import eventsData from "../data/events.json";
 import { getEventSlug } from "@/lib/eventSlug";
 import HomeHero from "@/components/HomeHero";
 import { nowInET, startOfWeekET, endOfWeekET, formatRangeET, toEtDate } from "@/lib/et";
+
+export function generateViewport() {
+  return {
+    themeColor: "#ffffff",
+  };
+}
+
 // local helper implementations removed — use shared helpers from lib/et
 
 // Helper: treat "null", empty, non-string as absent URL
@@ -126,6 +128,7 @@ export default function DailyPage() {
             </>
           }
           range={formatRangeET(weekStartEt, weekEndEt)}
+          className="prose lg:prose-lg" // force same typography as other pages
         />
 
         {/* Centered tabs */}

@@ -38,6 +38,7 @@ import eventsData from "../data/events.json";
 import AdSlot from "@/components/AdSlot";
 import WeeklyControls from "@/components/WeeklyControls.client";
 import EventCard from "@/components/EventCard";
+import Container from "@/components/Container";
 import {
   nowInET,
   startOfWeekET,
@@ -87,16 +88,13 @@ export default function WeeklyCarShowListPage() {
   });
 
   return (
-    <section className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-12 py-6">
-  {/* Top ad intentionally removed to avoid reserved space above hero */}
+    <Container className="space-y-12 py-6">
       <div className="flex items-center justify-between">
-        <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0">
+        <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-6">
           <ol className="flex items-center gap-2 flex-wrap">
-            <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
-            <li aria-hidden="true">/</li>
-            <li><Link href="/events/" className="hover:underline text-[var(--fg)]">All Events</Link></li>
-            <li aria-hidden="true">/</li>
-            <li aria-current="page" className="text-[var(--fg)]/80">Weekly Charlotte Car Shows</li>
+            <li><Link href="/" className="text-[var(--fg)]/60 hover:text-[var(--fg)]">Home</Link></li>
+            <li> / </li>
+            <li className="text-[var(--fg)]">All Events</li>
           </ol>
         </nav>
         <div>
@@ -130,6 +128,6 @@ export default function WeeklyCarShowListPage() {
        </div>
        {/* Ad loads after LCP/hydration via client AdSlot to avoid blocking LCP */}
        <AdSlot />
-     </section>
+     </Container>
    );
  }
