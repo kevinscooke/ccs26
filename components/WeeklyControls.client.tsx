@@ -8,8 +8,9 @@ function nowEtDay(): number {
 }
 
 function setHashValue(value: string | null) {
+  if (typeof window === "undefined") return;
   if (value === null) {
-    // clear hash
+    // clear hash -> week/all view
     history.replaceState(null, "", location.pathname + location.search);
   } else {
     location.hash = value;
@@ -36,29 +37,34 @@ export default function WeeklyControls() {
     <div className={styles.headerControls} role="toolbar" aria-label="Weekly controls">
       <button
         type="button"
-        className={`${styles.ctrlBtn} ${isSelected(todayHash) ? styles.active : ""}`}
-        onClick={() => setHashValue(todayHash)}
-      >
-        Today
-      </button>
-
-      <button
-        type="button"
-        className={`${styles.ctrlBtn} ${isSelected("weekend") ? styles.active : ""}`}
-        onClick={() => setHashValue(isSelected("weekend") ? null : "weekend")}
-      >
-        Weekend
-      </button>
-
-      <button
-        type="button"
         className={styles.ctrlBtn}
         onClick={() => {
-          // go to full events listing
+          // go to full events listing (separate page)
           router.push("/events/");
         }}
+        aria-label="List view"
       >
-        All
+        List
+      </button>
+
+      <button
+        type="button"
+        className={`${styles.ctrlBtn} ${isSelected(null) ? styles.active : ""}`}
+        onClick={() => setHashValue(null)}
+        aria-pressed={isSelected(null)}
+        aria-label="Week view"
+      >
+        Week
+      </button>
+
+      <button
+        type="button"
+        className={`${styles.ctrlBtn} ${isSelected(todayHash) ? styles.active : ""}`}
+        onClick={() => setHashValue(todayHash)}
+        aria-pressed={isSelected(todayHash)}
+        aria-label="Day view"
+      >
+        Day
       </button>
     </div>
   );
