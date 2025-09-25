@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import styles from "@/components/Weekly.module.css";
 import EventCard from "@/components/EventCard";
@@ -31,29 +31,27 @@ export default function WeeklyList({ events }: { events?: any[] }) {
     return now.getDay();
   }, []);
 
-  const computeDefault = () => {
+  const computeDefault = useCallback(() => {
     if (typeof window !== "undefined") {
       const h = location.hash.replace(/^#/, "");
       if (h.startsWith("day=")) {
         const n = Number(h.slice(4));
-        if (!isNaN(n) && n>=0 && n<=6) return n;
+        if (!isNaN(n) && n >= 0 && n <= 6) return n;
       }
       if (h === "weekend") return "weekend";
     }
-    // pick the next day that has events, starting with today (today -> tomorrow -> ...)
     for (let i = 0; i < 7; i++) {
       const d = (todayEt + i) % 7;
       if ((eventsByDay[d] || []).length > 0) return d;
     }
     return todayEt;
-  };
+  }, [eventsByDay, todayEt]);
 
-  // server-safe initial render: no selection. set selection on client.
+  // server-safe initial state; compute on client to avoid hydration mismatch and satisfy lint
   const [selected, setSelected] = useState<number | "weekend" | null>(null);
-
   useEffect(() => {
     setSelected(computeDefault());
-  }, [eventsByDay, todayEt]);
+  }, [computeDefault]);
 
   useEffect(() => {
     const handler = () => {
