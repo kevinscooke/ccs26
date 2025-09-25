@@ -5,6 +5,7 @@ export function generateViewport() {
 }
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import WeeklyTabs from "@/components/WeeklyTabs.client";
 import WeeklyControls from "@/components/WeeklyControls.client";
 import WeeklyList from "@/components/WeeklyList.client";
@@ -13,6 +14,7 @@ import weeklyStyles from "@/components/Weekly.module.css";
 import heroStyles from "@/components/HomeHero.module.css";
 import eventsData from "../data/events.json";
 import { getEventSlug } from "@/lib/eventSlug";
+import HomeHero from "@/components/HomeHero";
 
 function nowInET() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
@@ -79,7 +81,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function WeeklyCarShowListPage() {
+export default function DailyPage() {
   const nowEt = nowInET();
   const weekStartEt = startOfWeekET(nowEt);
   const weekEndEt = endOfWeekET(nowEt);
@@ -141,40 +143,36 @@ export default function WeeklyCarShowListPage() {
     .map(({ __rawStart, ...keep }) => keep);
 
   return (
-    <section className="w-full px-4 md:px-12 max-w-7xl mx-auto space-y-12 py-6">
-      {/* Top ad intentionally removed to avoid reserved space above hero */}
-      {/* Header row: breadcrumbs + controls (moved above hero) */}
-      <div className={weeklyStyles.headerRow}>
-        <nav aria-label="Breadcrumb" className={weeklyStyles.breadcrumbs}>
-          <Link href="/">Home</Link>
-          <span className="sep">/</span>
-          <span>Weekly Car Show List</span>
-        </nav>
-        <div className={weeklyStyles.headerControlsWrap}>
-          <WeeklyControls />
+    <Container>
+      <section className="w-full space-y-12 py-6">
+        {/* Top row */}
+        <div className={weeklyStyles.headerRow}>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Daily View", current: true }]} />
+          <div className={weeklyStyles.headerControlsWrap}>
+            <WeeklyControls />
+          </div>
         </div>
-      </div>
 
-      {/* Hero: title, lead, then the week range as part of the hero area */}
-      <div className={heroStyles.hero}>
-        <h1 className={heroStyles.heroTitle}>Weekly Car Show List</h1>
-        <p className={heroStyles.heroLead}>
-          See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets.
-          Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC.
-        </p>
-        <div className={weeklyStyles.range} aria-hidden>{formatRangeET(weekStartEt, weekEndEt)}</div>
-      </div>
+        {/* use shared hero so formatting matches other pages */}
+        <HomeHero
+          title="Daily Car Show List"
+          lead={
+            <>
+              See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets.
+              Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC.
+            </>
+          }
+          range={formatRangeET(weekStartEt, weekEndEt)}
+        />
 
-      {/* Centered tabs */}
-      <div className={weeklyStyles.tabsWrap}>
-        <WeeklyTabs events={eventsForClient} />
-      </div>
+        {/* Centered tabs */}
+        <div className={weeklyStyles.tabsWrap}>
+          <WeeklyTabs events={eventsForClient} />
+        </div>
 
-      {/* Event list (reuses EventCard, links use event.slug which matches generateStaticParams) */}
-      <WeeklyList events={eventsForClient} />
-
-      {/* Ad loads after LCP/hydration via client AdSlot to avoid blocking LCP */}
-      {/* <AdSlot /> */}
-    </section>
+        {/* Event list */}
+        <WeeklyList events={eventsForClient} />
+      </section>
+    </Container>
   );
 }

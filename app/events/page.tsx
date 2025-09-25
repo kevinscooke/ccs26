@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
 import Container from '@/components/Container';
 import EventCard from "@/components/EventCard";
+import WeeklyControls from "@/components/WeeklyControls.client";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import weeklyStyles from "@/components/Weekly.module.css";
 
 // Use runtime loader so /events stays in sync with V2 JSON (no rebuild needed)
 
@@ -80,15 +83,13 @@ export default async function EventsAllPage() {
   return (
     <Container>
       <section className="w-full space-y-12">
-  {/* Top ad intentionally removed to avoid reserved space above hero */}
-    {/* Breadcrumbs */}
-    <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0">
-        <ol className="flex items-center gap-2 flex-wrap">
-          <li><Link href="/" className="hover:underline text-[var(--fg)]">Home</Link></li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-[var(--fg)]/80">All Events</li>
-        </ol>
-      </nav>
+    {/* Top ad intentionally removed to avoid reserved space above hero */}
+    <div className={weeklyStyles.headerRow}>
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "All Events", current: true }]} />
+      <div className={weeklyStyles.headerControlsWrap}>
+        <WeeklyControls />
+      </div>
+    </div>
       {/* JSON-LD in body is fine with the App Router */}
       <script
         type="application/ld+json"
