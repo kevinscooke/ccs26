@@ -8,10 +8,11 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[[plugins]]
-  package = "netlify-plugin-inline-critical-css"
-  [plugins.inputs]
-  extract = true
+# Temporarily disabled due to CSS parse errors in inline-critical
+# [[plugins]]
+#   package = "netlify-plugin-inline-critical-css"
+#   [plugins.inputs]
+#   extract = true
 
 [[headers]]
   for = "/_next/static/*"
