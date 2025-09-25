@@ -1,0 +1,251 @@
+.dayTabs {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+}
+
+/* horizontal scroll container for small screens */
+.dayScroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+.dayScroll::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.06);
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.tab:hover {
+  background: rgba(15,23,42,0.03);
+}
+.active {
+  background: var(--primary, #111827);
+  color: white;
+  border-color: transparent;
+}
+
+/* small visual indicator for today inside tab */
+.todayMarker {
+  margin-left: 0.4rem;
+  opacity: 0.9;
+}
+
+/* control buttons (Today / Weekend / All) */
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: auto;
+}
+.btn {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.06);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.btn:hover { background: rgba(15,23,42,0.03); }
+.controls .active {
+  background: var(--primary, #111827);
+  color: white;
+  border-color: transparent;
+}
+
+/* Ensure page content centers within the max-width container */
+.weekly {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+  /* do NOT center children here — allow them to fill the container */
+  display: block; /* was flex + align-items:center which caused shrinkage */
+}
+
+/* make key children stretch the full width of the container */
+.headerRow,
+.hero,
+.dayTabs,
+.range {
+  width: 100%;
+}
+
+/* let breadcrumbs take remaining space so controls can align right */
+.headerRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;    /* tightened */
+}
+.headerRow .breadcrumbs {
+  flex: 1 1 auto;
+}
+
+/* keep hero text centered visually but full width */
+.hero {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* keep day tabs full width */
+.dayTabs {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  overflow: visible;
+}
+
+/* Center wrapper for the tabs row so layout uses CSS instead of inline styles */
+.tabsWrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 6px;   /* reduced */
+  margin-bottom: 4px;/* reduced */
+}
+
+/* Breadcrumbs - bigger hit area for mobile */
+.breadcrumbs {
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+  line-height: 1;
+}
+.breadcrumbs a,
+.breadcrumbs span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.4rem;   /* narrower horizontal padding */
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.breadcrumbs a:hover,
+.breadcrumbs a:focus {
+  background: rgba(15,23,42,0.03);
+  outline: none;
+}
+
+/* tighten separator spacing */
+.sep {
+  margin: 0 0.25rem;
+  opacity: 0.6;
+}
+
+/* Header row spacing */
+.headerRow {
+  gap: 0.5rem;               /* slightly reduced horizontal gap */
+  padding-top: 0.125rem;    /* less vertical breathing above */
+  padding-bottom: 0.25rem;  /* less vertical breathing below */
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;    /* tightened */
+}
+
+/* Controls (compact row used by WeeklyControls) */
+.headerControls {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.ctrlBtn {
+  padding: 0.42rem 0.65rem; /* tightened from earlier values */
+  border-radius: 8px;
+  min-height: 36px;
+  font-weight: 600;
+}
+.ctrlBtn:hover { background: rgba(15,23,42,0.03); }
+.headerControls .active,
+.ctrlBtn.active,
+.ctrlBtn[aria-pressed="true"] {
+  background: var(--primary, #111827);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Tabs */
+.dayTabs {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.dayScroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.15rem 0.2rem;
+}
+.tab {
+  flex: 0 0 auto;
+  padding: 0.6rem 0.85rem;  /* slightly narrower horizontally, comfortable tap area */
+  min-height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: transparent;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+.tab:hover { background: rgba(15,23,42,0.03); }
+.active {
+  background: var(--primary, #111827);
+  color: white;
+  border-color: transparent;
+}
+.todayMarker { margin-left: 0.35rem; opacity: 0.9; }
+.tabCount { margin-left: 0.5rem; opacity: 0.65; font-size: 0.85rem; }
+
+/* tighten event card vertical padding a little */
+.ccs-card {
+  padding: 0.9rem; /* from 1rem -> 0.9rem */
+}
+
+/* Mobile-specific tweaks */
+@media (max-width: 480px) {
+  .breadcrumb a,
+  .breadcrumb span {
+    padding: 0.5rem 0.7rem;
+  }
+  .ctrlBtn { padding: 0.5rem 0.75rem; min-height: 40px; }
+  .tab { padding: 0.75rem 0.95rem; min-height: 44px; }
+  .tabsWrap { margin-top: 10px; margin-bottom: 6px; }
+}
+
+/* selected control button */
+.ctrlBtnActive {
+  background: var(--primary, #0f172a);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06) inset;
+}
+
+/* ensure aria-pressed also styles the button when JS sets attribute */
+.ctrlBtn[aria-pressed="true"] {
+  background: var(--primary, #0f172a);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* small visual polish */
+.ctrlBtn:focus {
+  outline: 2px solid rgba(59,130,246,0.35);
+  outline-offset: 2px;
+}
