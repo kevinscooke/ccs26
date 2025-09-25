@@ -1,5 +1,9 @@
-export function getEventSlug(e: any): string {
-  // prefer a human slug, fall back to id (string)
-  const slug = e?.slug ?? e?.id;
-  return slug === undefined || slug === null ? "" : String(slug);
+interface EventLike {
+  slug?: string;
+  id?: string | number;
+}
+
+export function getEventSlug(e: EventLike): string {
+  // Prefer slug, fall back to id, otherwise empty string
+  return String(e?.slug ?? e?.id ?? "");
 }

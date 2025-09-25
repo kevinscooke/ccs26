@@ -80,9 +80,12 @@ export default function DailyPage() {
   const eventsForClient = (eventsData as any[] || [])
     .map((e) => {
       const startRaw = e.startAt ?? e.startsAt ?? e.start ?? e.datetime ?? null;
+      // build a stable id: prefer explicit id/slug, otherwise derive from slug/title+start
+      const stableId =
+        e.id ?? e.slug ?? getEventSlug(e) ?? `${String(e.title ?? "").slice(0, 40).replace(/\s+/g, "-")}-${String(startRaw)}`;
       return {
         __rawStart: startRaw,
-        id: e.id ?? e.slug ?? Math.random().toString(36).slice(2, 9),
+        id: String(stableId),
         slug: getEventSlug(e), // canonical slug used across the site
         title: e.title ?? e.name ?? "",
         startAt: startRaw ? String(startRaw) : "",
@@ -121,14 +124,9 @@ export default function DailyPage() {
         {/* use shared hero so formatting matches other pages */}
         <HomeHero
           title="Daily Car Show List"
-          lead={
-            <>
-              See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets.
-              Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC.
-            </>
-          }
-          range={formatRangeET(weekStartEt, weekEndEt)}
-          className="prose lg:prose-lg" // force same typography as other pages
+          lead="See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets. Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC."
+          range="September 22, 2025 – September 28, 2025"
+          className="prose lg:prose-lg"
         />
 
         {/* Centered tabs */}

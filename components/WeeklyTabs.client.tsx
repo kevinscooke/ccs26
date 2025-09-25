@@ -21,6 +21,8 @@ function nowEtDay(): number {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" })).getDay();
 }
 
+const MOBILE_SCROLL_DELAY = 50; // ms delay before forcing scroll on mobile/tall tabs
+
 export default function WeeklyTabs({ events }: { events?: EventItem[] }) {
   // build simple counts per day if events supplied
   const eventsByDay = useMemo(() => {
@@ -86,7 +88,7 @@ export default function WeeklyTabs({ events }: { events?: EventItem[] }) {
       setTimeout(() => {
         const el = dayScrollRef.current!;
         el.scrollLeft = el.scrollWidth;
-      }, 50);
+      }, MOBILE_SCROLL_DELAY);
     }
   }, [dayScrollRef, eventsByDay]);
 
