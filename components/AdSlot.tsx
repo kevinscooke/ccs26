@@ -28,9 +28,9 @@ export default function AdSlot() {
           ins.setAttribute("data-full-width-responsive", "true");
           container.appendChild(ins);
           try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-            (window as any).adsbygoogle.push({});
+            // typed access without using `any` so we don't need eslint-disable
+            const win = window as unknown as { adsbygoogle?: unknown[] };
+            (win.adsbygoogle ??= []).push({});
           } catch (e) {
             // ignore
           }
