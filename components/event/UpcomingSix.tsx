@@ -2,24 +2,30 @@
 import Link from "next/link";
 import { loadEvents } from "@/lib/data";
 import { Calendar, MapPin } from "lucide-react";
+import { formatDateET, parseToETDate } from "@/lib/formatET";
 
 export default async function UpcomingSix() {
-  const now = new Date();
+  const now = Date.now();
   const eventsData = await loadEvents();
   const events = (eventsData as any[])
-    .filter((e) => e.status === "PUBLISHED" && new Date(e.startAt) >= now)
-    .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || a.title.localeCompare(b.title))
+    .filter(
+      (e) =>
+        e.status === "PUBLISHED" &&
+        (parseToETDate(e.startAt)?.getTime() ?? Infinity) >= now
+    )
+    .sort(
+      (a, b) =>
+        (parseToETDate(a.startAt)?.getTime() ?? 0) -
+          (parseToETDate(b.startAt)?.getTime() ?? 0) ||
+        a.title.localeCompare(b.title)
+    )
     .slice(0, 6);
 
   if (!events.length) {
     return <p className="mt-4 text-zinc-400">No upcoming events yet.</p>;
   }
 
-  const fmt = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "America/New_York",
-  });
+  // display using ET-aware formatter
 
   return (
     <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full">
@@ -34,7 +40,7 @@ export default async function UpcomingSix() {
 
             <p className="mt-2 text-sm text-zinc-500 flex items-center justify-center gap-2 sm:justify-start sm:text-left break-words">
               <Calendar className="w-4 h-4 text-zinc-400" />
-              <span>{fmt.format(new Date(e.startAt))}</span>
+              <span>{formatDateET(e.startAt)}</span>
             </p>
 
             {/* Location */}
