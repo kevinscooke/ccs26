@@ -242,6 +242,17 @@
     "updated_at": "2025-09-19T21:00:58.827"
   },
   {
+    "id": "70091cd1-1684-4d1a-bffb-30f8edb3289e",
+    "name": "Southminster Church",
+    "slug": "southminster-gastonia-nc",
+    "address1": "1401 Hoffman Road",
+    "city": "Gastonia",
+    "state": "NC",
+    "postal": "28054",
+    "created_at": "2025-09-25T21:55:13.485",
+    "updated_at": "2025-09-25T21:55:13.485"
+  },
+  {
     "id": "cmfrc41lt0001ug4aozzyvd7h",
     "name": "Victory Youth Building",
     "slug": "victory-youth-building-charlotte",

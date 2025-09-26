@@ -85,7 +85,33 @@ async function main() {
   console.log(`Exported ${events?.length ?? 0} events and ${venues?.length ?? 0} venues.`);
 }
 
+async function exportEvents() {
+  const { data, error } = await supabase
+    .from("Event")
+    .select("*"); // include new columns
+
+  if (error) throw error;
+
+  const out = (data || []).map((e) => ({
+    id: e.id,
+    title: e.title,
+    slug: e.slug,
+    description: e.description,
+    url: e.url,
+    startAt: e.startAt,
+    endAt: e.endAt,
+    status: e.status,
+    public_status: e.public_status,
+    show_time: e.show_time ?? true,
+    status_note: e.status_note ?? null,
+    // venue, city, etc...
+  }));
+
+  fs.writeFileSync("app/data/events.json", JSON.stringify(out, null, 2), "utf8");
+}
+
 main().catch((err) => {
   console.error("Export failed:", err?.message || err);
   process.exit(1);
 });
+exportEvents().catch(err => { console.error(err); process.exit(1); });

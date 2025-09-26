@@ -5,7 +5,8 @@ import Link from "next/link";
 import eventsData from "../../data/events.json";
 import venuesData from "../../data/venues.json";
 import Container from '@/components/Container';
-import { toEtDate, formatDateET, formatTimeET } from "@/lib/et";
+import { Calendar } from "lucide-react";
+import { formatDateET, formatTimeET, toEtDate } from "@/lib/et";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-static";
@@ -97,11 +98,14 @@ export default async function EventPage({ params }: { params: { slug: string } }
   const ev = events.find((e) => e.slug === params.slug && e.status === "PUBLISHED");
   if (!ev) return notFound();
 
+  const isCancelled = (ev.public_status ?? ev.status) === "CANCELLED";
+  const showTime = ev.show_time ?? true;
+
   // --- build derived vars used in JSX and JSON-LD ---
   const canonical = `https://charlottecarshows.com/events/${params.slug}/`;
   const image = ev.imageUrl || "/images/hero-ccs.jpg";
 
-  const jsonLd = {
+  const jsonLd: any = {
     "@context": "https://schema.org",
     "@type": "Event",
     name: ev.title,
@@ -110,19 +114,8 @@ export default async function EventPage({ params }: { params: { slug: string } }
     description: ev.description || undefined,
     url: canonical,
     image,
-    location: ev.venue
-      ? {
-          "@type": "Place",
-          name: ev.venue.name,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: ev.venue.address1 || undefined,
-            addressLocality: ev.venue.city || ev.city?.name || undefined,
-            addressRegion: ev.venue.state || undefined,
-            postalCode: ev.venue.postal || undefined,
-          },
-        }
-      : undefined,
+    // add schema.org EventCancelled when cancelled
+    ...(isCancelled ? { eventStatus: "https://schema.org/EventCancelled" } : {}),
   };
 
   const breadcrumbLd = {
@@ -210,7 +203,19 @@ export default async function EventPage({ params }: { params: { slug: string } }
         </h1>
         <div className="text-xl text-[var(--fg)]/70 flex flex-col sm:flex-row items-center justify-center gap-2">
           <span className="flex items-center gap-2 text-base md:text-xl">
-            <span>{formatDateET(ev.startAt)}{ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""}</span>
+            <span>
+              {formatDateET(ev.startAt)}{" "}
+              {isCancelled ? (
+                <strong className="text-red-600">Canceled</strong>
+              ) : (
+                showTime ? (
+                  <>
+                    {formatTimeET(ev.startAt)}
+                    {ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""} ET
+                  </>
+                ) : null
+              )}
+            </span>
           </span>
           {ev.city?.name && (
             <span className="flex items-center gap-2 text-base md:text-xl">
@@ -219,6 +224,9 @@ export default async function EventPage({ params }: { params: { slug: string } }
             </span>
           )}
         </div>
+        {isCancelled && ev.status_note && (
+          <div className="text-sm text-[var(--fg)]/80 mt-2">{ev.status_note}</div>
+        )}
       </header>
 
   <div className="flex justify-center gap-3 mt-1">
@@ -274,9 +282,20 @@ export default async function EventPage({ params }: { params: { slug: string } }
                   <span className="block text-[var(--fg)] mt-1">
                     {formatDateET(ev.startAt)}
                     <br />
-                    {formatTimeET(ev.startAt)}
-                    {ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""} ET
+                    {isCancelled ? (
+                      <strong className="text-red-600">Canceled</strong>
+                    ) : (
+                      showTime ? (
+                        <>
+                          {formatTimeET(ev.startAt)}
+                          {ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""} ET
+                        </>
+                      ) : null
+                    )}
                   </span>
+                  {isCancelled && ev.status_note && (
+                    <p className="mt-1 text-sm text-[var(--fg)]/80">{ev.status_note}</p>
+                  )}
                  </dd>
                </div>
 

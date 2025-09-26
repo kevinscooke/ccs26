@@ -12,6 +12,9 @@ export default function EventCard(props: { event?: any; e?: any }) {
   const startTime = formatTimeET(ev.startAt);
   const endTime = ev.endAt ? formatTimeET(ev.endAt) : "";
 
+  const isCancelled = (ev.public_status ?? ev.status) === "CANCELLED";
+  const showTime = ev.show_time ?? true;
+
   return (
     <article className="ccs-card">
       <header className="flex items-start justify-between gap-3">
@@ -42,8 +45,15 @@ export default function EventCard(props: { event?: any; e?: any }) {
       <p className="text-sm text-[var(--fg)]/70 mt-2">
         <Calendar className="inline-block w-4 h-4 mr-2" />
         <span>
-          {startDate} {startTime}
-          {endTime ? ` – ${endTime}` : ""} ET
+          {startDate}{" "}
+          {isCancelled ? (
+            <strong className="text-red-600">Canceled</strong>
+          ) : showTime ? (
+            <>
+              {startTime}
+              {endTime ? ` – ${endTime}` : ""} ET
+            </>
+          ) : null}
         </span>
       </p>
 
