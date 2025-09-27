@@ -32,9 +32,21 @@ async function main() {
   // quick lookup for venue enrichment
   const venuesById = new Map((venues ?? []).map((v) => [v.id, v]));
 
+    // Helper: nice label for public status
+  const labelFor = (ps) =>
+    ps === 'CANCELLED' ? 'Cancelled' :
+    ps === 'POSTPONED' ? 'Postponed' : 'Published';
+
   const events = (eventsExt ?? []).map((e) => {
     const v = e.venue_id ? venuesById.get(e.venue_id) : null;
+
+    // read new columns from RPC (snake_case), default sensible values
+    const public_status = e.public_status ?? 'PUBLISHED';
+    const show_time = (e.show_time ?? true) === true; // coerce to boolean
+    const status_note = e.status_note ?? null;
+
     return {
+      // existing fields (unchanged to avoid breaking downstream consumers)
       id: e.id,
       title: e.title,
       slug: e.slug,
@@ -45,13 +57,25 @@ async function main() {
       createdAt: e.created_at || null,
       updatedAt: e.updated_at || null,
       publishedAt: e.published_at || null,
-      status: e.status,
+      status: e.status,                 // workflow status (PENDING/APPROVED/PUBLISHED/REJECTED)
       isFeatured: e.is_featured,
       price: e.price ?? null,
       type: e.type ?? null,
       size: e.size ?? null,
       isRecurring: e.is_recurring,
       socialLinks: e.social_links ?? [],
+
+      // NEW: public-facing status & helpers
+      public_status,                    // PUBLISHED/CANCELLED/POSTPONED
+      status_label: labelFor(public_status),
+      show_time,                        // boolean
+      status_note,                      // string | null
+
+      // NEW: display-times (null when hidden)
+      start_time_for_display: show_time ? e.start_at : null,
+      end_time_for_display:   show_time ? (e.end_at ?? null) : null,
+
+      // location enrichment (unchanged)
       city: null, // optional: enrich via a City RPC if you have one
       venue: v
         ? {
@@ -62,12 +86,15 @@ async function main() {
             state: v.state || null,
           }
         : null,
+
+      // ids (unchanged)
       seriesId: e.series_id || null,
       cityId: e.city_id || null,
       venueId: e.venue_id || null,
       organizerId: e.organizer_id || null,
     };
   });
+
 
   const outDir = path.join(process.cwd(), "public", "data");
   fs.mkdirSync(outDir, { recursive: true });
@@ -85,27 +112,66 @@ async function main() {
   console.log(`Exported ${events?.length ?? 0} events and ${venues?.length ?? 0} venues.`);
 }
 
+// scripts/export-json.mjs (replace your exportEvents with this)
 async function exportEvents() {
-  const { data, error } = await supabase
-    .from("Event")
-    .select("*"); // include new columns
+  // Call the RPC directly — no .from() after .rpc()
+  const { data, error } = await supabase.rpc('export_events_extended_v2');
+  if (error) {
+    throw new Error(`RPC export_events_extended_v2 failed: ${error.message}`);
+  }
 
-  if (error) throw error;
+  const out = (data ?? []).map((e) => {
+    const public_status = e.public_status ?? 'PUBLISHED';
+    const show_time     = (e.show_time ?? true) === true;
+    const status_note   = e.status_note ?? null;
 
-  const out = (data || []).map((e) => ({
-    id: e.id,
-    title: e.title,
-    slug: e.slug,
-    description: e.description,
-    url: e.url,
-    startAt: e.startAt,
-    endAt: e.endAt,
-    status: e.status,
-    public_status: e.public_status,
-    show_time: e.show_time ?? true,
-    status_note: e.status_note ?? null,
-    // venue, city, etc...
-  }));
+    const labelFor = (ps) =>
+      ps === 'CANCELLED' ? 'Cancelled' :
+      ps === 'POSTPONED' ? 'Postponed' : 'Published';
+
+    return {
+      // existing fields
+      id: e.id,
+      title: e.title,
+      slug: e.slug,
+      description: e.description,
+      url: e.url ?? null,
+      startAt: e.start_at,
+      endAt: e.end_at ?? null,
+      createdAt: e.created_at ?? null,
+      updatedAt: e.updated_at ?? null,
+      publishedAt: e.published_at ?? null,
+      status: e.status,                 // workflow (EventStatus)
+      isFeatured: e.is_featured ?? false,
+      price: e.price ?? null,
+      type: e.type ?? null,
+      size: e.size ?? null,
+      isRecurring: e.is_recurring ?? false,
+
+      // social links: RPC returns jsonb; keep as-is or coerce to []
+      socialLinks: e.social_links ?? [],
+
+      // NEW public-facing fields
+      public_status,
+      status_label: labelFor(public_status),
+      show_time,
+      status_note,
+
+      // NEW display helpers
+      start_time_for_display: show_time ? e.start_at : null,
+      end_time_for_display:   show_time ? (e.end_at ?? null) : null,
+
+      // ids
+      seriesId: e.series_id ?? null,
+      venueId: e.venue_id ?? null,
+      organizerId: e.organizer_id ?? null,
+
+      // optional enriched objects (populate elsewhere if needed)
+      city: null,
+      venue: null,
+    };
+  });
+
 
   fs.writeFileSync("app/data/events.json", JSON.stringify(out, null, 2), "utf8");
 }

@@ -92,6 +92,10 @@ export default function DailyPage() {
         description: e.description ?? e.summary ?? null,
         url: e.url ?? null,
         isFeatured: !!e.isFeatured,
+        // include public-facing status so UI can show "Canceled"
+        public_status: e.public_status ?? null,
+        show_time: typeof e.show_time === "boolean" ? e.show_time : true,
+        status_note: e.status_note ?? null,
         venue: {
           name: e.venue?.name ?? null,
           slug: e.venue?.slug ?? null,
@@ -111,32 +115,30 @@ export default function DailyPage() {
     .map(({ __rawStart, ...keep }) => keep);
 
   return (
-    <Container>
-      <section className="w-full space-y-12 py-6">
-        {/* Top row */}
-        <div className={weeklyStyles.headerRow}>
-          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Daily View", current: true }]} />
-          <div className={weeklyStyles.headerControlsWrap}>
-            <WeeklyControls />
-          </div>
+    <Container className="space-y-12 py-6">
+      {/* Top row */}
+      <div className={weeklyStyles.headerRow}>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Daily View", current: true }]} />
+        <div className={weeklyStyles.headerControlsWrap}>
+          <WeeklyControls />
         </div>
+      </div>
 
-        {/* use shared hero so formatting matches other pages */}
-        <HomeHero
-          title="Daily Car Show List"
-          lead="See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets. Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC."
-          range="September 22, 2025 – September 28, 2025"
-          className="prose lg:prose-lg"
-        />
+      {/* use shared hero so formatting matches other pages */}
+      <HomeHero
+        title="Daily Car Show List"
+        lead="See the complete weekly schedule of Charlotte-area car shows, Cars & Coffee, cruise-ins, and meets. Updated every week with the latest events, venues, and details for car enthusiasts in Charlotte, NC."
+        range="September 22, 2025 – September 28, 2025"
+        className="prose lg:prose-lg"
+      />
 
-        {/* Centered tabs */}
-        <div className={weeklyStyles.tabsWrap}>
-          <WeeklyTabs events={eventsForClient} />
-        </div>
+      {/* Centered tabs */}
+      <div className={weeklyStyles.tabsWrap}>
+        <WeeklyTabs events={eventsForClient} />
+      </div>
 
-        {/* Event list */}
-        <WeeklyList events={eventsForClient} />
-      </section>
+      {/* Event list */}
+      <WeeklyList events={eventsForClient} />
     </Container>
   );
 }
