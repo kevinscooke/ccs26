@@ -58,8 +58,18 @@ export default function PastEventsPage() {
 
         <div className="flex items-center gap-2">
           <Link href="/events/" className="ccs-btn px-3 py-1.5" aria-current="page">List</Link>
-          <Link href="/events/week/" className="ccs-btn px-3 py-1.5">Week</Link>
-          <Link href="/events/day/" className="ccs-btn px-3 py-1.5">Day</Link>
+          <Link
+            href="/weekly-car-show-list-charlotte/"
+            className="ccs-btn px-3 py-1.5"
+          >
+            Week
+          </Link>
+          <Link
+            href="/daily/"
+            className="ccs-btn px-3 py-1.5"
+          >
+            Day
+          </Link>
         </div>
       </div>
 

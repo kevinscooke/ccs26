@@ -306,5 +306,16 @@
     "postal": "28079",
     "created_at": "2025-09-23T11:34:27.255",
     "updated_at": "2025-09-23T11:34:27.255"
+  },
+  {
+    "id": "6419a49f-f8ee-42aa-92c9-cae98559fe27",
+    "name": "Fly High Lexington/Davidson County Executive Airport",
+    "slug": "fly-high-lexington-davidson-county-executive-airport-lexington-nc",
+    "address1": "1673 Aviation Wy",
+    "city": "Lexington",
+    "state": "NC",
+    "postal": "27292",
+    "created_at": "2025-10-01T11:33:37.778",
+    "updated_at": "2025-10-01T11:33:37.778"
   }
 ]

@@ -1615,10 +1615,16 @@
     "start_time_for_display": "2025-10-04T15:00:00",
     "end_time_for_display": "2025-10-04T19:00:00",
     "city": null,
-    "venue": null,
+    "venue": {
+      "id": "6419a49f-f8ee-42aa-92c9-cae98559fe27",
+      "name": "Fly High Lexington/Davidson County Executive Airport",
+      "address1": "1673 Aviation Wy",
+      "city": "Lexington",
+      "state": "NC"
+    },
     "seriesId": null,
     "cityId": null,
-    "venueId": null,
+    "venueId": "6419a49f-f8ee-42aa-92c9-cae98559fe27",
     "organizerId": null
   },
   {
@@ -2294,39 +2300,6 @@
     "organizerId": null
   },
   {
-    "id": "3b1922fb-f8f1-4304-83a7-484fb8004de6",
-    "title": "Southminster Free-for-All Car Show & Craft Fair",
-    "slug": "southminster-car-show-and-craft-fair-2025-11-01",
-    "description": "Southminster’s third annual, free-for-all car show and craft fair—plus a silent auction benefiting Tim Tebow’s Night to Shine. A prom-like celebration for people with special needs in the Gastonia area. Bring the family, stroll the craft vendors, and enjoy a welcoming community event.",
-    "url": "https://www.facebook.com/events/1252889983295431",
-    "startAt": "2025-11-01T13:00:00",
-    "endAt": "2025-11-01T19:00:00",
-    "createdAt": "2025-09-25T21:55:13.485",
-    "updatedAt": "2025-09-25T21:55:13.485",
-    "publishedAt": null,
-    "status": "PUBLISHED",
-    "isFeatured": false,
-    "price": null,
-    "type": "MEET",
-    "size": null,
-    "isRecurring": false,
-    "socialLinks": [
-      "https://www.facebook.com/events/1252889983295431"
-    ],
-    "public_status": "PUBLISHED",
-    "status_label": "Published",
-    "show_time": true,
-    "status_note": null,
-    "start_time_for_display": "2025-11-01T13:00:00",
-    "end_time_for_display": "2025-11-01T19:00:00",
-    "city": null,
-    "venue": null,
-    "seriesId": null,
-    "cityId": null,
-    "venueId": null,
-    "organizerId": null
-  },
-  {
     "id": "125aed1e-b715-4c2f-b0c6-319bd6fbae40",
     "title": "Cars & Coffee Rock Hill",
     "slug": "cars-and-coffee-rock-hill-2025-09-27",
@@ -2398,6 +2371,45 @@
     "seriesId": null,
     "cityId": null,
     "venueId": "e80ab1a4-a58f-4fa6-a073-faa7fddcd140",
+    "organizerId": null
+  },
+  {
+    "id": "3b1922fb-f8f1-4304-83a7-484fb8004de6",
+    "title": "Southminster Free-for-All Car Show & Craft Fair",
+    "slug": "southminster-car-show-and-craft-fair-2025-11-01",
+    "description": "Southminster’s third annual, free-for-all car show and craft fair—plus a silent auction benefiting Tim Tebow’s Night to Shine. A prom-like celebration for people with special needs in the Gastonia area. Bring the family, stroll the craft vendors, and enjoy a welcoming community event.",
+    "url": "https://www.facebook.com/events/1252889983295431",
+    "startAt": "2025-11-01T13:00:00",
+    "endAt": "2025-11-01T19:00:00",
+    "createdAt": "2025-09-25T21:55:13.485",
+    "updatedAt": "2025-09-25T21:55:13.485",
+    "publishedAt": null,
+    "status": "PUBLISHED",
+    "isFeatured": false,
+    "price": null,
+    "type": "MEET",
+    "size": null,
+    "isRecurring": false,
+    "socialLinks": [
+      "https://www.facebook.com/events/1252889983295431"
+    ],
+    "public_status": "PUBLISHED",
+    "status_label": "Published",
+    "show_time": true,
+    "status_note": null,
+    "start_time_for_display": "2025-11-01T13:00:00",
+    "end_time_for_display": "2025-11-01T19:00:00",
+    "city": null,
+    "venue": {
+      "id": "70091cd1-1684-4d1a-bffb-30f8edb3289e",
+      "name": "Southminster Church",
+      "address1": "1401 Hoffman Road",
+      "city": "Gastonia",
+      "state": "NC"
+    },
+    "seriesId": null,
+    "cityId": null,
+    "venueId": "70091cd1-1684-4d1a-bffb-30f8edb3289e",
     "organizerId": null
   }
 ]
