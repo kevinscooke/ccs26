@@ -317,5 +317,38 @@
     "postal": "27292",
     "created_at": "2025-10-01T11:33:37.778",
     "updated_at": "2025-10-01T11:33:37.778"
+  },
+  {
+    "id": "c14a1163-f2cf-4016-b42e-c4c8d5e08e00",
+    "name": "Downtown Mt. Gilead",
+    "slug": "downtown-mt-gilead-nc",
+    "address1": "123 N. Main St.",
+    "city": "Mt. Gilead",
+    "state": "NC",
+    "postal": "27306",
+    "created_at": "2025-10-02T00:59:10.355",
+    "updated_at": "2025-10-02T00:59:10.355"
+  },
+  {
+    "id": "fd057c28-e2d5-40da-b445-73b191c07b2c",
+    "name": "Advantage Place",
+    "slug": "advantage-place-statesville-nc",
+    "address1": "141 Advantage Place",
+    "city": "Statesville",
+    "state": "NC",
+    "postal": "28677",
+    "created_at": "2025-10-02T00:59:10.355",
+    "updated_at": "2025-10-02T00:59:10.355"
+  },
+  {
+    "id": "c18ae0bc-3818-42bd-b549-37256ce9e95d",
+    "name": "The Villager Deli",
+    "slug": "the-villager-deli-pinehurst-nc",
+    "address1": "6 Chinquapin Rd",
+    "city": "Pinehurst",
+    "state": "NC",
+    "postal": "28374",
+    "created_at": "2025-10-02T00:59:10.355",
+    "updated_at": "2025-10-02T00:59:10.355"
   }
 ]
