@@ -394,5 +394,16 @@
     "postal": "28107",
     "created_at": "2025-09-17T00:23:51.711",
     "updated_at": "2025-09-17T00:24:00.855"
+  },
+  {
+    "id": "5323351e-5d75-4324-81ce-1431180d8e6d",
+    "name": "Vix Garage",
+    "slug": "vix-garage-charlotte-nc",
+    "address1": "1710 Industrial Center Cir A",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "28213",
+    "created_at": "2025-10-18T20:39:20.208",
+    "updated_at": "2025-10-18T20:39:20.208"
   }
 ]
