@@ -383,5 +383,16 @@
     "postal": "28273",
     "created_at": "2025-10-18T17:12:11.949",
     "updated_at": "2025-10-18T17:12:11.949"
+  },
+  {
+    "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
+    "name": "OpenTap",
+    "slug": "opentap-charlotte-nc",
+    "address1": "5010 Carmel Ctr Dr",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "28226",
+    "created_at": "2025-10-18T18:30:42.552",
+    "updated_at": "2025-10-18T18:30:42.552"
   }
 ]
