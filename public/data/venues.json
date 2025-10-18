@@ -132,6 +132,17 @@
     "updated_at": "2025-09-16T23:54:50.538"
   },
   {
+    "id": "31da4fd1-f7e8-4313-b704-e44e2d483f99",
+    "name": "Vix Garage",
+    "slug": "vix-garage-charlotte-nc",
+    "address1": "1710 Industrial Center Cir A",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "28213",
+    "created_at": "2025-10-18T21:08:39.608",
+    "updated_at": "2025-10-18T21:08:39.608"
+  },
+  {
     "id": "cmfndetaz0000izdko2bedz6i",
     "name": "Lake Norman Brewery",
     "slug": "lake-norman-brewery-denver",
@@ -394,16 +405,5 @@
     "postal": "28107",
     "created_at": "2025-09-17T00:23:51.711",
     "updated_at": "2025-09-17T00:24:00.855"
-  },
-  {
-    "id": "5323351e-5d75-4324-81ce-1431180d8e6d",
-    "name": "Vix Garage",
-    "slug": "vix-garage-charlotte-nc",
-    "address1": "1710 Industrial Center Cir A",
-    "city": "Charlotte",
-    "state": "NC",
-    "postal": "28213",
-    "created_at": "2025-10-18T20:39:20.208",
-    "updated_at": "2025-10-18T20:39:20.208"
   }
 ]
