@@ -350,5 +350,38 @@
     "postal": "28374",
     "created_at": "2025-10-02T00:59:10.355",
     "updated_at": "2025-10-02T00:59:10.355"
+  },
+  {
+    "id": "f5d5a9ec-8eac-4c94-b8cc-24442022df69",
+    "name": "AutoBarn Classic Cars",
+    "slug": "autobarn-classic-cars-concord-nc",
+    "address1": "325 McGill Ave NW",
+    "city": "Concord",
+    "state": "NC",
+    "postal": "28027",
+    "created_at": "2025-10-18T17:12:11.949",
+    "updated_at": "2025-10-18T17:12:11.949"
+  },
+  {
+    "id": "ca4c29b1-e952-4016-8d61-b93fa3f06698",
+    "name": "River Oaks Community Church",
+    "slug": "river-oaks-community-church-clemmons-nc",
+    "address1": "1855 Lewisville Clemmons Rd",
+    "city": "Clemmons",
+    "state": "NC",
+    "postal": "27012",
+    "created_at": "2025-10-18T17:12:11.949",
+    "updated_at": "2025-10-18T17:12:11.949"
+  },
+  {
+    "id": "978dadf6-4ff5-4a88-8163-6d3598d6898c",
+    "name": "Visible Auto Lab",
+    "slug": "visible-auto-lab-charlotte-nc",
+    "address1": "11101 Park Charlotte Blvd, Suite A",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "28273",
+    "created_at": "2025-10-18T17:12:11.949",
+    "updated_at": "2025-10-18T17:12:11.949"
   }
 ]
