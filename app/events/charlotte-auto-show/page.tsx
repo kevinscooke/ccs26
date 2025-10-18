@@ -98,7 +98,10 @@ export default function CharlotteAutoShowPage() {
             streetAddress: e.venue?.address1 || VENUE_ADDRESS.split(",")[0],
             addressLocality: e.venue?.city || "Charlotte",
             addressRegion: e.venue?.state || "NC",
-            postalCode: e.venue?.postal_code || "28202",
+            postalCode:
+              ((e as any).venue?.postal_code ??
+               (e as any).venue?.postalCode ??
+               "28202"),
             addressCountry: "US",
           },
         },
