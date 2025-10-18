@@ -5,6 +5,50 @@
 import Link from 'next/link';
 import venuesData from '../../data/venues.json';
 import eventsData from '../../data/events.json';
+import EventCard from '@/components/event/EventCard'; // adjust path if needed
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+export const dynamic = 'force-static';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const venues = (venuesData as any[]) || [];
+  const v = venues.find((x) => x.slug === params.slug);
+  const canonical = `https://charlottecarshows.com/venue/${params.slug}/`;
+  if (!v) {
+    return {
+      title: 'Venue not found',
+      alternates: { canonical },
+    };
+  }
+  const city = v.city || 'Charlotte';
+  const state = v.state || 'NC';
+  const name = v.name || 'Venue';
+  const rawDesc =
+    v.description ||
+    `${name} in ${city}, ${state}. Upcoming car show events, address, and map.`;
+  const description = String(rawDesc).replace(/\s+/g, ' ').slice(0, 155);
+  const image = '/images/hero-ccs.jpg';
+  const title = `${name} – ${city}, ${state}`;
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'website',
+      images: [{ url: image }],
+    },
+    twitter: {
+      title,
+      description,
+      card: 'summary_large_image',
+      images: [image],
+    },
+  };
+}
 
 export function generateStaticParams() {
   const venues = (venuesData as any[]) || [];
@@ -15,7 +59,7 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
   const venues = (venuesData as any[]) || [];
   const events = (eventsData as any[]) || [];
   const venue = venues.find((v) => v.slug === params.slug);
-  if (!venue) return <div className="p-4">Venue not found</div>;
+  if (!venue) notFound();
 
   // ET helpers to keep consistent with the rest of the site
   const toET = (x: string | number | Date) =>
@@ -55,6 +99,55 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
 
   const mapQuery = [venue.address1, venue.city, venue.state].filter(Boolean).join(', ') || venue.name || 'Charlotte, NC';
 
+  // --- JSON-LD for Place + ItemList of upcoming events ---
+  const canonical = `https://charlottecarshows.com/venue/${venue.slug}/`;
+  const placeId = `${canonical}#place`;
+  const postal =
+    (venue as any).postal_code ??
+    (venue as any).postal ??
+    (venue as any).postalCode ??
+    undefined;
+  const lat =
+    (venue as any).lat ?? (venue as any).latitude ?? undefined;
+  const lng =
+    (venue as any).lng ?? (venue as any).longitude ?? undefined;
+  const placeLd: any = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    '@id': placeId,
+    name: venue.name,
+    url: canonical,
+    ...(venue.url ? { sameAs: [venue.url] } : {}),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: venue.address1 || undefined,
+      addressLocality: venue.city || undefined,
+      addressRegion: venue.state || undefined,
+      postalCode: postal,
+      addressCountry: 'US',
+    },
+    ...(lat != null && lng != null
+      ? { geo: { '@type': 'GeoCoordinates', latitude: lat, longitude: lng } }
+      : {}),
+  };
+  const itemListLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Upcoming events at ${venue.name}`,
+    itemListElement: upcoming.map((e: any, i: number) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Event',
+        name: e.title,
+        startDate: e.startAt,
+        endDate: e.endAt || e.startAt,
+        url: `https://charlottecarshows.com/events/${e.slug}/`,
+        location: { '@id': placeId },
+      },
+    })),
+  };
+
   return (
     <main className="max-w-6xl mx-auto p-4 space-y-6">
       <header className="space-y-2">
@@ -77,29 +170,7 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
           ) : (
             <div className="space-y-4">
               {upcoming.map((e: any) => (
-                <article key={e.id} className="ccs-card">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-semibold truncate">
-                        <Link href={`/events/${e.slug}`} className="hover:underline">
-                          {e.title}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-zinc-500 mt-1">{fmt.format(new Date(e.startAt))}</p>
-                    </div>
-
-                    <div className="flex flex-col items-end gap-2 text-sm">
-                      {e.isFeatured && <span className="ccs-badge">Featured</span>}
-                      <Link
-                        href={`/events/${e.slug}`}
-                        aria-label={`View details for ${e.title}`}
-                        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 text-white text-sm font-medium px-3 py-1.5 rounded-md"
-                      >
-                        Event Details
-                      </Link>
-                    </div>
-                  </div>
-                </article>
+                <EventCard key={e.id} e={e} />
               ))}
             </div>
           )}
@@ -107,31 +178,11 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
           {/* NEW: Past events section */}
           <h2 className="text-2xl font-semibold mt-10 mb-4">Past events at {venue.name}</h2>
           {past.length === 0 ? (
-            <p className="text-zinc-500">No past events listed for this venue.</p>
-          ) : (
-            <div className="space-y-4">
+             <p className="text-zinc-500">No past events listed for this venue.</p>
+           ) : (
+             <div className="space-y-4">
               {past.map((e: any) => (
-                <article key={e.id} className="ccs-card">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-semibold truncate">
-                        <Link href={`/events/${e.slug}`} className="hover:underline">
-                          {e.title}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-zinc-500 mt-1">{fmt.format(new Date(e.startAt))}</p>
-                    </div>
-                    <div className="flex flex-col items-end gap-2 text-sm">
-                      <Link
-                        href={`/events/${e.slug}`}
-                        aria-label={`View details for ${e.title}`}
-                        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 text-white text-sm font-medium px-3 py-1.5 rounded-md"
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  </div>
-                </article>
+                <EventCard key={e.id} e={e} />
               ))}
             </div>
           )}
@@ -172,6 +223,10 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
 `
           }}
         />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeLd) }} />
+      {upcoming.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
+      )}
     </main>
   );
 }
