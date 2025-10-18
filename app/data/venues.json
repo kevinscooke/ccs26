@@ -132,17 +132,6 @@
     "updated_at": "2025-09-16T23:54:50.538"
   },
   {
-    "id": "cmfn8o61r000011ymmqyef2e3",
-    "name": "Charlotte Motor Speedway",
-    "slug": "charlotte-motor-speedway-concord",
-    "address1": "5555 Concord Pkwy S",
-    "city": "Concord",
-    "state": "NC",
-    "postal": "28107",
-    "created_at": "2025-09-17T00:23:51.711",
-    "updated_at": "2025-09-17T00:24:00.855"
-  },
-  {
     "id": "cmfndetaz0000izdko2bedz6i",
     "name": "Lake Norman Brewery",
     "slug": "lake-norman-brewery-denver",
@@ -196,17 +185,6 @@
     "postal": "",
     "created_at": "2025-09-17T02:50:59.04",
     "updated_at": "2025-09-17T02:50:24.472"
-  },
-  {
-    "id": "cmfndxz8y0006127pprqeammk",
-    "name": "Hendrick Porsche",
-    "slug": "hendrick-porsche-charlotte",
-    "address1": "6800 E Independence Blvd",
-    "city": "Charlotte",
-    "state": "NC",
-    "postal": "",
-    "created_at": "2025-09-17T02:51:27.538",
-    "updated_at": "2025-09-17T02:51:11.756"
   },
   {
     "id": "cmfndfjk30001izdk3ubrkl0s",
@@ -394,5 +372,27 @@
     "postal": "28226",
     "created_at": "2025-10-18T18:30:42.552",
     "updated_at": "2025-10-18T18:30:42.552"
+  },
+  {
+    "id": "cmfndxz8y0006127pprqeammk",
+    "name": "Hendrick Porsche",
+    "slug": "hendrick-porsche",
+    "address1": "6800 E Independence Blvd",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "",
+    "created_at": "2025-09-17T02:51:27.538",
+    "updated_at": "2025-09-17T02:51:11.756"
+  },
+  {
+    "id": "cmfn8o61r000011ymmqyef2e3",
+    "name": "Charlotte Motor Speedway",
+    "slug": "charlotte-motor-speedway",
+    "address1": "5555 Concord Pkwy S",
+    "city": "Concord",
+    "state": "NC",
+    "postal": "28107",
+    "created_at": "2025-09-17T00:23:51.711",
+    "updated_at": "2025-09-17T00:24:00.855"
   }
 ]
