@@ -81,3 +81,10 @@
   status = 301
   force = false
   conditions = { Country = [] }
+
+# Marketing page redirect for the Auto Show
+[[redirects]]
+  from = "/event/charlotte-auto-show-2024/"
+  to = "/events/charlotte-auto-show/"
+  status = 301
+  force = true
