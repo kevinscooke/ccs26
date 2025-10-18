@@ -93,6 +93,16 @@ function isValidUrl(u: any): u is string {
   return typeof u === "string" && /^\s*https?:\/\//i.test(u.trim());
 }
 
+// simple local slugify fallback
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .trim()
+    .replace(/[\s/]+/g, "-")
+    .replace(/[^a-z0-9-]+/g, "")
+    .replace(/-+/g, "-");
+}
+
 export default async function EventPage({ params }: { params: { slug: string } }) {
   const events = (eventsData as any[]) || [];
   const ev = events.find((e) => e.slug === params.slug && e.status === "PUBLISHED");
@@ -139,7 +149,15 @@ export default async function EventPage({ params }: { params: { slug: string } }
   const isSponsored = !!ev.isSponsored;
   const parkingInfo = ev.venue?.parking || ev.parking || "Unknown";
   const socialLinks = Array.isArray(ev.social) ? ev.social : ev.social ? [ev.social] : [];
-  const venueSlug = ev.venue?.slug || null;
+  const venueList = (venuesData as any[]) || [];
+  const venueById = ev.venue?.id
+    ? venueList.find((v) => String(v.id) === String(ev.venue?.id))
+    : null;
+  const venueSlug =
+    ev.venue?.slug ??
+    venueById?.slug ??
+    (ev.venue?.name ? slugify(ev.venue.name) : null) ??
+    null;
 
   const idx = events.findIndex((e) => e.slug === params.slug);
   const prevEvent = idx > 0 ? events[idx - 1] : null;
@@ -423,10 +441,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
                 <div className="flex-1">
                   {venueSlug ? (
                     <h3 className="font-semibold text-[var(--fg)]">
-                      <Link
-                        href={`/venues/${venueSlug}/`}
-                        className="hover:underline"
-                      >
+                      <Link href={`/venue/${venueSlug}/`} className="hover:underline">
                         {ev.venue.name}
                       </Link>
                     </h3>
@@ -436,7 +451,13 @@ export default async function EventPage({ params }: { params: { slug: string } }
                     </h3>
                   )}
                   <p className="text-[var(--fg)]/70 mt-1">
-                    {fmtAddress(ev.venue ?? undefined)}
+                    {venueSlug ? (
+                      <Link href={`/venue/${venueSlug}/`} className="hover:underline">
+                        {fmtAddress(ev.venue ?? undefined)}
+                      </Link>
+                    ) : (
+                      fmtAddress(ev.venue ?? undefined)
+                    )}
                   </p>
                 </div>
               </div>
