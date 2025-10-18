@@ -1,4 +1,3 @@
-
 import eventsData from "../data/events.json";
 import venuesData from "../data/venues.json";
 
@@ -34,7 +33,8 @@ export async function GET() {
     .map((v) => {
       const updated = v.updated_at || v.updatedAt || fallbackLastmod;
       const lastmod = new Date(updated || fallbackLastmod).toISOString();
-      return `<url><loc>${base}/venues/${v.slug}</loc><changefreq>weekly</changefreq><lastmod>${lastmod}</lastmod></url>`;
+      // FIX: plural -> singular
+      return `<url><loc>${base}/venue/${v.slug}</loc><changefreq>weekly</changefreq><lastmod>${lastmod}</lastmod></url>`;
     })
     .join('');
 
