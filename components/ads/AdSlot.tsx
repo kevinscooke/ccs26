@@ -24,7 +24,7 @@ export default function AdSlot({
   format = "auto",
   fullWidthResponsive = true,
 }: AdSlotProps) {
-  const insRef = useRef<HTMLInsElement | null>(null);
+  const insRef = useRef<HTMLModElement | null>(null); // was HTMLInsElement
   const pushedRef = useRef(false);
 
   useEffect(() => {
