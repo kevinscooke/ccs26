@@ -14,8 +14,8 @@ type AdSlotProps = {
   className?: string;
   style?: React.CSSProperties;
   format?: string; // e.g. "auto"
-  fullWidthResponsive?: boolean; // accept boolean for ergonomics
-  sizes?: { media: string; width: number; height: number }[]; // pick one size by media query
+  fullWidthResponsive?: boolean; // accept boolean
+  sizes?: { media: string; width: number; height: number }[]; // choose fixed size by media
 };
 
 export default function AdSlot({
@@ -32,7 +32,7 @@ export default function AdSlot({
   const [ready, setReady] = useState(false);
   const [fixedSize, setFixedSize] = useState<{ width: number; height: number } | null>(null);
 
-  // Resolve size once on mount if sizes[] provided
+  // Resolve fixed size (once) when sizes[] provided
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -54,11 +54,10 @@ export default function AdSlot({
       }
       setFixedSize(chosen);
     }
-
     setReady(true);
   }, [sizes]);
 
-  // Push when ready (sizes chosen) and near viewport
+  // Push when ready and near viewport, once
   useEffect(() => {
     if (!ready) return;
 
@@ -77,7 +76,7 @@ export default function AdSlot({
         window.adsbygoogle.push({});
         pushedRef.current = true;
       } catch {
-        // benign repeats are ignored
+        // ignore benign repeat/empty errors
       }
     };
 
@@ -106,13 +105,13 @@ export default function AdSlot({
   }, [ready, slot]);
 
   const mergedStyle: React.CSSProperties = {
-    display: "inline-block",            // was "block" to reduce whitespace
-    lineHeight: 0,                      // remove baseline gap
+    display: "inline-block",
+    lineHeight: 0,
     ...(fixedSize ? { width: fixedSize.width, height: fixedSize.height } : {}),
     ...(style || {}),
   };
 
-  // If sizes[] provided (fixed), omit responsive data attrs
+  // If sizes[] provided (fixed), omit responsive attrs
   const dataProps =
     sizes || fullWidthResponsive === false
       ? {}
