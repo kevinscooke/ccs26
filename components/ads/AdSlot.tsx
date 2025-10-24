@@ -106,7 +106,8 @@ export default function AdSlot({
   }, [ready, slot]);
 
   const mergedStyle: React.CSSProperties = {
-    display: "block",
+    display: "inline-block",            // was "block" to reduce whitespace
+    lineHeight: 0,                      // remove baseline gap
     ...(fixedSize ? { width: fixedSize.width, height: fixedSize.height } : {}),
     ...(style || {}),
   };

@@ -89,7 +89,7 @@ export default function MarketingHomePage() {
       <div className="space-y-12 py-6 lg:space-y-10 lg:py-6">
         {/* Row 1: Skinny Landscape Ad */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2">
+          <div className="flex justify-center">
             <AdSlot
               slot="7744630827"
               sizes={[
@@ -320,7 +320,7 @@ export default function MarketingHomePage() {
 
         {/* Bottom ad slot */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2">
+          <div className="flex justify-center">
             <AdSlot
               slot="7335717776"
               sizes={[

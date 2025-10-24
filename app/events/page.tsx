@@ -84,7 +84,7 @@ export default async function EventsAllPage() {
     <Container>
       <section className="w-full space-y-8 lg:space-y-10">
         <section>
-          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+          <div className="flex items-center justify-center">
             <AdSlot
               slot="7744630827"
               sizes={[
@@ -168,7 +168,7 @@ export default async function EventsAllPage() {
 
         {/* Bottom leaderboard ad */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+          <div className="flex items-center justify-center">
             <AdSlot
               slot="7335717776"
               sizes={[

@@ -175,7 +175,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
       <div className="w-full space-y-6 py-6 lg:space-y-8">
         {/* Top leaderboard ad */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px]">
+          <div className="flex items-center justify-center">
             <AdSlot
               slot="7744630827"
               sizes={[
@@ -531,7 +531,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
         {/* Bottom ad slot */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px]">
+          <div className="flex items-center justify-center">
             <AdSlot
               slot="7335717776"
               sizes={[
