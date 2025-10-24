@@ -156,9 +156,9 @@ export default async function EventsAllPage() {
           </div>
 
           <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
-            <div className="flex items-center justify-center rounded-lg bg-white px-2 py-2 min-h-[280px] lg:min-h-[600px]">
+            <div className="flex items-center justify-center">
               <AdSlot
-                slot="7335717776" // consider using a dedicated skyscraper unit ID
+                slot="7335717776"
                 sizes={[
                   { media: "(min-width: 1024px)", width: 300, height: 600 }, // desktop skyscraper
                   { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile fallback
