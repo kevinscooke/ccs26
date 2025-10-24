@@ -1,7 +1,7 @@
 // components/ads/AdSlot.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -26,39 +26,46 @@ export default function AdSlot({
   fullWidthResponsive = true,
   sizes,
 }: AdSlotProps) {
-  const insRef = useRef<HTMLModElement | null>(null); // was HTMLInsElement
+  const insRef = useRef<HTMLElement | null>(null);
   const pushedRef = useRef(false);
-  const sizeRef = useRef<{ width: number; height: number } | null>(null);
 
+  const [ready, setReady] = useState(false);
+  const [fixedSize, setFixedSize] = useState<{ width: number; height: number } | null>(null);
+
+  // Resolve size once on mount if sizes[] provided
   useEffect(() => {
-    // Resolve size once on mount if a sizes map is provided
-    if (typeof window !== "undefined" && Array.isArray(sizes) && sizes.length) {
+    if (typeof window === "undefined") return;
+
+    if (Array.isArray(sizes) && sizes.length) {
+      let chosen: { width: number; height: number } | null = null;
       for (const s of sizes) {
         try {
           if (window.matchMedia(s.media).matches) {
-            sizeRef.current = { width: s.width, height: s.height };
+            chosen = { width: s.width, height: s.height };
             break;
           }
-        } catch {}
+        } catch {
+          // ignore
+        }
       }
-      // Fallback to last entry if none matched
-      if (!sizeRef.current) {
+      if (!chosen) {
         const last = sizes[sizes.length - 1];
-        sizeRef.current = { width: last.width, height: last.height };
+        chosen = { width: last.width, height: last.height };
       }
+      setFixedSize(chosen);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
+    setReady(true);
+  }, [sizes]);
+
+  // Push when ready (sizes chosen) and near viewport
   useEffect(() => {
+    if (!ready) return;
+
     const el = insRef.current as any;
     if (!el) return;
 
-    // If using sizes, ensure we've chosen one before pushing
-    if (sizes && !sizeRef.current) return;
-
-    const alreadyLoaded =
-      el.getAttribute?.("data-adsbygoogle-status") === "done";
+    const alreadyLoaded = el.getAttribute?.("data-adsbygoogle-status") === "done";
 
     const maybePush = () => {
       if (pushedRef.current || alreadyLoaded) {
@@ -70,7 +77,7 @@ export default function AdSlot({
         window.adsbygoogle.push({});
         pushedRef.current = true;
       } catch {
-        // ignore benign repeat push errors
+        // benign repeats are ignored
       }
     };
 
@@ -81,13 +88,14 @@ export default function AdSlot({
           if (entries[0]?.isIntersecting) {
             maybePush();
             observer?.disconnect();
+            observer = null;
           }
         },
         { rootMargin: "300px 0px" }
       );
       observer.observe(el);
     } catch {
-      setTimeout(maybePush, 1000);
+      setTimeout(maybePush, 500);
     }
 
     const t = setTimeout(maybePush, 4000);
@@ -95,17 +103,15 @@ export default function AdSlot({
       observer?.disconnect();
       clearTimeout(t);
     };
-  }, [slot, sizes]);
+  }, [ready, slot]);
 
-  // Build style with optional fixed size from sizes[]
-  const fixedSize = sizeRef.current;
   const mergedStyle: React.CSSProperties = {
     display: "block",
     ...(fixedSize ? { width: fixedSize.width, height: fixedSize.height } : {}),
     ...(style || {}),
   };
 
-  // If sizes[] provided, force fixed-size mode (omit responsive data attrs)
+  // If sizes[] provided (fixed), omit responsive data attrs
   const dataProps =
     sizes || fullWidthResponsive === false
       ? {}
