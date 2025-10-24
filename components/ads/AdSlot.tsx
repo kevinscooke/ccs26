@@ -13,8 +13,8 @@ type AdSlotProps = {
   slot: string; // AdSense ad slot id
   className?: string;
   style?: React.CSSProperties;
-  format?: string; // "auto"
-  fullWidthResponsive?: "true" | "false";
+  format?: string; // e.g. "auto"
+  fullWidthResponsive?: boolean; // accept boolean for ergonomics
 };
 
 export default function AdSlot({
@@ -22,9 +22,9 @@ export default function AdSlot({
   className,
   style,
   format = "auto",
-  fullWidthResponsive = "true",
+  fullWidthResponsive = true,
 }: AdSlotProps) {
-  const insRef = useRef<HTMLModElement | null>(null);
+  const insRef = useRef<HTMLInsElement | null>(null);
   const pushedRef = useRef(false);
 
   useEffect(() => {
@@ -41,28 +41,19 @@ export default function AdSlot({
         return;
       }
       try {
-        if (typeof window !== "undefined") {
-          window.adsbygoogle = window.adsbygoogle || [];
-          // Push only once per slot instance
-          window.adsbygoogle.push({});
-          pushedRef.current = true;
-        }
-      } catch (err: any) {
-        // Ignore benign "All 'ins' elements..." errors when nothing left to fill
-        const msg = String(err?.message || err || "");
-        if (!msg.includes("All 'ins' elements")) {
-          // Optional: console.warn("[AdSlot]", msg);
-        }
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+        pushedRef.current = true;
+      } catch (err) {
+        // ignore benign repeat push errors
       }
     };
 
-    // Push when near viewport (reduces errors and improves LCP)
     let observer: IntersectionObserver | null = null;
     try {
       observer = new IntersectionObserver(
         (entries) => {
-          const entry = entries[0];
-          if (entry?.isIntersecting) {
+          if (entries[0]?.isIntersecting) {
             maybePush();
             observer?.disconnect();
             observer = null;
@@ -72,28 +63,25 @@ export default function AdSlot({
       );
       observer.observe(el);
     } catch {
-      // Fallback if IntersectionObserver unavailable
       setTimeout(maybePush, 1000);
     }
 
-    // Safety timeout in case observer never fires
     const t = setTimeout(maybePush, 4000);
-
     return () => {
-      if (observer) observer.disconnect();
+      observer?.disconnect();
       clearTimeout(t);
     };
   }, [slot]);
 
   return (
     <ins
-      ref={insRef as any}
+      ref={insRef}
       className={`adsbygoogle ${className ?? ""}`}
       style={{ display: "block", ...(style || {}) }}
       data-ad-client="ca-pub-1514406406537630"
       data-ad-slot={slot}
       data-ad-format={format}
-      data-full-width-responsive={fullWidthResponsive}
+      data-full-width-responsive={fullWidthResponsive ? "true" : "false"}
     />
   );
 }

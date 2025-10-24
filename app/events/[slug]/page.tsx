@@ -176,10 +176,11 @@ export default async function EventPage({ params }: { params: { slug: string } }
         {/* Top leaderboard ad */}
         <section>
           <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
-            <AdSlot
+           <AdSlot
               slot="7744630827"
-              // 320x100 mobile / 728x90 desktop via responsive
-              style={{ minHeight: 90 }}
+              fullWidthResponsive={false} // disable full-width dynamic resizing
+              style={{ display: "inline-block" }}
+              className="w-full h-[60px] md:h-[90px]" // short on mobile, taller on desktop
             />
           </div>
         </section>
