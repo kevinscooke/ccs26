@@ -8,8 +8,8 @@ import Container from '@/components/Container';
 import { Calendar } from "lucide-react";
 import { formatDateET, formatTimeET, toEtDate } from "@/lib/et";
 import { notFound } from "next/navigation";
-
-export const dynamic = "force-static";
+import dynamic from "next/dynamic";
+const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 // --- Metadata per event (title/desc/canonical/OG/Twitter) ---
 export async function generateMetadata({
@@ -172,367 +172,371 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
   return (
     <Container>
-      <div className="w-full space-y-8 py-6">
-
-  {/* JSON-LD blocks */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
-
-  <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60 mb-0">
-        <ol className="flex items-center gap-2 flex-wrap">
-          <li>
-            <Link href="/" className="hover:underline text-[var(--fg)]">
-              Home
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link href="/events/" className="hover:underline text-[var(--fg)]">
-              All Events
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li
-            aria-current="page"
-            className="text-[var(--fg)]/80 truncate max-w-[60ch]"
-          >
-            {ev.title}
-          </li>
-        </ol>
-      </nav>
-
-  <header className="text-center space-y-2 mt-1">
-        {ev.isFeatured && (
-          <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
-            Featured Event
+      <div className="w-full space-y-6 py-6 lg:space-y-8">
+        {/* Top leaderboard ad */}
+        <section>
+          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+            <AdSlot
+              slot="7335717776"
+              // 320x100 mobile / 728x90 desktop via responsive
+              style={{ minHeight: 90 }}
+            />
           </div>
-        )}
-        <h1
-          className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--fg)]"
-          style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
-        >
-          {ev.title}
-        </h1>
-        <div className="text-xl text-[var(--fg)]/70 flex flex-col sm:flex-row items-center justify-center gap-2">
-          <span className="flex items-center gap-2 text-base md:text-xl">
-            <span>
-              {formatDateET(ev.startAt)}{" "}
-              {isCancelled ? (
-                <strong className="text-red-600">Canceled</strong>
-              ) : (
-                showTime ? (
-                  <>
-                    {formatTimeET(ev.startAt)}
-                    {ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""} ET
-                  </>
-                ) : null
-              )}
-            </span>
-          </span>
-          {ev.city?.name && (
-            <span className="flex items-center gap-2 text-base md:text-xl">
-              <span className="text-[var(--fg)]/40 md:inline hidden">•</span>
-              <span>{ev.city.name}</span>
-            </span>
-          )}
-        </div>
-        {isCancelled && ev.status_note && (
-          <div className="text-sm text-[var(--fg)]/80 mt-2">{ev.status_note}</div>
-        )}
-      </header>
-
-  <div className="flex justify-center gap-3 mt-1">
-        {siteUrl && (
-          <a
-            className="ccs-btn-primary px-4 py-2 text-base"
-            href={siteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Visit Official Site
-          </a>
-        )}
-         <a
-           className="ccs-btn px-4 py-2 text-base"
-           href={mapsHref}
-           target="_blank"
-           rel="noopener noreferrer"
-         >
-           Get Directions
-         </a>
-       </div>
-
-      {ev.description && (
-        <section className="ccs-card w-full">
-          <h2
-            className="text-2xl font-semibold text-[var(--fg)] mb-4"
-            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
-          >
-            About this event
-          </h2>
-          <p className="text-lg text-[var(--fg)]/80 leading-relaxed">
-            {ev.description}
-          </p>
         </section>
-      )}
 
-  <section className="grid gap-6 md:grid-cols-2">
-  <div className="ccs-card w-full">
-          <h2
-            className="text-2xl font-semibold text-[var(--fg)] mb-6"
-            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
-          >
-            Event Details
-          </h2>
-          <dl className="space-y-4">
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">📅</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Date &amp; Time
-                </span>
-                  <span className="block text-[var(--fg)] mt-1">
-                    {formatDateET(ev.startAt)}
-                    <br />
+        {/* JSON-LD blocks */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        />
+
+        <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link href="/" className="text-[var(--fg)] hover:underline">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link href="/events/" className="text-[var(--fg)] hover:underline">
+                All Events
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="max-w-[60ch] truncate text-[var(--fg)]/80">
+              {ev.title}
+            </li>
+          </ol>
+        </nav>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="space-y-6 lg:col-span-8">
+            <section className="ccs-card space-y-4">
+              {ev.isFeatured && (
+                <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  Featured Event
+                </div>
+              )}
+
+              <header className="space-y-2 text-left">
+                <h1
+                  className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[40px]"
+                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                >
+                  {ev.title}
+                </h1>
+
+                <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--fg)]/70 lg:text-base">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-4 w-4 text-[var(--fg)]/40" />
+                    {formatDateET(ev.startAt)}{" "}
                     {isCancelled ? (
                       <strong className="text-red-600">Canceled</strong>
                     ) : (
-                      showTime ? (
+                      showTime && (
                         <>
                           {formatTimeET(ev.startAt)}
                           {ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""} ET
                         </>
-                      ) : null
+                      )
                     )}
                   </span>
-                  {isCancelled && ev.status_note && (
-                    <p className="mt-1 text-sm text-[var(--fg)]/80">{ev.status_note}</p>
+                  {ev.city?.name && (
+                    <>
+                      <span className="hidden text-[var(--fg)]/40 lg:inline">•</span>
+                      <span>{ev.city.name}</span>
+                    </>
                   )}
-                 </dd>
-               </div>
-
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">🎟️</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Admission
-                </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {isPaid ? "Paid" : "Free"}
-                </span>
-              </dd>
-            </div>
-
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">👥</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Estimated Size
-                </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {size ? `${size}+` : "Unknown"}
-                </span>
-              </dd>
-            </div>
-
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">🔁</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Event Frequency
-                </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {isRecurring ? "Recurring" : "One-time"}
-                </span>
-              </dd>
-            </div>
-
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">⭐</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Featured/Sponsored
-                </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {ev.isFeatured
-                    ? "Featured"
-                    : isSponsored
-                    ? "Sponsored"
-                    : "Standard"}
-                </span>
-              </dd>
-            </div>
-
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">🅿️</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Parking
-                </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {parkingInfo}
-                </span>
-              </dd>
-            </div>
-
-            <div className="flex gap-3">
-              <dt className="w-8" aria-hidden="true">🔗</dt>
-              <dd className="flex-1">
-                <span className="block text-sm text-[var(--fg)]/60">
-                  Social / Website
-                </span>
-                <span className="block text-[var(--fg)] mt-1">
-                  {siteUrl ? (
-                    <a href={siteUrl} className="underline" target="_blank" rel="noopener noreferrer">Official Site</a>
-                  ) : (
-                    "-"
-                  )}
-                   {socialLinks.length > 0 &&
-                     socialLinks.map((link: string, i: number) => (
-                       <span key={i} className="ml-2">
-                         <a
-                           href={link}
-                           className="underline"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                         >
-                           Social
-                         </a>
-                       </span>
-                     ))}
-                 </span>
-               </dd>
-             </div>
-
-            {ev.type && (
-              <div className="flex gap-3">
-                <dt className="w-8" aria-hidden="true">🏁</dt>
-                <dd className="flex-1">
-                  <span className="block text-sm text-[var(--fg)]/60">
-                    Event Type
-                  </span>
-                  <span className="block text-[var(--fg)] mt-1">
-                    {String(ev.type).replaceAll("_", " ")}
-                  </span>
-                </dd>
-              </div>
-            )}
-          </dl>
-        </div>
-
-  <div className="ccs-card w-full">
-          <h2
-            className="text-2xl font-semibold text-[var(--fg)] mb-6"
-            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
-          >
-            Location
-          </h2>
-
-          {ev.venue ? (
-            <div className="space-y-6">
-              <div className="flex gap-3">
-                <div className="w-8" aria-hidden="true">📍</div>
-                <div className="flex-1">
-                  {venueSlug ? (
-                    <h3 className="font-semibold text-[var(--fg)]">
-                      <Link href={`/venue/${venueSlug}/`} className="hover:underline">
-                        {ev.venue.name}
-                      </Link>
-                    </h3>
-                  ) : (
-                    <h3 className="font-semibold text-[var(--fg)]">
-                      {ev.venue.name}
-                    </h3>
-                  )}
-                  <p className="text-[var(--fg)]/70 mt-1">
-                    {venueSlug ? (
-                      <Link href={`/venue/${venueSlug}/`} className="hover:underline">
-                        {fmtAddress(ev.venue ?? undefined)}
-                      </Link>
-                    ) : (
-                      fmtAddress(ev.venue ?? undefined)
-                    )}
-                  </p>
                 </div>
+
+                {isCancelled && ev.status_note && (
+                  <p className="text-sm text-[var(--fg)]/70">{ev.status_note}</p>
+                )}
+              </header>
+
+              {ev.description && (
+                <p className="text-base leading-relaxed text-[var(--fg)]/80">
+                  {ev.description}
+                </p>
+              )}
+
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                {siteUrl && (
+                  <a
+                    className="ccs-btn-primary px-4 py-2 text-sm lg:text-base"
+                    href={siteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Visit official site
+                  </a>
+                )}
+                <a
+                  className="ccs-btn px-4 py-2 text-sm lg:text-base"
+                  href={mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get directions
+                </a>
+              </div>
+            </section>
+
+            <section className="grid gap-6 lg:grid-cols-2">
+              <div className="ccs-card space-y-5">
+                <h2
+                  className="text-2xl font-semibold text-[var(--fg)]"
+                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                >
+                  Location
+                </h2>
+                {ev.venue ? (
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <div className="w-8" aria-hidden="true">
+                        📍
+                      </div>
+                      <div className="flex-1">
+                        {venueSlug ? (
+                          <h3 className="font-semibold text-[var(--fg)]">
+                            <Link href={`/venue/${venueSlug}/`} className="hover:underline">
+                              {ev.venue.name}
+                            </Link>
+                          </h3>
+                        ) : (
+                          <h3 className="font-semibold text-[var(--fg)]">{ev.venue.name}</h3>
+                        )}
+                        <p className="mt-1 text-[var(--fg)]/70">
+                          {venueSlug ? (
+                            <Link href={`/venue/${venueSlug}/`} className="hover:underline">
+                              {fmtAddress(ev.venue ?? undefined)}
+                            </Link>
+                          ) : (
+                            fmtAddress(ev.venue ?? undefined)
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="aspect-[16/9] overflow-hidden rounded-xl border border-zinc-200">
+                      <iframe
+                        title="Event Location Map"
+                        width="100%"
+                        height="100%"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+                      />
+                    </div>
+                    <p className="text-xs text-[var(--fg)]/60">
+                      Map centers on the venue address—confirm with the organizer before traveling.
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-[var(--fg)]/70">Venue details will be announced soon.</p>
+                )}
               </div>
 
-              <div className="aspect-[16/9] overflow-hidden rounded-xl border border-zinc-200">
-                <iframe
-                  title="Event Location Map"
-                  width="100%"
-                  height="100%"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(
-                    mapQuery
-                  )}&output=embed`}
-                />
+              <div className="ccs-card space-y-5">
+                <h2
+                  className="text-2xl font-semibold text-[var(--fg)]"
+                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                >
+                  Event details
+                </h2>
+                <dl className="space-y-4 text-sm text-[var(--fg)]">
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      📅
+                    </dt>
+                    <dd className="flex-1 space-y-1">
+                      <span className="text-[var(--fg)]/60">
+                        Date &amp; time:
+                      </span>
+                      <span>
+                        {formatDateET(ev.startAt)}
+                        <br />
+                        {isCancelled ? (
+                          <strong className="text-red-600">Canceled</strong>
+                        ) : (
+                          showTime &&
+                          `${formatTimeET(ev.startAt)}${
+                            ev.endAt ? ` – ${formatTimeET(ev.endAt)}` : ""
+                          } ET`
+                        )}
+                      </span>
+                      {isCancelled && ev.status_note && (
+                        <p className="text-[var(--fg)]/70">{ev.status_note}</p>
+                      )}
+                    </dd>
+                  </div>
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      🎟️
+                    </dt>
+                    <dd className="flex-1">
+                      <span className="text-[var(--fg)]/60">
+                        Admission:
+                      </span>{" "}
+                      <span>{isPaid ? "Paid" : "Free"}</span>
+                    </dd>
+                  </div>
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      👥
+                    </dt>
+                    <dd className="flex-1">
+                      <span className="text-[var(--fg)]/60">
+                        Estimated size:
+                      </span>{" "}
+                      <span>{size ? `${size}+` : "Unknown"}</span>
+                    </dd>
+                  </div>
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      🔁
+                    </dt>
+                    <dd className="flex-1">
+                      <span className="text-[var(--fg)]/60">
+                        Event frequency:
+                      </span>{" "}
+                      <span>{isRecurring ? "Recurring" : "One-time"}</span>
+                    </dd>
+                  </div>
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      ⭐
+                    </dt>
+                    <dd className="flex-1">
+                      <span className="text-[var(--fg)]/60">
+                        Featured / sponsored:
+                      </span>{" "}
+                      <span>
+                        {ev.isFeatured ? "Featured" : isSponsored ? "Sponsored" : "Standard"}
+                      </span>
+                    </dd>
+                  </div>
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      🅿️
+                    </dt>
+                    <dd className="flex-1">
+                      <span className="text-[var(--fg)]/60">
+                        Parking:
+                      </span>{" "}
+                      <span>{parkingInfo}</span>
+                    </dd>
+                  </div>
+                  <div className="flex gap-3">
+                    <dt className="w-8" aria-hidden="true">
+                      🔗
+                    </dt>
+                    <dd className="flex-1 space-y-1">
+                      <span className="text-[var(--fg)]/60">
+                        Social / website:
+                      </span>
+                      <span className="flex flex-wrap gap-2">
+                        {siteUrl ? (
+                          <a
+                            href={siteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline"
+                          >
+                            Official site
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                        {socialLinks.map((link: string, i: number) => (
+                          <a
+                            key={i}
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline"
+                          >
+                            Social
+                          </a>
+                        ))}
+                      </span>
+                    </dd>
+                  </div>
+                  {ev.type && (
+                    <div className="flex gap-3">
+                      <dt className="w-8" aria-hidden="true">
+                        🏁
+                      </dt>
+                      <dd className="flex-1">
+                        <span className="text-[var(--fg)]/60">
+                          Event type:
+                        </span>{" "}
+                        <span>{String(ev.type).replaceAll("_", " ")}</span>
+                      </dd>
+                    </div>
+                  )}
+                </dl>
               </div>
-              <p className="text-sm text-[var(--fg)]/60">
-                Map centers on the venue address. Always check the event’s official link before traveling.
-              </p>
+            </section>
+
+            {(prev || next) && (
+              <nav className="ccs-card flex items-center justify-between text-sm">
+                <div>
+                  {prev ? (
+                    <Link
+                      className="group flex items-center gap-2 ccs-btn px-4 py-2"
+                      href={`/events/${prev.slug}`}
+                    >
+                      <span className="transition-transform group-hover:-translate-x-1">←</span>
+                      <span>{prev.title}</span>
+                    </Link>
+                  ) : (
+                    <span className="px-4 text-[var(--fg)]/40">Start of list</span>
+                  )}
+                </div>
+                <div>
+                  {next ? (
+                    <Link
+                      className="group flex items-center gap-2 ccs-btn px-4 py-2"
+                      href={`/events/${next.slug}`}
+                    >
+                      <span>{next.title}</span>
+                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                  ) : (
+                    <span className="px-4 text-[var(--fg)]/40">End of list</span>
+                  )}
+                </div>
+              </nav>
+            )}
+          </div>
+
+          {/* Right column sticky skyscraper ad */}
+          <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <div className="rounded-lg bg-white px-2 py-2 min-h-[280px] lg:min-h-[600px]">
+              <AdSlot
+                slot="7335717776"
+                // 300x600 desktop skyscraper (auto on mobile)
+                style={{ minHeight: 280 }}
+              />
             </div>
-          ) : (
-            <p className="text-[var(--fg)]/70">
-              Venue details will be announced soon.
-            </p>
-          )}
+          </aside>
         </div>
-      </section>
 
-      {(prev || next) && (
-        <nav className="ccs-card flex items-center justify-between text-sm">
-          <div>
-            {prev ? (
-              <Link
-                className="group flex items-center gap-2 ccs-btn px-4 py-3"
-                href={`/events/${prev.slug}`}
-              >
-                <span className="group-hover:-translate-x-1 transition-transform">
-                  ←
-                </span>
-                <span>{prev.title}</span>
-              </Link>
-            ) : (
-              <span className="text-[var(--fg)]/40 px-4">Start of list</span>
-            )}
+        {/* Bottom ad slot */}
+        <section>
+          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+            <AdSlot
+              slot="7335717776"
+              // 320x100 mobile / 728x90 desktop via responsive
+              style={{ minHeight: 90 }}
+            />
           </div>
-          <div>
-            {next ? (
-              <Link
-                className="group flex items-center gap-2 ccs-btn px-4 py-3"
-                href={`/events/${next.slug}`}
-              >
-                <span>{next.title}</span>
-                <span className="group-hover:translate-x-1 transition-transform">
-                  →
-                </span>
-              </Link>
-            ) : (
-              <span className="text-[var(--fg)]/40 px-4">End of list</span>
-            )}
-          </div>
-        </nav>
-      )}
-
-        {/* Google Ad markup intentionally preserved — render as raw HTML to
-            avoid JSX/TSX parsing issues while keeping the snippet untouched */}
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-          }}
-        />
+        </section>
       </div>
     </Container>
   );

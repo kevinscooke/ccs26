@@ -136,7 +136,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           `}
         </Script>
 
-        {/* Ads removed: AdSense script intentionally removed */}
+        {/* Load AdSense globally, once */}
+        <Script
+          id="adsbygoogle-init"
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );
