@@ -1,9 +1,10 @@
-import { Suspense } from 'react';
-import UpcomingSix from '@/components/event/UpcomingSix';
+import { Suspense } from "react";
 import Image from "next/image";
-import { TAGS } from "@/lib/tags";
 import type { Metadata } from "next";
-import Container from '@/components/Container';
+import Container from "@/components/Container";
+import CompactUpcomingEvents from "@/components/event/CompactUpcomingEvents";
+import FeaturedEventsGrid from "@/components/event/FeaturedEventsGrid";
+import { TAGS } from "@/lib/tags";
 
 export const metadata: Metadata = {
   title: "Charlotte Car Shows – Weekly Event Listings & Automotive Community",
@@ -83,158 +84,233 @@ export default function MarketingHomePage() {
         }}
       />
 
-      <div className="space-y-16 py-8">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="relative rounded-xl overflow-hidden shadow-lg">
-          <div className="absolute inset-0">
-            <Image
-              src="/images/hero-ccs.jpg"
-              alt="Charlotte car show—rows of cars with spectators"
-              className="object-cover w-full h-full"
-              width={2000}   // replace with the actual image pixel width if known
-              height={900}   // replace with the actual image pixel height if known
-              priority
-              loading="eager"
-              sizes="(min-width: 768px) 60vw, 100vw"
-              style={{ objectFit: "cover", width: "100%", height: "100%" }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20" />
+      <div className="space-y-12 py-6 lg:space-y-10 lg:py-6">
+        {/* Row 1: Skinny Landscape Ad */}
+        <section>
+          <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 px-3 py-6 sm:min-h-[90px] sm:px-4 lg:min-h-[90px]">
+            <span className="text-[11px] text-gray-500 sm:text-xs lg:text-sm">
+              Ad Slot • 320×100 mobile / 728×90 desktop
+            </span>
           </div>
-          <div className="relative z-10 px-6 py-12 md:py-20 md:px-12">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-lg" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-                Find Your Next Car Show in Charlotte
-              </h1>
-              <p className="mt-4 text-lg md:text-xl text-white/90 leading-relaxed">
-                The most comprehensive source for car shows, Cars & Coffee meetups, and automotive events across the Charlotte area.
+        </section>
+
+        {/* Row 2: Hero + Compact Upcoming */}
+        <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8 lg:items-start">
+          <div className="space-y-6 lg:col-span-7">
+            <article className="space-y-5">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-emerald-700">
+                  Spotlight
+                </span>
+                <h1
+                  className="text-[32px] font-extrabold leading-tight tracking-tight text-gray-900 lg:text-[38px]"
+                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                >
+                  Charlotte&apos;s essential guide to car shows, cruises, and coffee meets.
+                </h1>
+              </div>
+
+              <p className="text-base text-gray-700 lg:text-[17px] lg:leading-7">
+                Discover what&apos;s happening this week across the Queen City scene—curated gatherings,
+                storied venues, and upcoming feature rallies pulled together by local enthusiasts.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a className="ccs-btn-primary px-6 py-3 text-lg shadow-lg" href="/events/">Browse Events</a>
-                <a className="ccs-btn px-5 py-3 text-lg bg-white/90 text-[var(--fg)] hover:bg-white" href="/pricing">Feature Your Event</a>
+
+              <div className="flex flex-wrap items-center gap-2 text-[13px] text-gray-500 lg:gap-3">
+                <span>Updated every Thursday</span>
+                <span>•</span>
+                <span>Greater Charlotte Metro</span>
+                <span>•</span>
+                <span>Curated by Charlotte Car Shows</span>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <a className="ccs-btn-primary px-4 py-2 text-sm shadow" href="/events/">
+                  Browse events
+                </a>
+                <a
+                  className="ccs-btn px-4 py-2 text-sm bg-white text-[var(--fg)] shadow hover:bg-white/80"
+                  href="/pricing"
+                >
+                  Feature your event
+                </a>
+              </div>
+            </article>
+
+            <div className="relative overflow-hidden rounded-3xl shadow-lg">
+              <Image
+                src="/images/hero-ccs.jpg"
+                alt="Charlotte car show—rows of cars with spectators"
+                width={2000}
+                height={600}
+                priority
+                loading="eager"
+                className="h-full w-full object-cover"
+                sizes="(min-width: 1280px) 45vw, (min-width: 1024px) 55vw, 100vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+              <div className="absolute top-6 left-6 max-w-lg text-white space-y-2">
+                <p className="text-sm uppercase tracking-wide text-white/70">November highlight</p>
+                <h2 className="text-2xl font-bold leading-tight">
+                  Charlotte Auto Show • Uptown Charlotte
+                </h2>
+                <p className="text-sm text-white/80">
+                  New model debuts, specialty exhibits, and family-friendly attractions all weekend long at the Charlotte Convention Center.
+                </p>
+              </div>
+              <div className="absolute bottom-6 left-6">
+                <a
+                  href="/events/charlotte-auto-show/"
+                  className="ccs-btn-primary px-5 py-2 text-sm shadow-lg"
+                >
+                  Explore show schedule
+                </a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Upcoming Events */}
-      <section className="ccs-card">
-        <div className="flex items-center justify-between md:flex-nowrap flex-wrap gap-4 mb-6">
-          {/* Left: heading/intro */}
-          <div className="min-w-0">
+          <aside className="lg:col-span-5">
+            <div className="h-full rounded-2xl border border-gray-200 bg-white/95 p-5 shadow-sm lg:p-4">
+              <div className="mb-4 space-y-1">
+                <h2
+                  className="text-lg font-bold text-gray-900"
+                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                >
+                  Upcoming events
+                </h2>
+                <p className="text-xs text-gray-600">The next five stops worth a closer look.</p>
+              </div>
+              <Suspense
+                fallback={
+                  <div className="space-y-3">
+                    {[...Array(5)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-16 animate-pulse rounded-2xl border border-gray-200 bg-gray-100"
+                      />
+                    ))}
+                  </div>
+                }
+              >
+                <CompactUpcomingEvents />
+              </Suspense>
+            </div>
+          </aside>
+        </section>
+
+        {/* Row 3: Featured Events */}
+        <section className="space-y-5">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <div>
               <h2
-              className="text-3xl font-bold text-gray-900 mb-2"
-              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                className="text-[30px] font-bold text-gray-900"
+                style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+              >
+                Featured events
+              </h2>
+              <p className="text-sm text-gray-600">Handpicked gatherings worth the drive.</p>
+            </div>
+            <a
+              href="/events/?featured=true"
+              className="text-xs font-semibold text-emerald-600 hover:text-emerald-800"
             >
-              This Week&apos;s Events
-            </h2>
-            <p className="text-gray-600">
-              Curated listings across the greater Charlotte area
-            </p>
-          </div>
-
-          {/* Right: buttons grouped & right-aligned on desktop */}
-          <div className="w-full md:w-auto md:ml-auto flex justify-start md:justify-end items-center gap-3">
-            <a className="ccs-btn px-6 py-3" href="/events/">View All Events</a>
-            <a className="ccs-btn-primary px-6 py-3" href="/weekly-car-show-list-charlotte/">
-              Events this Week!
+              Explore all featured →
             </a>
           </div>
-        </div>
-
-        <section className="mt-4">
-          <Suspense>
-            {/* UpcomingSix is an async Server Component that uses the runtime loader
-                so it shows the same merged events as /events (loadEvents()). */}
-            {/* It returns the same 6-item grid UI. */}
-            <UpcomingSix />
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="h-80 animate-pulse rounded-3xl bg-gray-100" />
+                ))}
+              </div>
+            }
+          >
+            <FeaturedEventsGrid />
           </Suspense>
         </section>
-</section>
 
-{/* Value Props */}
-      <section className="grid gap-8 md:grid-cols-3">
-        {[
-          {
-            title: "Weekly Updates",
-            description: "Fresh listings every week covering Charlotte and surrounding areas. Never miss a local car event.",
-            icon: "📅"
-          },
-          {
-            title: "Free Submissions",
-            description: "List your car show or meetup for free. Easy submission process with quick approval.",
-            icon: "✨"
-          },
-          {
-            title: "Premium Features",
-            description: "Boost your event with featured placement, social promotion, and extended reach.",
-            icon: "🌟"
-          }
-        ].map(prop => (
-          <div key={prop.title} className="ccs-card">
-            <div className="text-3xl mb-4">{prop.icon}</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{prop.title}</h3>
-            <p className="text-gray-600 leading-relaxed">{prop.description}</p>
-          </div>
-        ))}
-      </section>
+        {/* Value Props */}
+        <section className="grid gap-8 md:grid-cols-3">
+          {[
+            {
+              title: "Weekly Updates",
+              description: "Fresh listings every week covering Charlotte and surrounding areas. Never miss a local car event.",
+              icon: "📅"
+            },
+            {
+              title: "Free Submissions",
+              description: "List your car show or meetup for free. Easy submission process with quick approval.",
+              icon: "✨"
+            },
+            {
+              title: "Premium Features",
+              description: "Boost your event with featured placement, social promotion, and extended reach.",
+              icon: "🌟"
+            }
+          ].map(prop => (
+            <div key={prop.title} className="ccs-card">
+              <div className="text-3xl mb-4">{prop.icon}</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{prop.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{prop.description}</p>
+            </div>
+          ))}
+        </section>
 
-      {/* Featured Locations */}
-      <section className="grid gap-8 md:grid-cols-2">
-        <div className="ccs-card">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-3">Cars &amp; Coffee at CMS</h3>
-          <p className="text-gray-600 mb-4 leading-relaxed">
-            Join hundreds of enthusiasts at Charlotte Motor Speedway every third Saturday. Free admission, family-friendly atmosphere, and amazing vehicles.
-          </p>
-          <a className="ccs-btn inline-block" href="/events/">View Schedule</a>
-        </div>
-        <div className="ccs-card">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-3">Major Shows</h3>
+        {/* Featured Locations */}
+        <section className="grid gap-8 md:grid-cols-2">
+          <div className="ccs-card">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3">Cars &amp; Coffee at CMS</h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
-            Don&apos;t miss Charlotte&apos;s biggest automotive events, including AutoFair, Charlotte Auto Show, and special exhibitions.
-          </p>
-          <a className="ccs-btn inline-block" href="/events/">See Major Events</a>
-        </div>
-      </section>
-
-      {/* Guide promo */}
-      <section className="ccs-card">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-              New: The Guide to Charlotte Car Shows
-            </h2>
-            <p className="text-gray-600">Monthly staples, annual shows, and local resources—all in one place.</p>
+              Join hundreds of enthusiasts at Charlotte Motor Speedway every third Saturday. Free admission, family-friendly atmosphere, and amazing vehicles.
+            </p>
+            <a className="ccs-btn inline-block" href="/events/">View Schedule</a>
           </div>
-          <a className="ccs-btn-primary px-5 py-2" href="/guide-to-charlotte-car-shows">Read the Guide</a>
-        </div>
-      </section>
+          <div className="ccs-card">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3">Major Shows</h3>
+              <p className="text-gray-600 mb-4 leading-relaxed">
+              Don&apos;t miss Charlotte&apos;s biggest automotive events, including AutoFair, Charlotte Auto Show, and special exhibitions.
+            </p>
+            <a className="ccs-btn inline-block" href="/events/charlotte-auto-show/">Charlotte Auto Show</a>
+          </div>
+        </section>
 
-      {/* Community Section */}
-      <section className="ccs-card text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4" 
-            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-          Join Our Community
-        </h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6 leading-relaxed">
-          Follow us for daily updates, event highlights, and exclusive content. Connect with thousands of local car enthusiasts.
-        </p>
-        <div className="flex justify-center gap-4">
-          <a className="ccs-btn-primary px-6 py-3" 
-             href="https://www.instagram.com/charlottecarshows/" 
-             target="_blank" 
-             rel="noreferrer">
-            Follow on Instagram
-          </a>
-          <a className="ccs-btn px-6 py-3" 
-             href="https://www.facebook.com/CharlotteCarShows/" 
-             target="_blank" 
-             rel="noreferrer">
-            Join on Facebook
-          </a>
-        </div>
-      </section>
+        {/* Guide promo */}
+        <section className="ccs-card">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+                New: The Guide to Charlotte Car Shows
+              </h2>
+              <p className="text-gray-600">Monthly staples, annual shows, and local resources—all in one place.</p>
+            </div>
+            <a className="ccs-btn-primary px-5 py-2" href="/guide-to-charlotte-car-shows">Read the Guide</a>
+          </div>
+        </section>
+
+        {/* Community Section */}
+        <section className="ccs-card text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4" 
+              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+            Join Our Community
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6 leading-relaxed">
+            Follow us for daily updates, event highlights, and exclusive content. Connect with thousands of local car enthusiasts.
+          </p>
+          <div className="flex justify-center gap-4">
+            <a className="ccs-btn-primary px-6 py-3" 
+               href="https://www.instagram.com/charlottecarshows/" 
+               target="_blank" 
+               rel="noreferrer">
+              Follow on Instagram
+            </a>
+            <a className="ccs-btn px-6 py-3" 
+               href="https://www.facebook.com/CharlotteCarShows/" 
+               target="_blank" 
+               rel="noreferrer">
+              Join on Facebook
+            </a>
+          </div>
+        </section>
       </div>
       <div
           dangerouslySetInnerHTML={{
