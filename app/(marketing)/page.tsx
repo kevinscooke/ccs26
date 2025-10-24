@@ -92,8 +92,10 @@ export default function MarketingHomePage() {
           <div className="rounded-lg bg-white px-2 py-2">
             <AdSlot
               slot="7744630827"
-              fullWidthResponsive={false}
-              style={{ display: "inline-block", width: 320, height: 100 }} // lock to 320x100 on all breakpoints
+              sizes={[
+                { media: "(min-width: 1024px)", width: 728, height: 90 }, // desktop leaderboard
+                { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile large banner
+              ]}
             />
           </div>
         </section>
@@ -321,8 +323,10 @@ export default function MarketingHomePage() {
           <div className="rounded-lg bg-white px-2 py-2">
             <AdSlot
               slot="7335717776"
-              fullWidthResponsive={false}
-              style={{ display: "inline-block", width: 320, height: 100 }} // lock to 320x100 on desktop too
+              sizes={[
+                { media: "(min-width: 1024px)", width: 728, height: 90 },
+                { media: "(max-width: 1023px)", width: 320, height: 100 },
+              ]}
             />
           </div>
         </section>
