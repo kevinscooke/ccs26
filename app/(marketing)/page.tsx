@@ -87,14 +87,13 @@ export default function MarketingHomePage() {
       />
 
       <div className="space-y-12 py-6 lg:space-y-10 lg:py-6">
-        {/* Row 1: Skinny Landscape Ad (preserve height to avoid CLS) */}
+        {/* Row 1: Skinny Landscape Ad */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+          <div className="rounded-lg bg-white px-2 py-2">
             <AdSlot
               slot="7744630827"
-              fullWidthResponsive={false} // disable full-width dynamic resizing
-              style={{ display: "inline-block" }}
-              className="w-full h-[60px] md:h-[90px]" // short on mobile, taller on desktop
+              fullWidthResponsive={false}
+              style={{ display: "inline-block", width: 320, height: 100 }} // lock to 320x100 on all breakpoints
             />
           </div>
         </section>
@@ -319,10 +318,11 @@ export default function MarketingHomePage() {
 
         {/* Bottom ad slot */}
         <section>
-          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+          <div className="rounded-lg bg-white px-2 py-2">
             <AdSlot
               slot="7335717776"
-              style={{ minHeight: 90 }}
+              fullWidthResponsive={false}
+              style={{ display: "inline-block", width: 320, height: 100 }} // lock to 320x100 on desktop too
             />
           </div>
         </section>

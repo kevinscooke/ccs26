@@ -35,8 +35,7 @@ export default function AdSlot({
       el.getAttribute?.("data-adsbygoogle-status") === "done";
 
     const maybePush = () => {
-      if (pushedRef.current) return;
-      if (alreadyLoaded) {
+      if (pushedRef.current || alreadyLoaded) {
         pushedRef.current = true;
         return;
       }
@@ -44,7 +43,7 @@ export default function AdSlot({
         window.adsbygoogle = window.adsbygoogle || [];
         window.adsbygoogle.push({});
         pushedRef.current = true;
-      } catch (err) {
+      } catch {
         // ignore benign repeat push errors
       }
     };
@@ -56,7 +55,6 @@ export default function AdSlot({
           if (entries[0]?.isIntersecting) {
             maybePush();
             observer?.disconnect();
-            observer = null;
           }
         },
         { rootMargin: "300px 0px" }
@@ -73,15 +71,21 @@ export default function AdSlot({
     };
   }, [slot]);
 
+  const dataProps = fullWidthResponsive
+    ? {
+        "data-ad-format": format ?? "auto",
+        "data-full-width-responsive": "true",
+      }
+    : {}; // omit responsive attributes for fixed-size usage
+
   return (
     <ins
-      ref={insRef}
+      ref={insRef as any}
       className={`adsbygoogle ${className ?? ""}`}
       style={{ display: "block", ...(style || {}) }}
       data-ad-client="ca-pub-1514406406537630"
       data-ad-slot={slot}
-      data-ad-format={format}
-      data-full-width-responsive={fullWidthResponsive ? "true" : "false"}
+      {...(dataProps as any)}
     />
   );
 }
