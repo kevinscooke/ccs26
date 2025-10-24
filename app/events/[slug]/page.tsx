@@ -177,7 +177,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
         <section>
           <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
             <AdSlot
-              slot="7335717776"
+              slot="7744630827"
               // 320x100 mobile / 728x90 desktop via responsive
               style={{ minHeight: 90 }}
             />
