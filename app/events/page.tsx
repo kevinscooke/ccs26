@@ -9,6 +9,8 @@ import EventCard from "@/components/EventCard";
 import WeeklyControls from "@/components/WeeklyControls.client";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import weeklyStyles from "@/components/Weekly.module.css";
+import dynamic from "next/dynamic";
+const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 // Use runtime loader so /events stays in sync with V2 JSON (no rebuild needed)
 
@@ -80,71 +82,98 @@ export default async function EventsAllPage() {
 
   return (
     <Container>
-      <section className="w-full space-y-12">
-    {/* Top ad intentionally removed to avoid reserved space above hero */}
-    <div className={weeklyStyles.headerRow}>
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "All Events", current: true }]} />
-      <div className={weeklyStyles.headerControlsWrap}>
-        <WeeklyControls />
-      </div>
-    </div>
-      {/* JSON-LD in body is fine with the App Router */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
-      />
+      <section className="w-full space-y-8 lg:space-y-10">
+        <section>
+          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+            <AdSlot
+              slot="7335717776"
+              // 320x100 mobile / 728x90 desktop via responsive
+              style={{ minHeight: 90 }}
+            />
+          </div>
+        </section>
 
-  <header className="text-center space-y-2 mt-1">
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" 
-            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-          All Charlotte Car Shows
-        </h1>
-        <p className="text-lg text-[var(--fg)]/70 max-w-2xl mx-auto">
-          Browse upcoming Cars &amp; Coffee, meets, cruise-ins, and automotive events across the Charlotte area.
-        </p>
-      </header>
+        <div className={`${weeklyStyles.headerRow} gap-4`}>
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }, { label: "All Events", current: true }]}
+          />
+          <div className={weeklyStyles.headerControlsWrap}>
+            <WeeklyControls />
+          </div>
+        </div>
 
-      <div className="space-y-6">
-        {events.slice(0, 15).map((e: EventType) => {
-            const monthLabel = monthFmt.format(toEtDate(e.startAt) ?? new Date(e.startAt));
-            const showMonth = monthLabel !== lastMonth;
-            lastMonth = monthLabel;
-
-            return (
-              <React.Fragment key={e.id}>
-                {showMonth && (
-                  <div className="flex items-center gap-3 my-6" key={`m-${monthLabel}`}>
-                    <div className="h-px flex-1 bg-[var(--fg)]/10" />
-                    <div className="text-sm text-[var(--fg)]/70">
-                      {monthLabel}
-                    </div>
-                    <div className="h-px flex-1 bg-[var(--fg)]/10" />
-                  </div>
-                )}
-                {/* ensure the event list shows date + time */}
-                <EventCard event={e} />
-                {/* if you render date/time inline here instead of EventCard, use:
-                  {formatDateET(e.startAt)} {formatTimeET(e.startAt)}{e.endAt ? ` – ${formatTimeET(e.endAt)}` : ""} ET
-                */}
-               </React.Fragment>
-             );
-       })}
-      </div>
-      {/* Pagination Controls */}
-      <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
-  <Link href="/events/past/" className="ccs-btn px-4 py-2">Previous events</Link>
-  <Link href="/events/page/2/" className="ccs-btn px-4 py-2">Next Page</Link>
-      </nav>
-  <div
-          dangerouslySetInnerHTML={{
-            __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-          }}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
         />
+
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            All Charlotte Car Shows
+          </h1>
+          <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
+            Browse upcoming Cars &amp; Coffee, meets, cruise-ins, and automotive events across the
+            Charlotte area.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="space-y-5 lg:col-span-8">
+            {events.slice(0, 15).map((e: EventType) => {
+              const monthLabel = monthFmt.format(toEtDate(e.startAt) ?? new Date(e.startAt));
+              const showMonth = monthLabel !== lastMonth;
+              lastMonth = monthLabel;
+
+              return (
+                <React.Fragment key={e.id}>
+                  {showMonth && (
+                    <div className="my-4 flex items-center gap-3" key={`m-${monthLabel}`}>
+                      <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                      <div className="text-xs font-medium uppercase tracking-wide text-[var(--fg)]/60">
+                        {monthLabel}
+                      </div>
+                      <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                    </div>
+                  )}
+                  <EventCard event={e} />
+                </React.Fragment>
+              );
+            })}
+
+            <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
+              <Link href="/events/past/" className="ccs-btn px-4 py-2 text-sm">
+                Previous events
+              </Link>
+              <Link href="/events/page/2/" className="ccs-btn px-4 py-2 text-sm">
+                Next page
+              </Link>
+            </nav>
+          </div>
+
+          <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <div className="rounded-lg bg-white px-2 py-2 min-h-[280px] lg:min-h-[600px]">
+              <AdSlot
+                slot="7335717776"
+                // 300x600 desktop skyscraper (auto on mobile)
+                style={{ minHeight: 280 }}
+              />
+            </div>
+          </aside>
+        </div>
+
+        {/* Bottom leaderboard ad */}
+        <section>
+          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+            <AdSlot
+              slot="7335717776"
+              // 320x100 mobile / 728x90 desktop via responsive
+              style={{ minHeight: 90 }}
+            />
+          </div>
+        </section>
       </section>
     </Container>
   );

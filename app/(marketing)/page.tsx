@@ -5,6 +5,8 @@ import Container from "@/components/Container";
 import CompactUpcomingEvents from "@/components/event/CompactUpcomingEvents";
 import FeaturedEventsGrid from "@/components/event/FeaturedEventsGrid";
 import { TAGS } from "@/lib/tags";
+import dynamic from "next/dynamic";
+const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Charlotte Car Shows – Weekly Event Listings & Automotive Community",
@@ -85,12 +87,14 @@ export default function MarketingHomePage() {
       />
 
       <div className="space-y-12 py-6 lg:space-y-10 lg:py-6">
-        {/* Row 1: Skinny Landscape Ad */}
+        {/* Row 1: Skinny Landscape Ad (preserve height to avoid CLS) */}
         <section>
-          <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 px-3 py-6 sm:min-h-[90px] sm:px-4 lg:min-h-[90px]">
-            <span className="text-[11px] text-gray-500 sm:text-xs lg:text-sm">
-              Ad Slot • 320×100 mobile / 728×90 desktop
-            </span>
+          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+            <AdSlot
+              slot="7335717776"
+              // 320x100 mobile / 728x90 desktop via responsive
+              style={{ minHeight: 90 }}
+            />
           </div>
         </section>
 
@@ -198,7 +202,7 @@ export default function MarketingHomePage() {
         </section>
 
         {/* Row 3: Featured Events */}
-        <section className="space-y-5">
+       {/* } <section className="space-y-5">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
               <h2
@@ -227,7 +231,7 @@ export default function MarketingHomePage() {
           >
             <FeaturedEventsGrid />
           </Suspense>
-        </section>
+        </section> */}
 
         {/* Value Props */}
         <section className="grid gap-8 md:grid-cols-3">
@@ -311,17 +315,17 @@ export default function MarketingHomePage() {
             </a>
           </div>
         </section>
+
+        {/* Bottom ad slot */}
+        <section>
+          <div className="rounded-lg bg-white px-2 py-2 sm:min-h-[90px] lg:min-h-[90px]">
+            <AdSlot
+              slot="7335717776"
+              style={{ minHeight: 90 }}
+            />
+          </div>
+        </section>
       </div>
-      <div
-          dangerouslySetInnerHTML={{
-            __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-          }}
-        />
     </Container>
   );
 }
