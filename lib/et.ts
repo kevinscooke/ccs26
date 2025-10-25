@@ -91,8 +91,6 @@ export function formatRangeET(start: Date, endExclusive: Date) {
   return `${fmt.format(start)} – ${fmt.format(endShown)}`;
 }
 
-import zonedTimeToUtc from "date-fns-tz/zonedTimeToUtc";
-
 export const ET_TZ = "America/New_York";
 
 // Treat naive timestamps as UTC; if they include Z/offset, use as-is
