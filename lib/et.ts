@@ -95,24 +95,24 @@ import { zonedTimeToUtc } from "date-fns-tz";
 
 export const ET_TZ = "America/New_York";
 
-// If startAt has no timezone, treat it as UTC by appending Z.
-// If it has Z or an offset, use it as-is.
+// Treat naive timestamps as UTC; if they include Z/offset, use as-is
 export function parseStartAtToUtc(startAt?: string | null): Date | null {
   if (!startAt) return null;
   const hasTZ = /[zZ]|[+\-]\d{2}:\d{2}$/.test(startAt);
   const iso = hasTZ ? startAt : `${startAt}Z`;
   const d = new Date(iso);
-  return isNaN(d.getTime()) ? null : d;
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
-// Format a UTC Date in Eastern Time (DST-aware). Don’t hardcode -4.
-export function formatET(dateUtc: Date, opts?: Intl.DateTimeFormatOptions) {
-  return dateUtc.toLocaleString("en-US", {
+// Format a UTC Date in Eastern Time (DST-aware)
+export function formatET(dateUtc: Date, opts?: Intl.DateTimeFormatOptions): string {
+  const base: Intl.DateTimeFormatOptions = {
     timeZone: ET_TZ,
     month: "short",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
-    ...opts,
-  });
+  };
+  const options = Object.assign({}, base, opts || {});
+  return dateUtc.toLocaleString("en-US", options);
 }
