@@ -47,7 +47,7 @@ export function SearchBox({ className = "" }: { className?: string }) {
       })
       .filter((e): e is typeof data[number] => e !== null);
 
-    // Use ET-aware parsing for comparisons (handles -4/-5 with DST)
+    // Strict ET-aware parsing only (no native Date fallback)
     const withTimes = filtered.map((e) => ({
       e,
       startUtc: e.startAt ? parseStartAtToUtc(e.startAt) : null,
@@ -65,6 +65,14 @@ export function SearchBox({ className = "" }: { className?: string }) {
 
     return [...upcoming, ...past].slice(0, 10);
   }, [data, q, clean]);
+
+  // Helper to render exactly like events pages
+  const formatStartLabel = (startAt?: string | null) => {
+    if (!startAt) return null;
+    const d = parseStartAtToUtc(startAt);
+    if (!d) return null; // refuse to guess with native Date
+    return formatET(d);
+  };
 
   return (
     <div ref={boxRef} className={`relative ${className}`}>
@@ -113,34 +121,8 @@ export function SearchBox({ className = "" }: { className?: string }) {
           {!loading && !error && results.length === 0 && <div className="p-3 text-sm text-gray-600">No matches.</div>}
           {!loading && !error && results.length > 0 && (
             <ul className="max-h-80 overflow-auto divide-y divide-gray-100" role="listbox">
-              {results.map((e, idx) => {
-                // Robust ET date rendering with fallbacks
-                let startUtc: Date | null = null;
-                if (e.startAt) {
-                  try {
-                    startUtc = parseStartAtToUtc(e.startAt) ?? new Date(e.startAt);
-                  } catch {
-                    startUtc = new Date(e.startAt);
-                  }
-                }
-
-                const dateLabel = startUtc
-                  ? (() => {
-                      try {
-                        return formatET(startUtc!);
-                      } catch {
-                        // Fallback: still show ET even without helper
-                        return startUtc!.toLocaleString("en-US", {
-                          timeZone: "America/New_York",
-                          month: "short",
-                          day: "numeric",
-                          hour: "numeric",
-                          minute: "2-digit",
-                        });
-                      }
-                    })()
-                  : null;
-
+              {results.map((e) => {
+                const dateLabel = formatStartLabel(e.startAt);
                 const location = [e.venue?.name, e.city?.name || e.venue?.city]
                   .filter(Boolean)
                   .join(", ");
