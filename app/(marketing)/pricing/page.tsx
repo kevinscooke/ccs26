@@ -137,7 +137,7 @@ export default function Pricing() {
                       {t.cta}
                     </button>
                     <p className="mt-2 text-xs text-gray-500 text-center">
-                      Pinned in listings + IG shoutout • $25 one-time
+                      Pinned in listings + IG shoutout • $25 one-time via Paypal
                     </p>
                   </form>
                 ) : (
