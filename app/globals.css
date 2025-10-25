@@ -2,17 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --- Charlotte Car Shows: Light + Simple palette overrides + Design Tokens --- */
 
-/* --- Charlotte Car Shows: Light + Simple palette overrides --- */
-
-/* 1) Global background + text */
+/* 1) Root tokens (keep existing bg/fg and add brand, neutrals, radii, shadows, spacing) */
 :root {
-  /* Off-white page background; tweak a hair warmer/cooler if you like */
+  /* Existing page background + text */
   --bg: #faf9f7;
   --fg: #1f2937; /* zinc-800-ish for good contrast */
+
+  /* Brand */
+  --brand-50:  #f2fbf6;
+  --brand-100: #d9f3e6;
+  --brand-200: #b2e7cc;
+  --brand-300: #85d9b0;
+  --brand-400: #4ecb94;
+  --brand-500: #22b573; /* primary */
+  --brand-600: #18935c;
+  --brand-700: #117348;
+  --brand-800: #0d5737;
+  --brand-900: #093f28;
+
+  /* Neutrals */
+  --gray-50:  #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1f2937;
+  --gray-900: #0b1220;
+
+  /* Radii */
+  --radius-sm: .5rem;
+  --radius-md: .75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem; /* standard */
+  --radius-2xl: 1.5rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 6px 16px rgba(0,0,0,.08);  /* standard */
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.12);
+
+  /* Spacing jumps */
+  --space-1: .375rem;
+  --space-2: .625rem;
+  --space-3: .875rem;
+  --space-4: 1.125rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Typography (wired from next/font)
+     Note: do NOT set --font-sans or --font-heading here to avoid overriding next/font.
+     Use var(--font-sans) and var(--font-heading) in utilities below. */
 }
 
-/* Tailwind base hookup */
+/* Tailwind base hookup (kept) */
 html, body {
   @apply bg-[var(--bg)] text-[var(--fg)];
 }
@@ -28,9 +75,12 @@ html, body {
     --ring: 142 71% 45%;       /* green ring to match buttons */
   }
   body { @apply bg-background text-foreground; }
+
+  /* Optional: normalize focus */
+  :focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
 }
 
-/* 2) Cards, Buttons, Badges */
+/* 2) Components (kept as-is) */
 @layer components {
   /* Cards: white background, light border, readable text */
   .ccs-card {
@@ -65,4 +115,22 @@ html, body {
 
   /* Make AdSense / adsbygoogle responsive and avoid forcing large reserved blocks */
   /* Ads removed: ad-specific styles deleted */
+}
+
+/* 3) Utilities mapped from tokens (new) */
+@layer utilities {
+  .shadow-token-sm { box-shadow: var(--shadow-sm); }
+  .shadow-token-md { box-shadow: var(--shadow-md); }
+  .shadow-token-lg { box-shadow: var(--shadow-lg); }
+
+  .rounded-token    { border-radius: var(--radius-xl); }
+  .rounded-token-2x { border-radius: var(--radius-2xl); }
+
+  .p-token  { padding: var(--space-5); }
+  .px-token { padding-left: var(--space-5); padding-right: var(--space-5); }
+  .py-token { padding-top: var(--space-5); padding-bottom: var(--space-5); }
+
+  /* Font utilities use next/font variables applied on <html> */
+  .font-heading { font-family: var(--font-heading); }
+  .font-sans    { font-family: var(--font-sans); }
 }

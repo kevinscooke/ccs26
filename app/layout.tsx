@@ -3,17 +3,20 @@ import "./globals.css";
 import type { ReactNode } from "react";
 import Script from "next/script";
 import type { Metadata } from "next";
+import { Inter, Source_Serif_4 } from "next/font/google";
 
 import TopNav from "@/components/nav/TopNav";
 import Footer from "@/components/Footer";
 import HeaderAdBar from "@/components/ads/HeaderAdBar";
 import FooterAdBar from "@/components/ads/FooterAdBar";
-import { Bebas_Neue } from "next/font/google";
 
-const heading = Bebas_Neue({
+// Removed Bebas_Neue and added Inter + Source Serif 4
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-heading", // exposes CSS var
+  display: "swap",
+  variable: "--font-heading",
+  style: ["normal"],
 });
 
 export const metadata: Metadata = {
@@ -61,7 +64,7 @@ export function generateViewport() {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={heading.variable}>
+    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
       <head>
         {/* Small perf wins for GA and images */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />

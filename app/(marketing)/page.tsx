@@ -6,6 +6,7 @@ import CompactUpcomingEvents from "@/components/event/CompactUpcomingEvents";
 import FeaturedEventsGrid from "@/components/event/FeaturedEventsGrid";
 import { TAGS } from "@/lib/tags";
 import dynamic from "next/dynamic";
+import { Button } from "@/components/ui/button"; // added
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 export const metadata: Metadata = {
@@ -86,9 +87,9 @@ export default function MarketingHomePage() {
         }}
       />
 
-      <div className="space-y-12 pt-2 pb-6 lg:space-y-10 lg:pt-3 lg:pb-6">
+      <div className="space-y-10 lg:space-y-12 pt-4 pb-8 lg:pt-6 lg:pb-8">
         {/* Row 2: Hero + Compact Upcoming */}
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8 lg:items-start">
+        <section className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-8 lg:items-start">
           <div className="space-y-6 lg:col-span-7">
             <article className="space-y-5">
               <div className="space-y-2">
@@ -96,8 +97,7 @@ export default function MarketingHomePage() {
                   Spotlight
                 </span>
                 <h1
-                  className="text-[32px] font-extrabold leading-tight tracking-tight text-gray-900 lg:text-[38px]"
-                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+                  className="text-[32px] font-extrabold leading-tight tracking-tight text-gray-900 lg:text-[38px] font-heading"
                 >
                   Charlotte&apos;s essential guide to car shows, cruises, and coffee meets.
                 </h1>
@@ -116,16 +116,19 @@ export default function MarketingHomePage() {
                 <span>Curated by Charlotte Car Shows</span>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                <a className="ccs-btn-primary px-4 py-2 text-sm shadow" href="/events/">
-                  Browse events
-                </a>
-                <a
-                  className="ccs-btn px-4 py-2 text-sm bg-white text-[var(--fg)] shadow hover:bg-white/80"
-                  href="/pricing"
-                >
-                  Feature your event
-                </a>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild>
+                    <a href="/events/?when=weekend">This weekend</a>
+                  </Button>
+                  <Button asChild variant="secondary">
+                    <a href="/pricing">Feature your event</a>
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500">
+                  Pinned in listings + IG shoutout • from $25
+                  {/* TODO: replace $25 with your actual starting price */}
+                </p>
               </div>
             </article>
 
@@ -143,7 +146,7 @@ export default function MarketingHomePage() {
               <div className="absolute inset-0 flex flex-col justify-between gap-4 p-4 sm:p-6">
                 <div className="max-w-lg text-white space-y-2">
                   <p className="text-xs sm:text-sm uppercase tracking-wide text-white/70">November highlight</p>
-                  <h2 className="text-xl sm:text-2xl font-bold leading-tight font-[var(--font-heading,_inherit)]">
+                  <h2 className="text-xl sm:text-2xl font-bold leading-tight font-heading">
                     Charlotte Auto Show • Uptown Charlotte
                   </h2>
                   <p className="text-xs sm:text-sm text-white/80">
@@ -151,12 +154,9 @@ export default function MarketingHomePage() {
                   </p>
                 </div>
                 <div>
-                  <a
-                    href="/events/charlotte-auto-show/"
-                    className="ccs-btn-primary inline-block px-5 py-2 text-sm shadow-lg"
-                  >
-                    Explore show schedule
-                  </a>
+                  <Button asChild className="shadow-lg">
+                    <a href="/events/charlotte-auto-show/">Explore show schedule</a>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -165,10 +165,7 @@ export default function MarketingHomePage() {
           <aside className="lg:col-span-5">
             <div className="h-full rounded-2xl border border-gray-200 bg-white/95 p-5 shadow-sm lg:p-4">
               <div className="mb-4 space-y-1">
-                <h2
-                  className="text-lg font-bold text-gray-900"
-                  style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
-                >
+                <h2 className="text-lg font-bold text-gray-900 font-heading">
                   Upcoming events
                 </h2>
                 <p className="text-xs text-gray-600">The next five stops worth a closer look.</p>
@@ -187,6 +184,8 @@ export default function MarketingHomePage() {
               >
                 <CompactUpcomingEvents />
               </Suspense>
+
+              
             </div>
           </aside>
         </section>
@@ -272,37 +271,36 @@ export default function MarketingHomePage() {
         <section className="ccs-card">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 font-heading">
                 New: The Guide to Charlotte Car Shows
               </h2>
               <p className="text-gray-600">Monthly staples, annual shows, and local resources—all in one place.</p>
             </div>
-            <a className="ccs-btn-primary px-5 py-2" href="/guide-to-charlotte-car-shows">Read the Guide</a>
+            <Button asChild>
+              <a href="/guide-to-charlotte-car-shows">Read the Guide</a>
+            </Button>
           </div>
         </section>
 
         {/* Community Section */}
         <section className="ccs-card text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4" 
-              style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 font-heading">
             Join Our Community
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6 leading-relaxed">
             Follow us for daily updates, event highlights, and exclusive content. Connect with thousands of local car enthusiasts.
           </p>
           <div className="flex justify-center gap-4">
-            <a className="ccs-btn-primary px-6 py-3" 
-               href="https://www.instagram.com/charlottecarshows/" 
-               target="_blank" 
-               rel="noreferrer">
-              Follow on Instagram
-            </a>
-            <a className="ccs-btn px-6 py-3" 
-               href="https://www.facebook.com/CharlotteCarShows/" 
-               target="_blank" 
-               rel="noreferrer">
-              Join on Facebook
-            </a>
+            <Button asChild className="px-6 py-3">
+              <a href="https://www.instagram.com/charlottecarshows/" target="_blank" rel="noreferrer">
+                Follow on Instagram
+              </a>
+            </Button>
+            <Button asChild variant="secondary" className="px-6 py-3">
+              <a href="https://www.facebook.com/CharlotteCarShows/" target="_blank" rel="noreferrer">
+                Join on Facebook
+              </a>
+            </Button>
           </div>
         </section>
       </div>

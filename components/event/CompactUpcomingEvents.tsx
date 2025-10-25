@@ -20,7 +20,7 @@ export default async function CompactUpcomingEvents() {
     .filter((value): value is { event: any; start: Date } => Boolean(value))
     .filter(({ start }) => start.getTime() >= now)
     .sort((a, b) => a.start.getTime() - b.start.getTime())
-    .slice(0, 5);
+    .slice(0, 6);
 
   if (!upcoming.length) {
     return (
