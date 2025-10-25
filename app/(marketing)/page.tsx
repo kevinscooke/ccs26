@@ -123,7 +123,7 @@ export default function MarketingHomePage() {
                     <a href="/events/?when=weekend">This weekend</a>
                   </Button>
                   <Button asChild variant="secondary">
-                    <a href="/pricing">Feature your event</a>
+                    <a href="/pricing/">Feature your event</a>
                   </Button>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -197,7 +197,7 @@ export default function MarketingHomePage() {
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="text-xs text-gray-500">
                   Want to feature your event here?{" "}
-                  <a href="/pricing" className="text-emerald-600 hover:text-emerald-800">
+                  <a href="/pricing/" className="text-emerald-600 hover:text-emerald-800">
                     Learn about premium listings
                   </a>
                 </p>

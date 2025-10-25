@@ -100,17 +100,54 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
+
+              {/* CTA */}
               <div className="pt-4">
-                <a
-                  className={`w-full text-center ${
-                    t.highlight 
-                      ? "ccs-btn-primary" 
-                      : "ccs-btn"
-                  }`}
-                  href="/contact/"
-                >
-                  {t.cta}
-                </a>
+                {t.name === "Free" ? (
+                  <a
+                    className={`w-full text-center ${t.highlight ? "ccs-btn-primary" : "ccs-btn"}`}
+                    href="/submit-event/"
+                  >
+                    {t.cta}
+                  </a>
+                ) : t.name === "Featured Event" ? (
+                  // PayPal Buy Now button (static-site friendly)
+                  <form
+                    action="https://www.paypal.com/cgi-bin/webscr"
+                    method="post"
+                    target="_blank"
+                    className="w-full"
+                  >
+                    {/* One-time payment */}
+                    <input type="hidden" name="cmd" value="_xclick" />
+                    {/* Replace with your PayPal business email or merchant ID */}
+                    <input type="hidden" name="business" value="kevin@searchandbefound.com" />
+                    <input type="hidden" name="item_name" value="Featured Event Listing – Charlotte Car Shows" />
+                    <input type="hidden" name="amount" value="25.00" />
+                    <input type="hidden" name="currency_code" value="USD" />
+                    <input type="hidden" name="no_shipping" value="1" />
+                    <input type="hidden" name="no_note" value="1" />
+                    {/* Optional return URLs */}
+                    <input type="hidden" name="return" value="https://charlottecarshows.com/pricing?paid=1" />
+                    <input type="hidden" name="cancel_return" value="https://charlottecarshows.com/pricing?canceled=1" />
+                    {/* Branding hint (optional) */}
+                    <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynow_LG.gif:NonHosted" />
+
+                    <button type="submit" className="w-full ccs-btn-primary">
+                      {t.cta}
+                    </button>
+                    <p className="mt-2 text-xs text-gray-500 text-center">
+                      Pinned in listings + IG shoutout • $25 one-time
+                    </p>
+                  </form>
+                ) : (
+                  <a
+                    className={`w-full text-center ${t.highlight ? "ccs-btn-primary" : "ccs-btn"}`}
+                    href="/contact/"
+                  >
+                    {t.cta}
+                  </a>
+                )}
               </div>
             </div>
           </div>
