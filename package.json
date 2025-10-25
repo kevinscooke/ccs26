@@ -8,10 +8,10 @@
     "postbuild": "mkdir -p out && cp public/_redirects out/_redirects || true",
     "start": "next start",
     "lint": "next lint",
-    "export:json": "pnpm build:search-index && node scripts/export-json.mjs",
+    "export:json": "node scripts/export-json.mjs && pnpm build:search-index",
     "build:search-index": "tsx scripts/build-search-index.ts",
     "predev": "pnpm build:search-index",
-    "prebuild": "pnpm build:search-index"
+    "prebuild": "node scripts/export-json.mjs && pnpm build:search-index"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

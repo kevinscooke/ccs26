@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type EventIndex = {
@@ -26,7 +26,7 @@ function clean(str?: string | null) {
     .toLowerCase();
 }
 
-export default function SearchPage() {
+function SearchClient() {
   const sp = useSearchParams();
   const qParam = sp.get("q") ?? "";
   const q = clean(qParam);
@@ -35,7 +35,7 @@ export default function SearchPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/search-index.json", { cache: "force-cache" })
+    fetch("/search-index.json", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${r.status}`))))
       .then((json: EventIndex[]) => setData(json))
       .catch((e) => setError(e?.message || "Failed to load search index"));
@@ -45,12 +45,7 @@ export default function SearchPage() {
     if (!data || !q) return [];
     const filtered = data
       .map<EventIndex | null>((e) => {
-        const hay = [
-          clean(e.title),
-          clean(e.description || e.summary),
-          clean(e.venue?.name),
-          clean(e.city?.name || e.venue?.city),
-        ].join(" ");
+        const hay = [clean(e.title), clean(e.description || e.summary), clean(e.venue?.name), clean(e.city?.name || e.venue?.city)].join(" ");
         return hay.includes(q) ? e : null;
       })
       .filter((e): e is EventIndex => e !== null);
@@ -72,11 +67,13 @@ export default function SearchPage() {
 
       {error && <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">Failed to load search index.</div>}
 
-      {!q && <div className="rounded-xl border border-gray-200 bg-white p-6 text-gray-600">Enter a search in the global box above.</div>}
+      {!q && <div className="rounded-xl border border-gray-200 bg-white p-6 text-gray-600">Enter a search in the box.</div>}
 
       {q && (
         <>
-          <p className="text-sm text-gray-600">{results.length} result{results.length === 1 ? "" : "s"} for “{qParam}”</p>
+          <p className="text-sm text-gray-600">
+            {results.length} result{results.length === 1 ? "" : "s"} for “{qParam}”
+          </p>
           <section className="grid gap-4 md:gap-6">
             {results.map((event) => {
               const start = event.startAt ? new Date(event.startAt) : undefined;
@@ -107,5 +104,13 @@ export default function SearchPage() {
         </>
       )}
     </main>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-5xl px-4 py-8"><div className="h-16 animate-pulse rounded-xl border border-gray-200 bg-gray-100" /></main>}>
+      <SearchClient />
+    </Suspense>
   );
 }
