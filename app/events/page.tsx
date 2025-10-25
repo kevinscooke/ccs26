@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
 import { toEtDate, nowInET, formatDateET, formatTimeET } from "@/lib/et";
 import Container from '@/components/Container';
-import EventCard from "@/components/EventCard";
+import EventListCard from "@/components/event/EventListCard";
 import WeeklyControls from "@/components/WeeklyControls.client";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import weeklyStyles from "@/components/Weekly.module.css";
@@ -135,7 +135,7 @@ export default async function EventsAllPage() {
                       <div className="h-px flex-1 bg-[var(--fg)]/10" />
                     </div>
                   )}
-                  <EventCard event={e} />
+                  <EventListCard e={e} />
                 </React.Fragment>
               );
             })}

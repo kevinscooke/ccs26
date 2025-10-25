@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useEffect, useState } from "react";
 import EventCard from "@/components/EventCard";
+import EventListCard from "@/components/event/EventListCard";
 import eventsData from "@/app/data/events.json";
 
 const PAGE_SIZE = 15;
@@ -73,12 +74,14 @@ export default function PastEventsPage() {
         </div>
       </div>
 
-      <header className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
+      <header className="space-y-2 text-left">
+        <h1
+          className="text-balance font-serif text-3xl lg:text-4xl font-bold tracking-tight text-[var(--fg)]"
+        >
           Past Charlotte Car Shows
         </h1>
-        <p className="text-xl text-[var(--fg)]/70 max-w-2xl mx-auto mt-4">
-          Browse previously listed events.
+        <p className="max-w-3xl text-[13.5px] md:text-[15px] text-[var(--fg)]/70">
+          Recently ended Cars &amp; Coffee, meets, cruise-ins, and automotive events across the Charlotte area.
         </p>
       </header>
 
