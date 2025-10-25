@@ -65,11 +65,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="bg-bg text-text">
         <div className="min-h-dvh flex flex-col">
           <TopNav />
-      {/* Keep gutters at the app root so pages that don't render their own
-        max-width still get horizontal spacing on desktop and mobile.
-        We avoid `container` here to prevent nested max-width constraints
-        (which previously made some pages narrower on mobile). */}
-      <main className="w-full px-4 md:px-12 flex-1 py-8">{children}</main>
+
+          {/* Global top ad (centered, same gutters as content) */}
+          <div className="w-full px-4 md:px-12">
+            <HeaderAdBar />
+          </div>
+
+          {/* Page content */}
+          <main className="w-full px-4 md:px-12 flex-1 py-8">{children}</main>
+
+          {/* Global bottom ad (centered, same gutters as content) */}
+          <div className="w-full px-4 md:px-12">
+            <FooterAdBar />
+          </div>
+
           <Footer />
         </div>
 
