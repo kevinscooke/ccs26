@@ -83,18 +83,6 @@ export default async function EventsAllPage() {
   return (
     <Container>
       <section className="w-full space-y-8 lg:space-y-10">
-        <section>
-          <div className="flex items-center justify-center">
-            <AdSlot
-              slot="7744630827"
-              sizes={[
-                { media: "(min-width: 1024px)", width: 728, height: 90 }, // desktop leaderboard
-                { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile large banner
-              ]}
-            />
-          </div>
-        </section>
-
         <div className={`${weeklyStyles.headerRow} gap-4`}>
           <Breadcrumbs
             items={[{ label: "Home", href: "/" }, { label: "All Events", current: true }]}
@@ -167,19 +155,6 @@ export default async function EventsAllPage() {
             </div>
           </aside>
         </div>
-
-        {/* Bottom leaderboard ad */}
-        <section>
-          <div className="flex items-center justify-center">
-            <AdSlot
-              slot="7335717776"
-              sizes={[
-                { media: "(min-width: 1024px)", width: 728, height: 90 },
-                { media: "(max-width: 1023px)", width: 320, height: 100 },
-              ]}
-            />
-          </div>
-        </section>
       </section>
     </Container>
   );

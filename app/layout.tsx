@@ -6,6 +6,8 @@ import type { Metadata } from "next";
 
 import TopNav from "@/components/nav/TopNav";
 import Footer from "@/components/Footer";
+import HeaderAdBar from "@/components/ads/HeaderAdBar";
+import FooterAdBar from "@/components/ads/FooterAdBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://charlottecarshows.com"),

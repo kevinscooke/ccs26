@@ -138,19 +138,6 @@ export default async function EventPage({ params }: { params: { slug: string } }
   return (
     <Container>
       <div className="w-full space-y-6 py-6 lg:space-y-8">
-        {/* Top ad with reserved height (reduces CLS) */}
-        <section aria-label="Advertisement">
-          <div className="flex items-center justify-center min-h-[90px]">
-            <AdSlot
-              slot="7744630827"
-              sizes={[
-                { media: "(min-width: 1024px)", width: 728, height: 90 },
-                { media: "(max-width: 1023px)", width: 320, height: 100 },
-              ]}
-            />
-          </div>
-        </section>
-
         {/* Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
@@ -367,17 +354,6 @@ export default async function EventPage({ params }: { params: { slug: string } }
             </div>
           </nav>
         )}
-
-        {/* Bottom ad (full-width, responsive) */}
-        <section aria-label="Advertisement">
-          <div className="w-full">
-            <AdSlot
-              slot="7744630827" // use a different unit than the skyscraper
-              // full-width responsive; reserve height to ensure push
-              style={{ display: "block", width: "100%", minHeight: 120 }}
-            />
-          </div>
-        </section>
 
         {/* Mobile sticky CTA */}
         <StickyCTA

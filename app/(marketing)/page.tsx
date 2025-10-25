@@ -87,19 +87,6 @@ export default function MarketingHomePage() {
       />
 
       <div className="space-y-12 py-6 lg:space-y-10 lg:py-6">
-        {/* Row 1: Skinny Landscape Ad */}
-        <section>
-          <div className="flex justify-center">
-            <AdSlot
-              slot="7744630827"
-              sizes={[
-                { media: "(min-width: 1024px)", width: 728, height: 90 }, // desktop leaderboard
-                { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile large banner
-              ]}
-            />
-          </div>
-        </section>
-
         {/* Row 2: Hero + Compact Upcoming */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8 lg:items-start">
           <div className="space-y-6 lg:col-span-7">
@@ -315,19 +302,6 @@ export default function MarketingHomePage() {
                rel="noreferrer">
               Join on Facebook
             </a>
-          </div>
-        </section>
-
-        {/* Bottom ad slot */}
-        <section>
-          <div className="flex justify-center">
-            <AdSlot
-              slot="7335717776"
-              sizes={[
-                { media: "(min-width: 1024px)", width: 728, height: 90 },
-                { media: "(max-width: 1023px)", width: 320, height: 100 },
-              ]}
-            />
           </div>
         </section>
       </div>
