@@ -8,6 +8,13 @@ import TopNav from "@/components/nav/TopNav";
 import Footer from "@/components/Footer";
 import HeaderAdBar from "@/components/ads/HeaderAdBar";
 import FooterAdBar from "@/components/ads/FooterAdBar";
+import { Bebas_Neue } from "next/font/google";
+
+const heading = Bebas_Neue({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-heading", // exposes CSS var
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://charlottecarshows.com"),
@@ -54,7 +61,7 @@ export function generateViewport() {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={heading.variable}>
       <head>
         {/* Small perf wins for GA and images */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />

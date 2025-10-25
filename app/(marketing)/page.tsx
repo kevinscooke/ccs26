@@ -129,34 +129,35 @@ export default function MarketingHomePage() {
               </div>
             </article>
 
-            <div className="relative overflow-hidden rounded-3xl shadow-lg">
+            <div className="relative overflow-hidden rounded-3xl shadow-lg min-h-[480px] sm:min-h-[520px] lg:min-h-[520px]">
               <Image
                 src="/images/hero-ccs.jpg"
                 alt="Charlotte car show—rows of cars with spectators"
-                width={2000}
-                height={600}
+                fill
                 priority
                 loading="eager"
-                className="h-full w-full object-cover"
+                className="object-cover"
                 sizes="(min-width: 1280px) 45vw, (min-width: 1024px) 55vw, 100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-              <div className="absolute top-6 left-6 max-w-lg text-white space-y-2">
-                <p className="text-sm uppercase tracking-wide text-white/70">November highlight</p>
-                <h2 className="text-2xl font-bold leading-tight">
-                  Charlotte Auto Show • Uptown Charlotte
-                </h2>
-                <p className="text-sm text-white/80">
-                  New model debuts, specialty exhibits, and family-friendly attractions all weekend long at the Charlotte Convention Center.
-                </p>
-              </div>
-              <div className="absolute bottom-6 left-6">
-                <a
-                  href="/events/charlotte-auto-show/"
-                  className="ccs-btn-primary px-5 py-2 text-sm shadow-lg"
-                >
-                  Explore show schedule
-                </a>
+              <div className="absolute inset-0 flex flex-col justify-between gap-4 p-4 sm:p-6">
+                <div className="max-w-lg text-white space-y-2">
+                  <p className="text-xs sm:text-sm uppercase tracking-wide text-white/70">November highlight</p>
+                  <h2 className="text-xl sm:text-2xl font-bold leading-tight font-[var(--font-heading,_inherit)]">
+                    Charlotte Auto Show • Uptown Charlotte
+                  </h2>
+                  <p className="text-xs sm:text-sm text-white/80">
+                    New model debuts, specialty exhibits, and family-friendly attractions all weekend long at the Charlotte Convention Center.
+                  </p>
+                </div>
+                <div>
+                  <a
+                    href="/events/charlotte-auto-show/"
+                    className="ccs-btn-primary inline-block px-5 py-2 text-sm shadow-lg"
+                  >
+                    Explore show schedule
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
 import eventsData from "@/app/data/events.json";
-import venuesData from "@/app/data/venues.json";
+// import venuesData from "@/app/data/venues.json"; // not used here
 import Container from "@/components/Container";
 import { Calendar } from "lucide-react";
 import { formatDateET, formatTimeET, toEtDate } from "@/lib/et";
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const descBase = `${ev.title} in ${cityState} on ${dateLong}. ${(ev.description || "Details, time, venue, and map.").trim()}`.replace(/\s+/g, " ");
   const description = descBase.slice(0, 155);
   const canonical = `https://charlottecarshows.com/events/${params.slug}/`;
-  const image = ev.imageUrl || "/images/hero-ccs.jpg";
+  const image = ev.imageUrl?.trim() || "/images/hero-ccs.jpg";
 
   return {
     title,
@@ -67,30 +67,91 @@ export default async function EventPage({ params }: { params: { slug: string } }
   const showTime = ev.show_time ?? true;
 
   const canonical = `https://charlottecarshows.com/events/${params.slug}/`;
-  const image = ev.imageUrl || "/images/hero-ccs.jpg";
+  const image = ev.imageUrl?.trim() || "/images/hero-ccs.jpg";
+
+  // Clean, safe fields
+  const city = ev.city?.name || ev.venue?.city || "Charlotte";
+  const state = ev.venue?.state || "NC";
+  const desc = ev.description?.trim() || undefined;
+  const isPaid =
+    typeof ev.price === "number"
+      ? ev.price > 0
+      : Boolean(ev.isPaid ?? ev.paid ?? ev.admissionPaid ?? false);
+  const size =
+    typeof ev.size === "number"
+      ? ev.size
+      : typeof ev.estimatedSize === "number"
+      ? ev.estimatedSize
+      : typeof ev.expectedSize === "number"
+      ? ev.expectedSize
+      : undefined;
+  const isRecurring = Boolean(ev.isRecurring ?? ev.recurring ?? ev.frequency);
+  const venueSlug = ev.venue?.name ? slugify(ev.venue.name) : null;
+  const mapQuery = ev.venue
+    ? `${ev.venue.name}, ${[ev.venue.address1, ev.venue.address2, ev.venue.city, ev.venue.state, ev.venue.postal]
+        .filter(Boolean)
+        .join(", ")}`
+    : `${ev.title}, ${city}, ${state}`;
+  const mapsHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`;
+  const parkingInfo = (ev.parkingInfo || ev.parking || "").toString().trim() || "See event details";
 
   const siteUrl = isValidUrl(ev.url || ev.website || ev.siteUrl || ev.externalUrl)
     ? (ev.url || ev.website || ev.siteUrl || ev.externalUrl).trim()
     : null;
 
-  const venueList = (venuesData as any[]) || [];
-  const venueById = ev.venue?.id ? venueList.find((v) => String(v.id) === String(ev.venue?.id)) : null;
-  const venueSlug =
-    ev.venue?.slug ?? venueById?.slug ?? (ev.venue?.name ? slugify(ev.venue.name) : null) ?? null;
+  // Chronological prev/next (by startAt in ET)
+  const toMs = (d: string) => (toEtDate(d)?.getTime() ?? new Date(d).getTime());
+  const published = events.filter((e) => e.status === "PUBLISHED" && e.slug);
+  const sorted = [...published].sort((a, b) => toMs(a.startAt) - toMs(b.startAt));
+  const idx = sorted.findIndex((e) => e.slug === ev.slug);
+  const prev = idx > 0 ? sorted[idx - 1] : null;
+  const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
 
-  const isPaid = Boolean(ev.price) || ev.admission === "paid" || !!ev.paid;
-  const size = ev.size || ev.estimatedAttendance || null;
-  const isRecurring = !!ev.recurrence || !!ev.isRecurring || !!ev.frequency;
-  const parkingInfo = ev.venue?.parking || ev.parking || "Unknown";
+  // Enrichments for JSON-LD
+  const socials = [
+    ev.instagram, ev.facebook, ev.twitter, ev.youtube, ev.tiktok, ev.social, ev.socialUrl,
+  ]
+    .filter(Boolean)
+    .map((s: string) => s.trim())
+    .filter(isValidUrl);
 
-  // Build map + directions
-  const mapQuery = ev.venue ? fmtAddress(ev.venue) : `${ev.title} ${ev.city?.name ?? ""}`;
-  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+  const organizerObj =
+    ev.organizer
+      ? {
+          "@type": "Organization",
+          name: ev.organizer,
+          ...(siteUrl ? { url: siteUrl } : {}),
+          ...(socials.length ? { sameAs: socials } : {}),
+        }
+      : undefined;
 
-  // Prev/Next
-  const idx = events.findIndex((e) => e.slug === params.slug);
-  const prev = idx > 0 ? events[idx - 1] : null;
-  const next = idx >= 0 && idx < events.length - 1 ? events[idx + 1] : null;
+  const performers: any[] = Array.isArray((ev as any).performers)
+    ? (ev as any).performers
+        .map((p: any) =>
+          typeof p === "string"
+            ? { "@type": "Organization", name: p }
+            : p?.name
+            ? { "@type": p["@type"] || "Organization", name: p.name }
+            : null
+        )
+        .filter(Boolean)
+    : (ev as any).performer
+    ? [
+        typeof (ev as any).performer === "string"
+          ? { "@type": "Organization", name: (ev as any).performer }
+          : (ev as any).performer?.name
+          ? { "@type": (ev as any).performer["@type"] || "Organization", name: (ev as any).performer.name }
+          : null,
+      ].filter(Boolean)
+    : [];
+
+  const maxCapRaw =
+    (ev as any).capacity ??
+    (ev as any).maxCapacity ??
+    (ev as any).maxAttendees ??
+    (ev as any).maximumAttendeeCapacity ??
+    (typeof (ev as any).size === "number" ? (ev as any).size : undefined);
+  const maxCap = typeof maxCapRaw === "number" ? maxCapRaw : undefined;
 
   // ---------- JSON-LD (enriched) ----------
   const jsonLd: any = {
@@ -99,13 +160,15 @@ export default async function EventPage({ params }: { params: { slug: string } }
     name: ev.title,
     startDate: toEtDate(ev.startAt)?.toISOString() ?? ev.startAt,
     ...(ev.endAt ? { endDate: toEtDate(ev.endAt)?.toISOString() ?? ev.endAt } : {}),
-    description: ev.description || undefined,
+    description: desc,
     url: canonical,
     image,
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     isAccessibleForFree: !isPaid,
     offers: [{ "@type": "Offer", price: isPaid ? String(ev.price ?? "") : "0.00", priceCurrency: "USD", url: siteUrl || canonical, availability: "https://schema.org/InStock" }],
-    ...(ev.organizer ? { organizer: { "@type": "Organization", name: ev.organizer } } : {}),
+    ...(organizerObj ? { organizer: organizerObj } : {}),
+    ...(performers.length ? { performer: performers } : {}),
+    ...(typeof maxCap === "number" ? { maximumAttendeeCapacity: maxCap } : {}),
     ...(ev.venue?.name
       ? {
           location: {
@@ -137,7 +200,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
   return (
     <Container>
-      <div className="w-full space-y-6 py-6 lg:space-y-8">
+      <div className="w-full space-y-6 py-6 pb-20 lg:space-y-8">
         {/* Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
@@ -174,8 +237,8 @@ export default async function EventPage({ params }: { params: { slug: string } }
                 {isCancelled && <span className="inline-flex rounded-full bg-red-50 text-red-700 px-3 py-1">Canceled</span>}
               </div>
 
-              {ev.description && (
-                <p className="mt-4 max-w-2xl text-zinc-600 leading-relaxed">{ev.description}</p>
+              {desc && (
+                <p className="mt-4 max-w-2xl text-zinc-600 leading-relaxed">{desc}</p>
               )}
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -193,7 +256,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
                   title={ev.title}
                   startISO={toEtDate(ev.startAt)?.toISOString() ?? ev.startAt}
                   endISO={ev.endAt ? (toEtDate(ev.endAt)?.toISOString() ?? ev.endAt) : undefined}
-                  details={ev.description || ""}
+                  details={desc || ""}
                   location={mapQuery}
                 />
               </div>
@@ -254,7 +317,10 @@ export default async function EventPage({ params }: { params: { slug: string } }
                     </p>
                   </div>
                 </div>
-                <div id="map" className="aspect-[16/9] overflow-hidden rounded-xl border border-zinc-200">
+                <div
+                  id="map"
+                  className="scroll-mt-24 md:scroll-mt-28 aspect-[16/9] overflow-hidden rounded-xl border border-zinc-200"
+                >
                   <iframe
                     title="Event Location Map"
                     width="100%"
@@ -362,7 +428,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
             title: ev.title,
             startISO: toEtDate(ev.startAt)?.toISOString() ?? ev.startAt,
             endISO: ev.endAt ? (toEtDate(ev.endAt)?.toISOString() ?? ev.endAt) : undefined,
-            details: ev.description || "",
+            details: desc || "",
             location: mapQuery,
           }}
         />
