@@ -368,10 +368,14 @@ export default async function EventPage({ params }: { params: { slug: string } }
           </nav>
         )}
 
-        {/* Bottom ad */}
+        {/* Bottom ad (full-width, responsive) */}
         <section aria-label="Advertisement">
-          <div className="flex items-center justify-center">
-            <AdSlot slot="7335717776" />
+          <div className="w-full">
+            <AdSlot
+              slot="7744630827" // use a different unit than the skyscraper
+              // full-width responsive; reserve height to ensure push
+              style={{ display: "block", width: "100%", minHeight: 120 }}
+            />
           </div>
         </section>
 
