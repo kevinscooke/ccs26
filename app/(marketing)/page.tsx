@@ -86,7 +86,7 @@ export default function MarketingHomePage() {
         }}
       />
 
-      <div className="space-y-12 py-6 lg:space-y-10 lg:py-6">
+      <div className="space-y-12 pt-2 pb-6 lg:space-y-10 lg:pt-3 lg:pb-6">
         {/* Row 2: Hero + Compact Upcoming */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8 lg:items-start">
           <div className="space-y-6 lg:col-span-7">

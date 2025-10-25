@@ -200,7 +200,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
   return (
     <Container>
-      <div className="w-full space-y-6 py-6 pb-20 lg:space-y-8">
+      <div className="w-full space-y-6 pt-0 pb-20 lg:space-y-8">
         {/* Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
