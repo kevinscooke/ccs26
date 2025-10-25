@@ -10,6 +10,7 @@ import WeeklyControls from "@/components/WeeklyControls.client";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import weeklyStyles from "@/components/Weekly.module.css";
 import dynamic from "next/dynamic";
+import { SearchBox } from "@/components/search/SearchBox";
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 // Use runtime loader so /events stays in sync with V2 JSON (no rebuild needed)
@@ -109,6 +110,12 @@ export default async function EventsAllPage() {
             Charlotte area.
           </p>
         </header>
+
+        <div className="mb-6 md:mb-8">
+          <div className="max-w-xl">
+            <SearchBox />
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="space-y-5 lg:col-span-8">

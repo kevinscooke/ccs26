@@ -9,6 +9,7 @@ import TopNav from "@/components/nav/TopNav";
 import Footer from "@/components/Footer";
 import HeaderAdBar from "@/components/ads/HeaderAdBar";
 import FooterAdBar from "@/components/ads/FooterAdBar";
+import { SearchProvider } from "@/components/search/SearchProvider";
 
 // Removed Bebas_Neue and added Inter + Source Serif 4
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
@@ -62,10 +63,12 @@ export function generateViewport() {
   };
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
       <head>
+        {/* Keep this so the index is warmed up */}
+        <link rel="prefetch" href="/search-index.json" as="fetch" crossOrigin="anonymous" />
         {/* Small perf wins for GA and images */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -73,96 +76,97 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="dns-prefetch" href="https://i.ytimg.com" />
       </head>
       <body className="bg-bg text-text">
-        <div className="min-h-dvh flex flex-col">
-          <TopNav />
+        <SearchProvider>
+          <div className="min-h-dvh flex flex-col">
+            <TopNav />
 
-          {/* Global top ad (centered, no extra vertical padding here) */}
-          <div className="w-full px-4 md:px-12">
-            <HeaderAdBar />
+            {/* Global top ad */}
+            <div className="w-full px-4 md:px-12">
+              <HeaderAdBar />
+            </div>
+
+            <main className="w-full px-4 md:px-12 flex-1 pt-2 md:pt-3 pb-8">
+              {children}
+            </main>
+
+            <FooterAdBar />
+            <Footer />
           </div>
 
-          {/* Page content */}
-          <main className="w-full px-4 md:px-12 flex-1 pt-2 md:pt-3 pb-8">{children}</main>
+          {/* CollectionPage JSON-LD */}
+          <Script
+            id="ld-collection"
+            type="application/ld+json"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "CollectionPage",
+                name: "Charlotte Car Shows",
+                description:
+                  "Weekly Charlotte-area car shows, meets, and cruise-ins.",
+                url: "https://charlottecarshows.com/",
+                publisher: {
+                  "@type": "Organization",
+                  name: "Charlotte Car Shows",
+                  url: "https://charlottecarshows.com/",
+                },
+              }),
+            }}
+          />
 
-          {/* Global bottom ad */}
-          <FooterAdBar />
-
-          <Footer />
-        </div>
-
-        {/* CollectionPage JSON-LD */}
-        <Script
-          id="ld-collection"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "CollectionPage",
-              name: "Charlotte Car Shows",
-              description:
-                "Weekly Charlotte-area car shows, meets, and cruise-ins.",
-              url: "https://charlottecarshows.com/",
-              publisher: {
+          {/* Organization JSON-LD */}
+          <Script
+            id="ld-organization"
+            type="application/ld+json"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
                 "@type": "Organization",
                 name: "Charlotte Car Shows",
                 url: "https://charlottecarshows.com/",
-              },
-            }),
-          }}
-        />
+                logo: "https://charlottecarshows.com/images/hero-ccs.jpg",
+                sameAs: [
+                  "https://www.instagram.com/charlottecarshows/",
+                  "https://www.facebook.com/CharlotteCarShows/",
+                ],
+                contactPoint: [
+                  {
+                    "@type": "ContactPoint",
+                    email: "hello@charlottecarshows.com",
+                    contactType: "customer support",
+                    areaServed: "US-NC",
+                    availableLanguage: ["en"],
+                  },
+                ],
+              }),
+            }}
+          />
 
-        {/* Organization JSON-LD */}
-        <Script
-          id="ld-organization"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Charlotte Car Shows",
-              url: "https://charlottecarshows.com/",
-              logo: "https://charlottecarshows.com/images/hero-ccs.jpg",
-              sameAs: [
-                "https://www.instagram.com/charlottecarshows/",
-                "https://www.facebook.com/CharlotteCarShows/",
-              ],
-              contactPoint: [
-                {
-                  "@type": "ContactPoint",
-                  email: "hello@charlottecarshows.com",
-                  contactType: "customer support",
-                  areaServed: "US-NC",
-                  availableLanguage: ["en"],
-                },
-              ],
-            }),
-          }}
-        />
+          {/* Google Analytics 4 (GA4) */}
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-ECG2CKEFSG"
+            strategy="afterInteractive"
+          />
+          <Script id="ga4-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-ECG2CKEFSG', { 'send_page_view': true });
+            `}
+          </Script>
 
-        {/* Google Analytics 4 (GA4) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-ECG2CKEFSG"
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-ECG2CKEFSG', { 'send_page_view': true });
-          `}
-        </Script>
-
-        {/* Load AdSense globally, once */}
-        <Script
-          id="adsbygoogle-init"
-          async
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
-          crossOrigin="anonymous"
-        />
+          {/* Load AdSense globally, once */}
+          <Script
+            id="adsbygoogle-init"
+            async
+            strategy="afterInteractive"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630"
+            crossOrigin="anonymous"
+          />
+        </SearchProvider>
       </body>
     </html>
   );

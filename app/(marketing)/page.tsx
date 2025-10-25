@@ -6,7 +6,8 @@ import CompactUpcomingEvents from "@/components/event/CompactUpcomingEvents";
 import FeaturedEventsGrid from "@/components/event/FeaturedEventsGrid";
 import { TAGS } from "@/lib/tags";
 import dynamic from "next/dynamic";
-import { Button } from "@/components/ui/button"; // added
+import { Button } from "@/components/ui/button";
+import { SearchBox } from "@/components/search/SearchBox"; // added
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 export const metadata: Metadata = {
@@ -170,6 +171,13 @@ export default function MarketingHomePage() {
                 </h2>
                 <p className="text-xs text-gray-600">The next five stops worth a closer look.</p>
               </div>
+
+              {/* Quick search — re-added here */}
+              <div className="mb-4">
+                <SearchBox />
+              </div>
+
+              {/* List */}
               <Suspense
                 fallback={
                   <div className="space-y-3">
@@ -185,7 +193,15 @@ export default function MarketingHomePage() {
                 <CompactUpcomingEvents />
               </Suspense>
 
-              
+              {/* Footer CTA */}
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-xs text-gray-500">
+                  Want to feature your event here?{" "}
+                  <a href="/pricing" className="text-emerald-600 hover:text-emerald-800">
+                    Learn about premium listings
+                  </a>
+                </p>
+              </div>
             </div>
           </aside>
         </section>

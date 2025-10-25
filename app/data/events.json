@@ -3348,5 +3348,42 @@
     "cityId": null,
     "venueId": "31da4fd1-f7e8-4313-b704-e44e2d483f99",
     "organizerId": null
+  },
+  {
+    "id": "d6bad4b4-9580-4a6f-a388-33ef150b1443",
+    "title": "Sunrise at Sun Valley",
+    "slug": "sunrise-at-sun-valley-2025-10-25",
+    "description": "Monthly morning meet at Sun Valley 14 Theaters—great people, great cars, and easy roll-in. Family and pet friendly; all are welcome.",
+    "url": "Manual",
+    "startAt": "2025-10-25T12:00:00",
+    "endAt": "2025-10-25T14:30:00",
+    "createdAt": "2025-10-20T18:30:47.535",
+    "updatedAt": "2025-10-20T18:30:47.535",
+    "publishedAt": null,
+    "status": "PUBLISHED",
+    "isFeatured": false,
+    "price": null,
+    "type": "MEET",
+    "size": 100,
+    "isRecurring": true,
+    "socialLinks": [],
+    "public_status": "PUBLISHED",
+    "status_label": "Published",
+    "show_time": true,
+    "status_note": null,
+    "start_time_for_display": "2025-10-25T12:00:00",
+    "end_time_for_display": "2025-10-25T14:30:00",
+    "city": null,
+    "venue": {
+      "id": "d4bbfd0e-8a5e-4615-81fe-0401bf0dc1d1",
+      "name": "Sun Valley 14 Theaters",
+      "address1": "4669 Old Monroe Road",
+      "city": "Indian Trail",
+      "state": "NC"
+    },
+    "seriesId": null,
+    "cityId": null,
+    "venueId": "d4bbfd0e-8a5e-4615-81fe-0401bf0dc1d1",
+    "organizerId": null
   }
 ]

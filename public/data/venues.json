@@ -198,6 +198,17 @@
     "updated_at": "2025-09-17T02:50:24.472"
   },
   {
+    "id": "d4bbfd0e-8a5e-4615-81fe-0401bf0dc1d1",
+    "name": "Sun Valley 14 Theaters",
+    "slug": "sun-valley-14-theaters-indian-trail-nc",
+    "address1": "4669 Old Monroe Road",
+    "city": "Indian Trail",
+    "state": "NC",
+    "postal": "28079",
+    "created_at": "2025-10-20T18:30:47.535",
+    "updated_at": "2025-10-20T18:30:47.535"
+  },
+  {
     "id": "cmfndfjk30001izdk3ubrkl0s",
     "name": "Poplin Place Shopping Center",
     "slug": "poplin-place-shopping-center-monroe",

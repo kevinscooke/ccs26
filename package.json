@@ -8,7 +8,10 @@
     "postbuild": "mkdir -p out && cp public/_redirects out/_redirects || true",
     "start": "next start",
     "lint": "next lint",
-    "export:json": "node scripts/export-json.mjs"
+    "export:json": "pnpm build:search-index && node scripts/export-json.mjs",
+    "build:search-index": "tsx scripts/build-search-index.ts",
+    "predev": "pnpm build:search-index",
+    "prebuild": "pnpm build:search-index"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -41,7 +44,7 @@
     "netlify-plugin-inline-critical-css": "^2.0.0",
     "postcss": "^8.5.6",
     "tailwindcss": "3.4.13",
-    "tsx": "4.19.1",
+    "tsx": "^4.19.1",
     "typescript": "5.4.5"
   },
   "pnpm": {
