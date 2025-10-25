@@ -336,78 +336,57 @@ export default async function EventPage({ params }: { params: { slug: string } }
           </section>
         </section>
 
-        {/* Sidebar ad below (still sticky on desktop) and Prev/Next full width */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          {/* Right column ad */}
-          <aside className="space-y-4 lg:col-span-4 lg:col-start-9 lg:sticky lg:top-24 lg:self-start">
-            <div className="flex items-center justify-center min-h-[250px]">
-              <AdSlot
-                slot="7335717776"
-                sizes={[
-                  { media: "(min-width: 1024px)", width: 300, height: 600 },
-                  { media: "(max-width: 1023px)", width: 320, height: 100 },
-                ]}
-              />
+        {/* Prev/Next now full width under the two columns */}
+        {(prev || next) && (
+          <nav className="ccs-card mt-0 flex items-center justify-between text-sm">
+            <div>
+              {prev ? (
+                <Link
+                  className="group flex items-center gap-2 border rounded-xl px-4 py-2 hover:bg-zinc-50"
+                  href={`/events/${prev.slug}`}
+                >
+                  <span className="transition-transform group-hover:-translate-x-1">←</span>
+                  <span>{prev.title}</span>
+                </Link>
+              ) : (
+                <span className="px-4 text-zinc-400">Start of list</span>
+              )}
             </div>
-          </aside>
-
-          {/* Prev/Next now full width under the two columns */}
-          <div className="lg:col-span-12">
-            {(prev || next) && (
-              <nav className="ccs-card mt-0 flex items-center justify-between text-sm">
-                <div>
-                  {prev ? (
-                    <Link
-                      className="group flex items-center gap-2 border rounded-xl px-4 py-2 hover:bg-zinc-50"
-                      href={`/events/${prev.slug}`}
-                    >
-                      <span className="transition-transform group-hover:-translate-x-1">←</span>
-                      <span>{prev.title}</span>
-                    </Link>
-                  ) : (
-                    <span className="px-4 text-zinc-400">Start of list</span>
-                  )}
-                </div>
-                <div>
-                  {next ? (
-                    <Link
-                      className="group flex items-center gap-2 border rounded-xl px-4 py-2 hover:bg-zinc-50"
-                      href={`/events/${next.slug}`}
-                    >
-                      <span>{next.title}</span>
-                      <span className="transition-transform group-hover:translate-x-1">→</span>
-                    </Link>
-                  ) : (
-                    <span className="px-4 text-zinc-400">End of list</span>
-                  )}
-                </div>
-              </nav>
-            )}
-          </div>
-        </div>
+            <div>
+              {next ? (
+                <Link
+                  className="group flex items-center gap-2 border rounded-xl px-4 py-2 hover:bg-zinc-50"
+                  href={`/events/${next.slug}`}
+                >
+                  <span>{next.title}</span>
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </Link>
+              ) : (
+                <span className="px-4 text-zinc-400">End of list</span>
+              )}
+            </div>
+          </nav>
+        )}
 
         {/* Bottom ad */}
         <section aria-label="Advertisement">
-          <div className="flex items-center justify-center min-h-[90px]">
-            <AdSlot
-              slot="7335717776"
-              sizes={[
-                { media: "(min-width: 1024px)", width: 728, height: 90 },
-                { media: "(max-width: 1023px)", width: 320, height: 100 },
-              ]}
-            />
+          <div className="flex items-center justify-center">
+            <AdSlot slot="7335717776" />
           </div>
         </section>
 
         {/* Mobile sticky CTA */}
-        <StickyCTA directionsHref={mapsHref} icsMeta={{
-          title: ev.title,
-          startISO: toEtDate(ev.startAt)?.toISOString() ?? ev.startAt,
-          endISO: ev.endAt ? (toEtDate(ev.endAt)?.toISOString() ?? ev.endAt) : undefined,
-          details: ev.description || "",
-          location: mapQuery
-        }} />
-      </div>
+        <StickyCTA
+          directionsHref={mapsHref}
+          icsMeta={{
+            title: ev.title,
+            startISO: toEtDate(ev.startAt)?.toISOString() ?? ev.startAt,
+            endISO: ev.endAt ? (toEtDate(ev.endAt)?.toISOString() ?? ev.endAt) : undefined,
+            details: ev.description || "",
+            location: mapQuery,
+          }}
+        />
+      </div> {/* <-- closes the main wrapper once */}
     </Container>
   );
 }
