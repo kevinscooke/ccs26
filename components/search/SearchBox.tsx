@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchIndex } from "./SearchProvider";
+import { parseStartAtToUtc, formatET } from "@/lib/et"; // <- use ET helper
 
 export function SearchBox({ className = "" }: { className?: string }) {
   const { data, loading, error, clean, ensureLoaded } = useSearchIndex();
@@ -12,6 +13,7 @@ export function SearchBox({ className = "" }: { className?: string }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -31,7 +33,8 @@ export function SearchBox({ className = "" }: { className?: string }) {
   const results = useMemo(() => {
     if (!data || !q.trim()) return [];
     const nq = clean(q);
-    const now = Date.now();
+    const nowUtc = new Date();
+
     const filtered = data
       .map((e) => {
         const haystack = [
@@ -44,12 +47,21 @@ export function SearchBox({ className = "" }: { className?: string }) {
       })
       .filter((e): e is typeof data[number] => e !== null);
 
-    const upcoming = filtered
-      .filter((e) => (e.startAt ? new Date(e.startAt).getTime() >= now : false))
-      .sort((a, b) => new Date(a.startAt || 0).getTime() - new Date(b.startAt || 0).getTime());
-    const past = filtered
-      .filter((e) => !(e.startAt ? new Date(e.startAt).getTime() >= now : false))
-      .sort((a, b) => new Date(b.startAt || 0).getTime() - new Date(a.startAt || 0).getTime());
+    // Use ET-aware parsing for comparisons (handles -4/-5 with DST)
+    const withTimes = filtered.map((e) => ({
+      e,
+      startUtc: e.startAt ? parseStartAtToUtc(e.startAt) : null,
+    }));
+
+    const upcoming = withTimes
+      .filter(({ startUtc }) => !!startUtc && startUtc.getTime() >= nowUtc.getTime())
+      .sort((a, b) => a.startUtc!.getTime() - b.startUtc!.getTime())
+      .map(({ e }) => e);
+
+    const past = withTimes
+      .filter(({ startUtc }) => !startUtc || startUtc.getTime() < nowUtc.getTime())
+      .sort((a, b) => (b.startUtc?.getTime() ?? 0) - (a.startUtc?.getTime() ?? 0))
+      .map(({ e }) => e);
 
     return [...upcoming, ...past].slice(0, 10);
   }, [data, q, clean]);
@@ -62,6 +74,7 @@ export function SearchBox({ className = "" }: { className?: string }) {
           const term = q.trim();
           if (!term) return;
           setOpen(false);
+          inputRef.current?.blur(); // prevent mobile zoom carrying over
           router.push(`/search?q=${encodeURIComponent(term)}`);
         }}
       >
@@ -69,6 +82,7 @@ export function SearchBox({ className = "" }: { className?: string }) {
           Search events and venues
         </label>
         <input
+          ref={inputRef}
           id="global-search"
           type="search"
           value={q}
@@ -83,10 +97,12 @@ export function SearchBox({ className = "" }: { className?: string }) {
               (e.target as HTMLInputElement).blur();
             }
           }}
+          inputMode="search"
+          enterKeyHint="search"
+          autoComplete="on"
           placeholder="Search events or venues"
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-          aria-expanded={open && !!q}
-          aria-haspopup="listbox"
+          // text-base = 16px; shrink back to text-sm on md+ to match desktop
+          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-base md:text-sm text-gray-900 placeholder-gray-400 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
         />
       </form>
 
@@ -98,22 +114,45 @@ export function SearchBox({ className = "" }: { className?: string }) {
           {!loading && !error && results.length > 0 && (
             <ul className="max-h-80 overflow-auto divide-y divide-gray-100" role="listbox">
               {results.map((e, idx) => {
-                const start = e.startAt ? new Date(e.startAt) : null;
-                const dateLabel =
-                  start &&
-                  start.toLocaleString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    timeZone: "America/New_York",
-                  });
-                const location = [e.venue?.name, e.city?.name || e.venue?.city].filter(Boolean).join(", ");
+                // Robust ET date rendering with fallbacks
+                let startUtc: Date | null = null;
+                if (e.startAt) {
+                  try {
+                    startUtc = parseStartAtToUtc(e.startAt) ?? new Date(e.startAt);
+                  } catch {
+                    startUtc = new Date(e.startAt);
+                  }
+                }
+
+                const dateLabel = startUtc
+                  ? (() => {
+                      try {
+                        return formatET(startUtc!);
+                      } catch {
+                        // Fallback: still show ET even without helper
+                        return startUtc!.toLocaleString("en-US", {
+                          timeZone: "America/New_York",
+                          month: "short",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                        });
+                      }
+                    })()
+                  : null;
+
+                const location = [e.venue?.name, e.city?.name || e.venue?.city]
+                  .filter(Boolean)
+                  .join(", ");
+
                 return (
                   <li key={e.id}>
                     <Link
                       href={`/events/${e.slug}/`}
-                      onClick={() => setOpen(false)}
+                      onClick={() => {
+                        setOpen(false);
+                        (document.activeElement as HTMLElement | null)?.blur();
+                      }}
                       className="block px-3 py-2 text-sm hover:bg-gray-50"
                     >
                       <div className="font-medium text-gray-900">{e.title}</div>
