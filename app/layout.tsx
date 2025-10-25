@@ -81,10 +81,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* Page content */}
           <main className="w-full px-4 md:px-12 flex-1 pt-2 md:pt-3 pb-8">{children}</main>
 
-          {/* Global bottom ad (centered) */}
-          <div className="w-full px-4 md:px-12 flex items-center justify-center">
-            <FooterAdBar />
-          </div>
+          {/* Global bottom ad */}
+          <FooterAdBar />
 
           <Footer />
         </div>
