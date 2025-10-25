@@ -66,7 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="min-h-dvh flex flex-col">
           <TopNav />
 
-          {/* Global top ad (centered, same gutters as content) */}
+          {/* Global top ad (centered, no extra vertical padding here) */}
           <div className="w-full px-4 md:px-12">
             <HeaderAdBar />
           </div>
@@ -74,8 +74,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* Page content */}
           <main className="w-full px-4 md:px-12 flex-1 py-8">{children}</main>
 
-          {/* Global bottom ad (centered, same gutters as content) */}
-          <div className="w-full px-4 md:px-12">
+          {/* Global bottom ad (centered) */}
+          <div className="w-full px-4 md:px-12 flex items-center justify-center">
             <FooterAdBar />
           </div>
 

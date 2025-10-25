@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Container from '@/components/Container';
+import dynamicImport from "next/dynamic"; // rename to avoid clashing with `export const dynamic`
+const AdSlot = dynamicImport(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 export const dynamic = "force-static";
 
@@ -88,17 +90,15 @@ export default function Contact() {
         {/* Right: skyscraper ad ~40% (col-span-5/12 ≈ 41.7%) */}
         <aside className="md:col-span-5">
           <div className="ccs-card p-4">
-            {/* Preserve the raw ad snippet — use dangerouslySetInnerHTML to avoid JSX parsing errors */}
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-              }}
-            />
+            <div className="flex items-center justify-center">
+              <AdSlot
+                slot="7335717776"
+                sizes={[
+                  { media: "(min-width: 1024px)", width: 300, height: 600 }, // desktop skyscraper
+                  { media: "(max-width: 1023px)", width: 320, height: 100 },  // mobile fallback
+                ]}
+              />
+            </div>
           </div>
         </aside>
       </div>

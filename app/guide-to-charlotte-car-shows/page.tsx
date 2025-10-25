@@ -1,6 +1,8 @@
 // app/guide-to-charlotte-car-shows/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 export const runtime = "nodejs";
 export const revalidate = 604800; // 1 week ISR for guide page
@@ -110,11 +112,6 @@ export default function GuidePage() {
               <li><a className="hover:underline" href="#local-resources">Local Resources</a></li>
             </ul>
           </nav>
-
-          {/* Ad removed from main flow and placed into the right-rail below so it
-              is only visible on desktop (lg+) and remains sticky while the
-              user scrolls. This prevents the ad from appearing inline on
-              mobile between the ToC and content. */}
 
           {/* Sections */}
           <Section id="first-weekend" title="First Weekend Of The Month">
@@ -231,17 +228,15 @@ export default function GuidePage() {
               <li><a className="hover:underline" href="#annual-shows">Annual Car Shows in Charlotte</a></li>
               <li><a className="hover:underline" href="#local-resources">Local Resources</a></li>
             </ul>
+
             {/* Skyscraper ad: visible only on lg+ (aside is hidden on mobile) */}
-            <div className="mt-4">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-                }}
+            <div className="mt-4 flex items-center justify-center">
+              <AdSlot
+                slot="7335717776"
+                sizes={[
+                  { media: "(min-width: 1024px)", width: 300, height: 600 }, // desktop skyscraper
+                  { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile fallback (aside hidden on mobile)
+                ]}
               />
             </div>
           </div>

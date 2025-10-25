@@ -2,8 +2,8 @@
 import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
-import eventsData from "../../data/events.json";
-import venuesData from "../../data/venues.json";
+import eventsData from "@/app/data/events.json";
+import venuesData from "@/app/data/venues.json";
 import Container from "@/components/Container";
 import { Calendar } from "lucide-react";
 import { formatDateET, formatTimeET, toEtDate } from "@/lib/et";
