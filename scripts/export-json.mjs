@@ -180,4 +180,5 @@ main().catch((err) => {
   console.error("Export failed:", err?.message || err);
   process.exit(1);
 });
-exportEvents().catch(err => { console.error(err); process.exit(1); });
+console.log("[export-json] Skipped (exporter disabled). Using committed app/data/events.json.");
+process.exit(0);
