@@ -11,6 +11,7 @@ import eventsData from "../data/events.json";
 import { getEventSlug } from "@/lib/eventSlug";
 import HomeHero from "@/components/HomeHero";
 import { nowInET, startOfWeekET, endOfWeekET, formatRangeET, toEtDate } from "@/lib/et";
+import { Suspense } from "react";
 
 export function generateViewport() {
   return {
@@ -51,79 +52,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function DailyPage() {
-  const nowEt = nowInET();
-  const weekStartEt = startOfWeekET(nowEt);
-  const weekEndEt = endOfWeekET(nowEt);
-  const events = (eventsData as any[])
-    .filter(e => {
-      if (e.status !== "PUBLISHED") return false;
-      const dt = toEtDate(e.startAt);
-      return !!dt && dt >= weekStartEt && dt < weekEndEt;
-    })
-    .sort((a, b) => (toEtDate(a.startAt)?.getTime() ?? 0) - (toEtDate(b.startAt)?.getTime() ?? 0) || a.title.localeCompare(b.title))
-    // sanitize URL field so downstream rendering can rely on truthiness
-    .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
-
-  const headingRange = formatRangeET(weekStartEt, weekEndEt);
-  const tfmt = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "America/New_York",
-  });
-
-  // Build a serializable, minimal events array for the client component
-  // Only include events that start within the current ET week (Monday -> Sunday).
-  const weekStart = startOfWeekET(nowInET());
-  const weekEnd = endOfWeekET(nowInET()); // exclusive
-
-  const eventsForClient = (eventsData as any[] || [])
-    .map((e) => {
-      const startRaw = e.startAt ?? e.startsAt ?? e.start ?? e.datetime ?? null;
-      // build a stable id: prefer explicit id/slug, otherwise derive from slug/title+start
-      const stableId =
-        e.id ?? e.slug ?? getEventSlug(e) ?? `${String(e.title ?? "").slice(0, 40).replace(/\s+/g, "-")}-${String(startRaw)}`;
-      return {
-        __rawStart: startRaw,
-        id: String(stableId),
-        slug: getEventSlug(e), // canonical slug used across the site
-        title: e.title ?? e.name ?? "",
-        startAt: startRaw ? String(startRaw) : "",
-        description: e.description ?? e.summary ?? null,
-        url: e.url ?? null,
-        isFeatured: !!e.isFeatured,
-        // include public-facing status so UI can show "Canceled"
-        public_status: e.public_status ?? null,
-        show_time: typeof e.show_time === "boolean" ? e.show_time : true,
-        status_note: e.status_note ?? null,
-        venue: {
-          name: e.venue?.name ?? null,
-          slug: e.venue?.slug ?? null,
-          city: e.venue?.city ?? null,
-          state: e.venue?.state ?? null,
-        },
-        city: {
-          name: e.city?.name ?? e.city ?? null,
-        },
-      };
-    })
-    .filter((e) => {
-      const dt = toEtDate(e.__rawStart);
-      if (!dt) return false;
-      return dt >= weekStart && dt < weekEnd;
-    })
-    .map(({ __rawStart, ...keep }) => keep);
-
+export default async function DailyPage() {
   return (
-    <Container className="space-y-12 py-6">
-      {/* Top row */}
-      <div className={weeklyStyles.headerRow}>
-        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Daily View", current: true }]} />
-        <div className={weeklyStyles.headerControlsWrap}>
-          <WeeklyControls />
-        </div>
-      </div>
-
+    <Container>
+      <Suspense fallback={<div className="h-9 w-64 rounded-md bg-zinc-100" aria-hidden="true" />}>
+        <WeeklyControls />
+      </Suspense>
       {/* use shared hero so formatting matches other pages */}
       <HomeHero
         title="Daily Car Show List"
@@ -134,11 +68,11 @@ export default function DailyPage() {
 
       {/* Centered tabs */}
       <div className={weeklyStyles.tabsWrap}>
-        <WeeklyTabs events={eventsForClient} />
+        <WeeklyTabs events={[]} />
       </div>
 
       {/* Event list */}
-      <WeeklyList events={eventsForClient} />
+      <WeeklyList events={[]} />
     </Container>
   );
 }

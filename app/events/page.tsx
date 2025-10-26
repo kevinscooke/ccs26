@@ -1,5 +1,5 @@
 // app/events/page.tsx  (All events index - 1 column preserved)
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
@@ -89,7 +89,9 @@ export default async function EventsAllPage() {
             items={[{ label: "Home", href: "/" }, { label: "All Events", current: true }]}
           />
           <div className={weeklyStyles.headerControlsWrap}>
-            <WeeklyControls />
+            <Suspense fallback={<div className="h-9 w-64 rounded-md bg-zinc-100" aria-hidden="true" />}>
+              <WeeklyControls />
+            </Suspense>
           </div>
         </div>
 
