@@ -416,5 +416,27 @@
     "postal": "28107",
     "created_at": "2025-09-17T00:23:51.711",
     "updated_at": "2025-09-17T00:24:00.855"
+  },
+  {
+    "id": "cfbd3d0a-9fe4-463a-82a7-fb8c53fdd4c2",
+    "name": "Tattoo Bill’s Charlotte",
+    "slug": "tattoo-bills-charlotte-nc",
+    "address1": "10823 John Price Rd, F",
+    "city": "Charlotte",
+    "state": "NC",
+    "postal": "28273",
+    "created_at": "2025-10-26T00:39:16.311",
+    "updated_at": "2025-10-26T00:39:16.311"
+  },
+  {
+    "id": "fa4060ed-1dd1-4fa8-a724-b4747f1d5e27",
+    "name": "Indian Trail Town Hall",
+    "slug": "indian-trail-town-hall-nc",
+    "address1": "315 Matthews-Indian Trail Rd",
+    "city": "Indian Trail",
+    "state": "NC",
+    "postal": "28079",
+    "created_at": "2025-10-26T00:39:16.311",
+    "updated_at": "2025-10-26T00:39:16.311"
   }
 ]
