@@ -1,35 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useState, Fragment } from 'react';
+import { Menu, Transition } from '@headlessui/react';
 
 export default function TopNav() {
-  // open: false | 'events' | 'resources'
-  const [open, setOpen] = useState<false | 'events' | 'resources'>(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      if (!menuRef.current || !btnRef.current) return;
-      const t = e.target as Node;
-      if (menuRef.current.contains(t) || btnRef.current.contains(t)) return;
-      setOpen(false);
-    }
-    document.addEventListener('click', onDocClick);
-    return () => document.removeEventListener('click', onDocClick);
-  }, []);
-
-  // Close on escape
-  useEffect(() => {
-    function onEsc(e: KeyboardEvent) {
-      if (e.key === 'Escape') { setOpen(false); setMobileOpen(false); }
-    }
-    document.addEventListener('keydown', onEsc);
-    return () => document.removeEventListener('keydown', onEsc);
-  }, []);
 
   return (
     <header className="border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 sticky top-0 z-50">
@@ -39,91 +15,131 @@ export default function TopNav() {
         </Link>
 
         {/* Desktop nav */}
-  <nav className="hidden md:flex items-center gap-2">
-          {/* Charlotte Events with dropdown */}
-          <div className="relative">
-            <button
-              ref={btnRef}
-              type="button"
-              className="ccs-btn"
-              aria-haspopup="menu"
-              aria-expanded={open === 'events'}
-              onClick={() => setOpen(open === 'events' ? false : 'events')}
-            >
-              Charlotte Events
-              <span className="ml-2 inline-block align-middle">▾</span>
-            </button>
-            {open === 'events' && (
-              <div
-                ref={menuRef}
-                role="menu"
-                className="absolute right-0 mt-2 w-72 rounded-2xl border border-zinc-200 bg-white shadow-lg p-2"
-              >
-                
-                <Link
-                  href="/events/"
-                  role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
-                  onClick={() => setOpen(false)}
+        <nav className="hidden md:flex items-center gap-2">
+          {/* Charlotte Events */}
+          <Menu as="div" className="relative">
+            {({ open }) => (
+              <>
+                <Menu.Button
+                  className="ccs-btn inline-flex items-center gap-1"
+                  aria-label="Open Charlotte Events menu"
                 >
-                  All Charlotte Events
-                </Link>
-                <Link
-                  href="/weekly-car-show-list-charlotte/"
-                  role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
-                  onClick={() => setOpen(false)}
-                >
-                  Weekly Car Show List (Charlotte)
-                </Link>
-                <Link
-                  href="/events/charlotte-auto-show/"
-                  role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
-                  onClick={() => setOpen(false)}
-                >
-                  Charlotte Auto Show
-                </Link>
-              </div>
-            )}
-          </div>
+                  Charlotte Events
+                  <svg
+                    aria-hidden="true"
+                    className={`ml-2 h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
+                  </svg>
+                </Menu.Button>
 
-          {/* Resources dropdown (button-based, matches Events) */}
-          <div className="relative">
-            <button
-              type="button"
-              className="ccs-btn"
-              aria-haspopup="menu"
-              aria-expanded={open === 'resources'}
-              onClick={() => setOpen(open === 'resources' ? false : 'resources')}
-            >
-              Resources
-              <span className="ml-2 inline-block align-middle">▾</span>
-            </button>
-            {open === 'resources' && (
-              <div
-                role="menu"
-                className="absolute right-0 mt-2 w-80 rounded-2xl border border-zinc-200 bg-white shadow-lg p-2"
-              >
-                <Link
-                  href="/guide-to-charlotte-car-shows"
-                  role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
-                  onClick={() => setOpen(false)}
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
                 >
-                  Guide to Charlotte Car Shows
-                </Link>
-                <Link
-                  href="/resources"
-                  role="menuitem"
-                  className="block rounded-xl px-3 py-2 text-[var(--fg)] hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-600/20"
-                  onClick={() => setOpen(false)}
-                >
-                  All Resources
-                </Link>
-              </div>
+                  <Menu.Items
+                    className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-zinc-200 bg-white p-2 shadow-lg ring-1 ring-black/5 max-h-96 overflow-auto focus:outline-none"
+                  >
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/events/"
+                          className={`block rounded-xl px-3 py-2 text-[var(--fg)] focus:outline-none ${active ? 'bg-zinc-100' : ''}`}
+                        >
+                          All Charlotte Events
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/weekly-car-show-list-charlotte/"
+                          className={`block rounded-xl px-3 py-2 text-[var(--fg)] ${active ? 'bg-zinc-100' : ''}`}
+                        >
+                          Weekly Car Show List (Charlotte)
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/events/charlotte-auto-show/"
+                          className={`block rounded-xl px-3 py-2 text-[var(--fg)] ${active ? 'bg-zinc-100' : ''}`}
+                        >
+                          Charlotte Auto Show
+                        </Link>
+                      )}
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </>
             )}
-          </div>
+          </Menu>
+
+          {/* Resources */}
+          <Menu as="div" className="relative">
+            {({ open }) => (
+              <>
+                <Menu.Button
+                  className="ccs-btn inline-flex items-center gap-1"
+                  aria-label="Open Resources menu"
+                >
+                  Resources
+                  <svg
+                    aria-hidden="true"
+                    className={`ml-2 h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
+                  </svg>
+                </Menu.Button>
+
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items
+                    className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-zinc-200 bg-white p-2 shadow-lg ring-1 ring-black/5 max-h-96 overflow-auto focus:outline-none"
+                  >
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/guide-to-charlotte-car-shows"
+                          className={`block rounded-xl px-3 py-2 text-[var(--fg)] ${active ? 'bg-zinc-100' : ''}`}
+                        >
+                          Guide to Charlotte Car Shows
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/resources"
+                          className={`block rounded-xl px-3 py-2 text-[var(--fg)] ${active ? 'bg-zinc-100' : ''}`}
+                        >
+                          All Resources
+                        </Link>
+                      )}
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </>
+            )}
+          </Menu>
+
           <Link href="/pricing" className="ccs-btn">Pricing</Link>
           <Link href="/contact" className="ccs-btn">Contact</Link>
         </nav>
@@ -143,7 +159,6 @@ export default function TopNav() {
       {mobileOpen && (
         <div className="md:hidden border-t border-zinc-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80">
           <nav className="container py-2 flex flex-col gap-2">
-            
             <Link href="/events/" className="ccs-btn" onClick={() => setMobileOpen(false)}>
               All Charlotte Events
             </Link>

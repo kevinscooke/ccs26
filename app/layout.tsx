@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import HeaderAdBar from "@/components/ads/HeaderAdBar";
 import FooterAdBar from "@/components/ads/FooterAdBar";
 import { SearchProvider } from "@/components/search/SearchProvider";
+import Container from "@/components/Container";
 
 // Removed Bebas_Neue and added Inter + Source Serif 4
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });

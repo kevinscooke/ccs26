@@ -15,7 +15,7 @@ const footerNav = {
     { label: "Charlotte Stormwater", href: "https://charlottestormwater.com", external: true },
     { label: "Charlotte Trailer Rental", href: "https://clttrailerrental.com", external: true },
     { label: "Peoples Golf", href: "https://peoples.golf", external: true },
-    { label: "Raleigh Car Shows", href: "https://raleighcarshows.com", external: true },
+    { label: "Raleigh Car Shows (FOR SALE)", href: "https://raleighcarshows.com", external: true },
     { label: "Atlanta Car Shows (FOR SALE)", href: "https://charlottecarshows.com" /* placeholder if ATL site not live yet */, external: true },
   ],
   company: [
@@ -32,7 +32,7 @@ const footerNav = {
 
 export default function Footer() {
   return (
-    <footer className="bg-surface text-text border-t border-border mt-12">
+    <footer className="w-full">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-10 md:grid-cols-4">
           {/* Brand + blurb */}
@@ -103,7 +103,14 @@ export default function Footer() {
         </div>
 
         <hr className="my-8 border-border" />
-
+        <div
+          className="mb-4 rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-sm text-zinc-700 ring-1 ring-zinc-200
+                     dark:border-zinc-700/60 dark:bg-zinc-900/40 dark:text-zinc-300 dark:ring-zinc-800/60"
+          role="note"
+          aria-label="Disclaimer"
+        >
+          <b>DISCLAIMER:</b> Charlotte Car Shows is an event aggregator and is not the organizer of every event. If information is inaccurate or a listed event is not public, please let us know via our <a href="/contact/">contact form</a>. We encourage you to attend, meet, and interact at events to learn about participating individually or with your business.
+        </div>
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <p className="text-sm text-text-muted">
             © {new Date().getFullYear()} Charlotte Car Shows · Powered by{" "}
@@ -117,6 +124,8 @@ export default function Footer() {
             <li><Link href="/accessibility" className="hover:underline">Accessibility</Link></li>
           </ul>
         </div>
+
+        
       </div>
     </footer>
   );

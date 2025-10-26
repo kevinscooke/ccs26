@@ -98,10 +98,13 @@ export default function MarketingHomePage() {
                   Spotlight
                 </span>
                 <h1
-                  className="text-[32px] font-extrabold leading-tight tracking-tight text-gray-900 lg:text-[38px] font-heading"
+                  className="font-serif text-balance tracking-tight text-[var(--fg)] leading-tight text-3xl sm:text-4xl lg:text-5xl max-w-[68ch] break-words"
+                >Charlotte Car Shows</h1>
+                <h2
+                  className="font-serif text-balance tracking-tight text-[var(--fg)] leading-tight text-2xl sm:text-3xl lg:text-4xl max-w-[68ch] break-words" 
                 >
                   Charlotte&apos;s essential guide to car shows, cruises, and coffee meets.
-                </h1>
+                </h2>
               </div>
 
               <p className="text-base text-gray-700 lg:text-[17px] lg:leading-7">
@@ -110,25 +113,24 @@ export default function MarketingHomePage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-2 text-[13px] text-gray-500 lg:gap-3">
-                <span>Updated every Thursday</span>
+                <span>Updated Weekly</span>
                 <span>•</span>
                 <span>Greater Charlotte Metro</span>
                 <span>•</span>
-                <span>Curated by Charlotte Car Shows</span>
+                <span>Curated by Seach & Be Found</span>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-start gap-3">
                   <Button asChild>
                     <a href="/events/?when=weekend">This weekend</a>
                   </Button>
                   <Button asChild variant="secondary">
-                    <a href="/pricing/">Feature your event</a>
+                    <a href="/pricing/">Featured listings + IG shoutout • from $25</a>
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500">
-                  Pinned in listings + IG shoutout • from $25
-                  {/* TODO: replace $25 with your actual starting price */}
+                <p className="pt-1 text-xs text-gray-500">
+                  Est. 2015 — Free to list, easy to find.
                 </p>
               </div>
             </article>
@@ -169,14 +171,14 @@ export default function MarketingHomePage() {
                 <h2 className="text-lg font-bold text-gray-900 font-heading">
                   Upcoming events
                 </h2>
-                <p className="text-xs text-gray-600">The next five stops worth a closer look.</p>
+                
               </div>
 
               {/* Quick search — re-added here */}
               <div className="mb-4">
                 <SearchBox />
               </div>
-
+              <p className="pt-1 text-xs text-gray-600">The next six stops worth a closer look.</p>
               {/* List */}
               <Suspense
                 fallback={

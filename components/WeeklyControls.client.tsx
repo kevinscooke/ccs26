@@ -1,42 +1,67 @@
 "use client";
-import React from "react";
-import { useRouter, usePathname } from "next/navigation";
-import styles from "@/components/Weekly.module.css";
+
+import { Tab } from "@headlessui/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { Fragment, useMemo } from "react";
+
+const tabs = [
+  { label: "The List", href: "/events/" },
+  { label: "This Weekend", href: "/weekly-car-show-list-charlotte/" },
+  { label: "Daily", href: "/daily/" },
+];
 
 export default function WeeklyControls() {
   const router = useRouter();
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname() || "/";
+  const params = useSearchParams();
 
-  const isActive = (p: string) => pathname === p || pathname.startsWith(p);
+  const selectedIndex = useMemo(() => {
+    if (pathname.startsWith("/weekly-car-show-list-charlotte")) return 1;
+    if (pathname.startsWith("/daily")) return 2;
+    return 0;
+  }, [pathname]);
+
+  const preserveQuery = false; // set true to keep ?q=… filters across tabs
 
   return (
-    <div className={styles.headerControls} role="toolbar" aria-label="Weekly controls">
-      <button
-        type="button"
-        className={`${styles.ctrlBtn} ${isActive("/events") ? styles.ctrlBtnActive : ""}`}
-        onClick={() => router.push("/events/")}
-        aria-pressed={isActive("/events")}
+    <Tab.Group
+      selectedIndex={selectedIndex}
+      onChange={(idx) => {
+        const base = tabs[idx].href;
+        const next = preserveQuery && params?.size ? `${base}?${params.toString()}` : base;
+        router.push(next);
+      }}
+    >
+      <Tab.List
+        aria-label="View selector"
+        className="inline-flex gap-1 rounded-xl border border-zinc-200 bg-white p-1 shadow-sm"
       >
-        List
-      </button>
+        {tabs.map((t) => (
+          <Tab as={Fragment} key={t.href}>
+            {({ selected }) => (
+              <button
+                type="button"
+                className={[
+                  "px-3.5 py-1.5 text-sm font-medium rounded-lg outline-none transition",
+                  "focus-visible:ring-2 focus-visible:ring-green-600/30",
+                  selected
+                    ? "bg-zinc-900 text-white"
+                    : "text-zinc-700 hover:bg-zinc-50",
+                ].join(" ")}
+              >
+                {t.label}
+              </button>
+            )}
+          </Tab>
+        ))}
+      </Tab.List>
 
-      <button
-        type="button"
-        className={`${styles.ctrlBtn} ${isActive("/weekly-car-show-list-charlotte") ? styles.ctrlBtnActive : ""}`}
-        onClick={() => router.push("/weekly-car-show-list-charlotte/")}
-        aria-pressed={isActive("/weekly-car-show-list-charlotte")}
-      >
-        Week
-      </button>
-
-      <button
-        type="button"
-        className={`${styles.ctrlBtn} ${isActive("/daily") ? styles.ctrlBtnActive : ""}`}
-        onClick={() => router.push("/daily/")}
-        aria-pressed={isActive("/daily")}
-      >
-        Day
-      </button>
-    </div>
+      {/* Panels are optional here; include hidden panels to satisfy ARIA linkage */}
+      <Tab.Panels className="sr-only">
+        <Tab.Panel />
+        <Tab.Panel />
+        <Tab.Panel />
+      </Tab.Panels>
+    </Tab.Group>
   );
 }

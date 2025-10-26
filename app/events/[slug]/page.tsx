@@ -94,6 +94,12 @@ export default async function EventPage({ params }: { params: { slug: string } }
   const mapsHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`;
   const parkingInfo = (ev.parkingInfo || ev.parking || "").toString().trim() || "See event details";
 
+  // Past event flag (use endAt if present, else startAt)
+  const endedAtMs =
+    toEtDate(ev.endAt ?? ev.startAt)?.getTime() ??
+    new Date(ev.endAt ?? ev.startAt).getTime();
+  const isPastEvent = endedAtMs < Date.now();
+
   const siteUrl = isValidUrl(ev.url || ev.website || ev.siteUrl || ev.externalUrl)
     ? (ev.url || ev.website || ev.siteUrl || ev.externalUrl).trim()
     : null;
@@ -219,8 +225,29 @@ export default async function EventPage({ params }: { params: { slug: string } }
         <section className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white/70 backdrop-blur p-6 sm:p-8">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             <div>
+              {isPastEvent && (
+                <div
+                  className="mb-4 flex items-start gap-3 rounded-xl border border-orange-300 bg-orange-50 px-4 py-3 text-orange-900 shadow-sm ring-1 ring-orange-200"
+                  role="status"
+                >
+                  <span aria-hidden="true">⏳</span>
+                  <p className="text-sm">
+                    This event has ended.{" "}
+                    {venueSlug ? (
+                      <Link href={`/venue/${venueSlug}/`} className="underline underline-offset-2 font-medium">
+                        See upcoming events at this venue
+                      </Link>
+                    ) : (
+                      <Link href="/events/" className="underline underline-offset-2 font-medium">
+                        Browse upcoming events
+                      </Link>
+                    )}
+                    .
+                  </p>
+                </div>
+              )}
               {/* Display heading font via Tailwind class you’ll map to a display family (e.g., Bebas/Anton) */}
-              <h1 className="font-[var(--font-heading,_inherit)] tracking-tight text-4xl sm:text-5xl md:text-6xl leading-[0.95] text-zinc-900">
+              <h1 className="font-serif text-balance tracking-tight text-[var(--fg)] leading-tight text-3xl sm:text-4xl lg:text-5xl max-w-[68ch] break-words">
                 {ev.title}
               </h1>
 
@@ -242,8 +269,13 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 {siteUrl && (
-                  <a className="inline-flex items-center justify-center rounded-xl bg-black text-white px-4 py-2 text-sm font-medium shadow hover:bg-zinc-900"
-                     href={siteUrl} target="_blank" rel="noopener noreferrer" data-cta="official_site">
+                  <a
+                    className="inline-flex items-center justify-center rounded-xl bg-black text-white px-4 py-2 text-sm font-medium shadow hover:bg-zinc-900"
+                    href={siteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-cta="official_site"
+                  >
                     Visit official site
                   </a>
                 )}
