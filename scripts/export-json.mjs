@@ -46,7 +46,7 @@ async function main() {
     const status_note = e.status_note ?? null;
 
     return {
-      // existing fields (unchanged to avoid breaking downstream consumers)
+      // existing fields (unchanged)
       id: e.id,
       title: e.title,
       slug: e.slug,
@@ -57,7 +57,7 @@ async function main() {
       createdAt: e.created_at || null,
       updatedAt: e.updated_at || null,
       publishedAt: e.published_at || null,
-      status: e.status,                 // workflow status (PENDING/APPROVED/PUBLISHED/REJECTED)
+      status: e.status,
       isFeatured: e.is_featured,
       price: e.price ?? null,
       type: e.type ?? null,
@@ -65,18 +65,19 @@ async function main() {
       isRecurring: e.is_recurring,
       socialLinks: e.social_links ?? [],
 
-      // NEW: public-facing status & helpers
-      public_status,                    // PUBLISHED/CANCELLED/POSTPONED
+      public_status,
       status_label: labelFor(public_status),
-      show_time,                        // boolean
-      status_note,                      // string | null
+      show_time,
+      status_note,
 
-      // NEW: display-times (null when hidden)
       start_time_for_display: show_time ? e.start_at : null,
       end_time_for_display:   show_time ? (e.end_at ?? null) : null,
 
+      // new: venue slug for linking
+      venueslug: v?.slug ?? null,
+
       // location enrichment (unchanged)
-      city: null, // optional: enrich via a City RPC if you have one
+      city: null,
       venue: v
         ? {
             id: v.id,
@@ -176,9 +177,11 @@ async function exportEvents() {
   fs.writeFileSync("app/data/events.json", JSON.stringify(out, null, 2), "utf8");
 }
 
-main().catch((err) => {
-  console.error("Export failed:", err?.message || err);
-  process.exit(1);
-});
-console.log("[export-json] Skipped (exporter disabled). Using committed app/data/events.json.");
-process.exit(0);
+(async () => {
+   try {
+     await main();
+   } catch (err) {
+     console.error("Export failed:", err?.message || err);
+     process.exit(1);
+   }
+ })();

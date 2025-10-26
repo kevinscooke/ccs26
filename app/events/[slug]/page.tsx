@@ -56,7 +56,6 @@ function fmtAddress(v?: { address1?: string | null; address2?: string | null; ci
   return parts.join(", ");
 }
 function isValidUrl(u: any): u is string { return typeof u === "string" && /^\s*https?:\/\//i.test(u?.trim()); }
-function slugify(s: string) { return s.toLowerCase().trim().replace(/[\s/]+/g, "-").replace(/[^a-z0-9-]+/g, "").replace(/-+/g, "-"); }
 
 export default async function EventPage({ params }: { params: { slug: string } }) {
   const events = (eventsData as any[]) || [];
@@ -86,7 +85,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
       ? ev.expectedSize
       : undefined;
   const isRecurring = Boolean(ev.isRecurring ?? ev.recurring ?? ev.frequency);
-  const venueSlug = ev.venue?.name ? slugify(ev.venue.name) : null;
+  const venueSlug = ev.venueslug ? String(ev.venueslug).trim() : null;
   const mapQuery = ev.venue
     ? `${ev.venue.name}, ${[ev.venue.address1, ev.venue.address2, ev.venue.city, ev.venue.state, ev.venue.postal]
         .filter(Boolean)

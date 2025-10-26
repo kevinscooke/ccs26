@@ -10,7 +10,8 @@
     "lint": "next lint",
     "build:search-index": "tsx scripts/build-search-index.ts",
     "predev": "pnpm build:search-index",
-    "prebuild": "pnpm build:search-index"
+    "prebuild": "pnpm build:search-index",
+    "export:json": "node scripts/export-json.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

@@ -23,6 +23,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-05T16:00:00",
     "end_time_for_display": "2025-10-05T20:00:00",
+    "venueslug": "downtown-mt-gilead-nc",
     "city": null,
     "venue": {
       "id": "c14a1163-f2cf-4016-b42e-c4c8d5e08e00",
@@ -60,6 +61,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-02T17:00:00",
     "end_time_for_display": "2025-11-02T21:00:00",
+    "venueslug": "downtown-mt-gilead-nc",
     "city": null,
     "venue": {
       "id": "c14a1163-f2cf-4016-b42e-c4c8d5e08e00",
@@ -97,6 +99,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-19T22:00:00",
     "end_time_for_display": "2025-09-20T02:00:00",
+    "venueslug": "late-apex-storage-condos-mooresville",
     "city": null,
     "venue": {
       "id": "cmfn7nkqe000030mi5grdy5uk",
@@ -134,6 +137,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-15T13:00:00",
     "end_time_for_display": "2025-11-15T17:00:00",
+    "venueslug": "charlotte-motor-speedway",
     "city": null,
     "venue": {
       "id": "cmfn8o61r000011ymmqyef2e3",
@@ -171,6 +175,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-20T13:00:00",
     "end_time_for_display": "2025-12-20T17:00:00",
+    "venueslug": "charlotte-motor-speedway",
     "city": null,
     "venue": {
       "id": "cmfn8o61r000011ymmqyef2e3",
@@ -208,6 +213,7 @@
     "status_note": null,
     "start_time_for_display": "2026-01-17T13:00:00",
     "end_time_for_display": "2026-01-17T17:00:00",
+    "venueslug": "charlotte-motor-speedway",
     "city": null,
     "venue": {
       "id": "cmfn8o61r000011ymmqyef2e3",
@@ -245,6 +251,7 @@
     "status_note": null,
     "start_time_for_display": "2026-02-21T13:00:00",
     "end_time_for_display": "2026-02-21T17:00:00",
+    "venueslug": "charlotte-motor-speedway",
     "city": null,
     "venue": {
       "id": "cmfn8o61r000011ymmqyef2e3",
@@ -282,6 +289,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T13:00:00",
     "end_time_for_display": "2025-09-27T17:00:00",
+    "venueslug": "gateway-classic-cars-concord",
     "city": null,
     "venue": {
       "id": "cmfndvzbh0001127pjz5wegno",
@@ -319,6 +327,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-25T13:00:00",
     "end_time_for_display": "2025-10-25T17:00:00",
+    "venueslug": "gateway-classic-cars-concord",
     "city": null,
     "venue": {
       "id": "cmfndvzbh0001127pjz5wegno",
@@ -356,6 +365,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-18T12:00:00",
     "end_time_for_display": "2025-10-18T16:00:00",
+    "venueslug": "charlotte-motor-speedway",
     "city": null,
     "venue": {
       "id": "cmfn8o61r000011ymmqyef2e3",
@@ -393,6 +403,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-29T14:00:00",
     "end_time_for_display": "2025-11-29T18:00:00",
+    "venueslug": "gateway-classic-cars-concord",
     "city": null,
     "venue": {
       "id": "cmfndvzbh0001127pjz5wegno",
@@ -430,6 +441,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-27T14:00:00",
     "end_time_for_display": "2025-12-27T18:00:00",
+    "venueslug": "gateway-classic-cars-concord",
     "city": null,
     "venue": {
       "id": "cmfndvzbh0001127pjz5wegno",
@@ -467,6 +479,7 @@
     "status_note": null,
     "start_time_for_display": "2026-01-31T14:00:00",
     "end_time_for_display": "2026-01-31T18:00:00",
+    "venueslug": "gateway-classic-cars-concord",
     "city": null,
     "venue": {
       "id": "cmfndvzbh0001127pjz5wegno",
@@ -504,6 +517,7 @@
     "status_note": null,
     "start_time_for_display": "2026-02-28T14:00:00",
     "end_time_for_display": "2026-02-28T18:00:00",
+    "venueslug": "gateway-classic-cars-concord",
     "city": null,
     "venue": {
       "id": "cmfndvzbh0001127pjz5wegno",
@@ -541,6 +555,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-20T13:00:00",
     "end_time_for_display": "2025-09-20T13:00:00",
+    "venueslug": "lake-norman-brewery-denver",
     "city": null,
     "venue": {
       "id": "cmfndetaz0000izdko2bedz6i",
@@ -578,6 +593,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-20T12:00:00",
     "end_time_for_display": "2025-09-20T16:00:00",
+    "venueslug": "charlotte-motor-speedway",
     "city": null,
     "venue": {
       "id": "cmfn8o61r000011ymmqyef2e3",
@@ -615,6 +631,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-04T12:00:00",
     "end_time_for_display": "2025-10-04T16:00:00",
+    "venueslug": "martha-rivers-park-gastonia",
     "city": null,
     "venue": {
       "id": "cmfndvzbl0002127px2vitl6x",
@@ -652,6 +669,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-01T12:00:00",
     "end_time_for_display": "2025-11-01T16:00:00",
+    "venueslug": "martha-rivers-park-gastonia",
     "city": null,
     "venue": {
       "id": "cmfndvzbl0002127px2vitl6x",
@@ -689,6 +707,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-06T13:00:00",
     "end_time_for_display": "2025-12-06T17:00:00",
+    "venueslug": "martha-rivers-park-gastonia",
     "city": null,
     "venue": {
       "id": "cmfndvzbl0002127px2vitl6x",
@@ -726,6 +745,7 @@
     "status_note": null,
     "start_time_for_display": "2026-01-03T13:00:00",
     "end_time_for_display": "2026-01-03T17:00:00",
+    "venueslug": "martha-rivers-park-gastonia",
     "city": null,
     "venue": {
       "id": "cmfndvzbl0002127px2vitl6x",
@@ -763,6 +783,7 @@
     "status_note": null,
     "start_time_for_display": "2026-02-07T13:00:00",
     "end_time_for_display": "2026-02-07T17:00:00",
+    "venueslug": "martha-rivers-park-gastonia",
     "city": null,
     "venue": {
       "id": "cmfndvzbl0002127px2vitl6x",
@@ -800,6 +821,7 @@
     "status_note": null,
     "start_time_for_display": "2026-03-07T13:00:00",
     "end_time_for_display": "2026-03-07T17:00:00",
+    "venueslug": "martha-rivers-park-gastonia",
     "city": null,
     "venue": {
       "id": "cmfndvzbl0002127px2vitl6x",
@@ -837,6 +859,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-14T23:00:00",
     "end_time_for_display": "2025-11-15T01:00:00",
+    "venueslug": "historic-downtown-monroe-monroe",
     "city": null,
     "venue": {
       "id": "cmfndxd9d0004127pgx12acn3",
@@ -874,6 +897,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-12T23:00:00",
     "end_time_for_display": "2025-12-13T01:00:00",
+    "venueslug": "historic-downtown-monroe-monroe",
     "city": null,
     "venue": {
       "id": "cmfndxd9d0004127pgx12acn3",
@@ -911,6 +935,7 @@
     "status_note": null,
     "start_time_for_display": "2026-01-09T23:00:00",
     "end_time_for_display": "2026-01-10T01:00:00",
+    "venueslug": "historic-downtown-monroe-monroe",
     "city": null,
     "venue": {
       "id": "cmfndxd9d0004127pgx12acn3",
@@ -948,6 +973,7 @@
     "status_note": null,
     "start_time_for_display": "2026-02-13T23:00:00",
     "end_time_for_display": "2026-02-14T01:00:00",
+    "venueslug": "historic-downtown-monroe-monroe",
     "city": null,
     "venue": {
       "id": "cmfndxd9d0004127pgx12acn3",
@@ -985,6 +1011,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T13:00:00",
     "end_time_for_display": "2025-09-27T18:00:00",
+    "venueslug": "victory-youth-building-charlotte",
     "city": null,
     "venue": {
       "id": "cmfrc41lt0001ug4aozzyvd7h",
@@ -1022,6 +1049,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-25T21:00:00",
     "end_time_for_display": "2025-10-26T00:00:00",
+    "venueslug": "craft-burger-n-tap-denver-nc",
     "city": null,
     "venue": {
       "id": "26a9202a-687f-479d-9cba-79298154e237",
@@ -1059,6 +1087,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-11T13:00:00",
     "end_time_for_display": "2025-10-11T15:00:00",
+    "venueslug": "hendrick-porsche",
     "city": null,
     "venue": {
       "id": "cmfndxz8y0006127pprqeammk",
@@ -1096,6 +1125,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-08T14:00:00",
     "end_time_for_display": "2025-11-08T16:00:00",
+    "venueslug": "hendrick-porsche",
     "city": null,
     "venue": {
       "id": "cmfndxz8y0006127pprqeammk",
@@ -1133,6 +1163,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-13T14:00:00",
     "end_time_for_display": "2025-12-13T16:00:00",
+    "venueslug": "hendrick-porsche",
     "city": null,
     "venue": {
       "id": "cmfndxz8y0006127pprqeammk",
@@ -1170,6 +1201,7 @@
     "status_note": null,
     "start_time_for_display": "2026-01-10T14:00:00",
     "end_time_for_display": "2026-01-10T16:00:00",
+    "venueslug": "hendrick-porsche",
     "city": null,
     "venue": {
       "id": "cmfndxz8y0006127pprqeammk",
@@ -1207,6 +1239,7 @@
     "status_note": null,
     "start_time_for_display": "2026-02-14T14:00:00",
     "end_time_for_display": "2026-02-14T16:00:00",
+    "venueslug": "hendrick-porsche",
     "city": null,
     "venue": {
       "id": "cmfndxz8y0006127pprqeammk",
@@ -1244,6 +1277,7 @@
     "status_note": null,
     "start_time_for_display": "2026-03-14T13:00:00",
     "end_time_for_display": "2026-03-14T15:00:00",
+    "venueslug": "hendrick-porsche",
     "city": null,
     "venue": {
       "id": "cmfndxz8y0006127pprqeammk",
@@ -1281,6 +1315,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-10T22:00:00",
     "end_time_for_display": "2025-10-11T00:00:00",
+    "venueslug": "historic-downtown-monroe-monroe",
     "city": null,
     "venue": {
       "id": "cmfndxd9d0004127pgx12acn3",
@@ -1318,6 +1353,7 @@
     "status_note": null,
     "start_time_for_display": "2026-03-13T22:00:00",
     "end_time_for_display": "2026-03-14T00:00:00",
+    "venueslug": "historic-downtown-monroe-monroe",
     "city": null,
     "venue": {
       "id": "cmfndxd9d0004127pgx12acn3",
@@ -1355,6 +1391,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-20T14:00:00",
     "end_time_for_display": "2025-09-20T16:00:00",
+    "venueslug": "lamborghini-charlotte",
     "city": null,
     "venue": {
       "id": "cmfndxd9e0005127plris3v6j",
@@ -1392,6 +1429,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-21T13:00:00",
     "end_time_for_display": "2025-09-21T13:00:00",
+    "venueslug": "poplin-place-shopping-center-monroe",
     "city": null,
     "venue": {
       "id": "cmfndfjk30001izdk3ubrkl0s",
@@ -1429,6 +1467,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-20T17:00:00",
     "end_time_for_display": "2025-11-21T02:00:00",
+    "venueslug": "charlotte-convention-center-charlotte",
     "city": null,
     "venue": {
       "id": "cmfndyykw0007127p4uq7aqvl",
@@ -1466,6 +1505,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T21:00:00",
     "end_time_for_display": "2025-09-28T00:00:00",
+    "venueslug": "craft-burger-n-tap-denver-nc",
     "city": null,
     "venue": {
       "id": "26a9202a-687f-479d-9cba-79298154e237",
@@ -1503,6 +1543,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-04T15:00:00",
     "end_time_for_display": "2025-10-04T19:00:00",
+    "venueslug": "fly-high-lexington-davidson-county-executive-airport-lexington-nc",
     "city": null,
     "venue": {
       "id": "6419a49f-f8ee-42aa-92c9-cae98559fe27",
@@ -1540,6 +1581,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-14T12:30:00",
     "end_time_for_display": "2025-12-14T14:30:00",
+    "venueslug": "harris-teeter-waxhaw-nc",
     "city": null,
     "venue": {
       "id": "2c12db2e-2aeb-4735-a6e3-178f83fe05d6",
@@ -1577,6 +1619,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-03T21:00:00",
     "end_time_for_display": "2025-10-04T01:00:00",
+    "venueslug": "mint-hill-festival-shopping-center-mint-hill-nc",
     "city": null,
     "venue": {
       "id": "e6c879e5-79df-4e54-9cde-9813ce07a8f6",
@@ -1614,6 +1657,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-07T22:00:00",
     "end_time_for_display": "2025-11-08T02:00:00",
+    "venueslug": "mint-hill-festival-shopping-center-mint-hill-nc",
     "city": null,
     "venue": {
       "id": "e6c879e5-79df-4e54-9cde-9813ce07a8f6",
@@ -1651,6 +1695,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-07T23:00:00",
     "end_time_for_display": "2025-11-08T02:00:00",
+    "venueslug": "downtown-york-congress-st-n-york-sc",
     "city": null,
     "venue": {
       "id": "45eb379e-2d29-4cc9-8e5c-d4f37d8efc4e",
@@ -1688,6 +1733,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-04T14:00:00",
     "end_time_for_display": "2025-10-04T18:00:00",
+    "venueslug": "advantage-place-statesville-nc",
     "city": null,
     "venue": {
       "id": "fd057c28-e2d5-40da-b445-73b191c07b2c",
@@ -1727,6 +1773,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-22T14:00:00",
     "end_time_for_display": "2025-11-22T20:00:00",
+    "venueslug": "trane-technologies-davidson-nc",
     "city": null,
     "venue": {
       "id": "d6fb9a15-28aa-4fec-982d-40dfb9959970",
@@ -1766,6 +1813,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-28T17:00:00",
     "end_time_for_display": "2025-09-28T20:00:00",
+    "venueslug": "jet-s-pizza-matthews-nc-matthews-nc",
     "city": null,
     "venue": {
       "id": "fc80c7fb-1172-4cc1-a220-b0dea2a64e94",
@@ -1805,6 +1853,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-26T17:00:00",
     "end_time_for_display": "2025-10-26T20:00:00",
+    "venueslug": "jet-s-pizza-matthews-nc-matthews-nc",
     "city": null,
     "venue": {
       "id": "fc80c7fb-1172-4cc1-a220-b0dea2a64e94",
@@ -1842,6 +1891,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-25T21:00:00",
     "end_time_for_display": "2025-09-26T01:00:00",
+    "venueslug": "murto-made-mooresville-nc",
     "city": null,
     "venue": {
       "id": "349b368e-c8e7-47da-8ff2-b54159869c3e",
@@ -1879,6 +1929,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-08T12:00:00",
     "end_time_for_display": "2025-11-08T15:00:00",
+    "venueslug": "southern-touch-bakery-york-sc",
     "city": null,
     "venue": {
       "id": "6c74bc72-3787-41f2-a269-ddb8c205ef79",
@@ -1916,6 +1967,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-11T11:00:00",
     "end_time_for_display": "2025-10-11T14:00:00",
+    "venueslug": "southern-touch-bakery-york-sc",
     "city": null,
     "venue": {
       "id": "6c74bc72-3787-41f2-a269-ddb8c205ef79",
@@ -1953,6 +2005,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-13T12:00:00",
     "end_time_for_display": "2025-12-13T15:00:00",
+    "venueslug": "southern-touch-bakery-york-sc",
     "city": null,
     "venue": {
       "id": "6c74bc72-3787-41f2-a269-ddb8c205ef79",
@@ -1990,6 +2043,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T12:00:00",
     "end_time_for_display": "2025-09-27T14:30:00",
+    "venueslug": "sun-valley-commons-indian-trail",
     "city": null,
     "venue": {
       "id": "cmfrbu1820001ug14s3ovvb1y",
@@ -2027,6 +2081,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-19T11:30:00",
     "end_time_for_display": "2025-10-19T13:30:00",
+    "venueslug": "harris-teeter-waxhaw-nc",
     "city": null,
     "venue": {
       "id": "2c12db2e-2aeb-4735-a6e3-178f83fe05d6",
@@ -2064,6 +2119,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T14:00:00",
     "end_time_for_display": "2025-09-27T19:00:00",
+    "venueslug": "blackstone-shooting-sports-charlotte-nc",
     "city": null,
     "venue": {
       "id": "8c4e1811-44e5-4955-b193-f82d5c96f13c",
@@ -2101,6 +2157,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T12:00:00",
     "end_time_for_display": "2025-09-27T19:00:00",
+    "venueslug": "crossroads-ford-indian-trail-nc",
     "city": null,
     "venue": {
       "id": "af1ecbe5-82ec-4450-8541-c40db903b2c0",
@@ -2138,6 +2195,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-26T20:00:00",
     "end_time_for_display": "2025-09-27T01:00:00",
+    "venueslug": "downtown-oakboro-nc",
     "city": null,
     "venue": {
       "id": "953a2d28-291e-423d-930a-b110bba71baa",
@@ -2175,6 +2233,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T20:00:00",
     "end_time_for_display": "2025-09-28T01:00:00",
+    "venueslug": "downtown-oakboro-nc",
     "city": null,
     "venue": {
       "id": "953a2d28-291e-423d-930a-b110bba71baa",
@@ -2212,6 +2271,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T13:00:00",
     "end_time_for_display": "2025-09-27T15:00:00",
+    "venueslug": "knowledge-perk-coffee-rock-hill-sc",
     "city": null,
     "venue": {
       "id": "83362e22-7fa0-4b20-9804-18155c87557b",
@@ -2249,6 +2309,7 @@
     "status_note": null,
     "start_time_for_display": "2025-09-27T14:00:00",
     "end_time_for_display": "2025-09-27T17:00:00",
+    "venueslug": "brooklyns-pizzeria-concord-nc",
     "city": null,
     "venue": {
       "id": "e80ab1a4-a58f-4fa6-a073-faa7fddcd140",
@@ -2288,6 +2349,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-01T13:00:00",
     "end_time_for_display": "2025-11-01T19:00:00",
+    "venueslug": "southminster-gastonia-nc",
     "city": null,
     "venue": {
       "id": "70091cd1-1684-4d1a-bffb-30f8edb3289e",
@@ -2325,6 +2387,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-05T13:00:00",
     "end_time_for_display": "2025-10-05T15:00:00",
+    "venueslug": "the-villager-deli-pinehurst-nc",
     "city": null,
     "venue": {
       "id": "c18ae0bc-3818-42bd-b549-37256ce9e95d",
@@ -2362,6 +2425,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-26T18:00:00",
     "end_time_for_display": "2025-10-26T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2399,6 +2463,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-11T14:00:00",
     "end_time_for_display": "2025-10-11T16:00:00",
+    "venueslug": "lamborghini-charlotte",
     "city": null,
     "venue": {
       "id": "cmfndxd9e0005127plris3v6j",
@@ -2436,6 +2501,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-16T12:30:00",
     "end_time_for_display": "2025-11-16T14:30:00",
+    "venueslug": "harris-teeter-waxhaw-nc",
     "city": null,
     "venue": {
       "id": "2c12db2e-2aeb-4735-a6e3-178f83fe05d6",
@@ -2473,6 +2539,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-25T13:00:00",
     "end_time_for_display": "2025-10-25T15:00:00",
+    "venueslug": "knowledge-perk-coffee-rock-hill-sc",
     "city": null,
     "venue": {
       "id": "83362e22-7fa0-4b20-9804-18155c87557b",
@@ -2510,6 +2577,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-30T19:00:00",
     "end_time_for_display": "2025-11-30T21:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2547,6 +2615,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-28T19:00:00",
     "end_time_for_display": "2025-12-28T21:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2584,6 +2653,7 @@
     "status_note": null,
     "start_time_for_display": "2026-01-25T19:00:00",
     "end_time_for_display": "2026-01-25T21:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2621,6 +2691,7 @@
     "status_note": null,
     "start_time_for_display": "2026-02-22T19:00:00",
     "end_time_for_display": "2026-02-22T21:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2658,6 +2729,7 @@
     "status_note": null,
     "start_time_for_display": "2026-03-29T18:00:00",
     "end_time_for_display": "2026-03-29T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2695,6 +2767,7 @@
     "status_note": null,
     "start_time_for_display": "2026-04-26T18:00:00",
     "end_time_for_display": "2026-04-26T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2732,6 +2805,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-01T13:00:00",
     "end_time_for_display": "2025-11-01T17:00:00",
+    "venueslug": "autobarn-classic-cars-concord-nc",
     "city": null,
     "venue": {
       "id": "f5d5a9ec-8eac-4c94-b8cc-24442022df69",
@@ -2769,6 +2843,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-01T15:00:00",
     "end_time_for_display": "2025-11-01T19:00:00",
+    "venueslug": "river-oaks-community-church-clemmons-nc",
     "city": null,
     "venue": {
       "id": "ca4c29b1-e952-4016-8d61-b93fa3f06698",
@@ -2806,6 +2881,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-25T16:00:00",
     "end_time_for_display": "2025-10-25T20:00:00",
+    "venueslug": "visible-auto-lab-charlotte-nc",
     "city": null,
     "venue": {
       "id": "978dadf6-4ff5-4a88-8163-6d3598d6898c",
@@ -2845,6 +2921,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-21T17:00:00",
     "end_time_for_display": "2025-11-22T02:00:00",
+    "venueslug": "charlotte-convention-center-charlotte",
     "city": null,
     "venue": {
       "id": "cmfndyykw0007127p4uq7aqvl",
@@ -2884,6 +2961,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-22T15:00:00",
     "end_time_for_display": "2025-11-23T02:00:00",
+    "venueslug": "charlotte-convention-center-charlotte",
     "city": null,
     "venue": {
       "id": "cmfndyykw0007127p4uq7aqvl",
@@ -2923,6 +3001,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-23T15:00:00",
     "end_time_for_display": "2025-11-23T23:00:00",
+    "venueslug": "charlotte-convention-center-charlotte",
     "city": null,
     "venue": {
       "id": "cmfndyykw0007127p4uq7aqvl",
@@ -2960,6 +3039,7 @@
     "status_note": null,
     "start_time_for_display": "2026-05-31T18:00:00",
     "end_time_for_display": "2026-05-31T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -2997,6 +3077,7 @@
     "status_note": null,
     "start_time_for_display": "2026-06-28T18:00:00",
     "end_time_for_display": "2026-06-28T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -3034,6 +3115,7 @@
     "status_note": null,
     "start_time_for_display": "2026-07-26T18:00:00",
     "end_time_for_display": "2026-07-26T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -3071,6 +3153,7 @@
     "status_note": null,
     "start_time_for_display": "2026-08-30T18:00:00",
     "end_time_for_display": "2026-08-30T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -3108,6 +3191,7 @@
     "status_note": null,
     "start_time_for_display": "2026-09-27T18:00:00",
     "end_time_for_display": "2026-09-27T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -3145,6 +3229,7 @@
     "status_note": null,
     "start_time_for_display": "2026-10-25T18:00:00",
     "end_time_for_display": "2026-10-25T20:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -3182,6 +3267,7 @@
     "status_note": null,
     "start_time_for_display": "2026-11-29T19:00:00",
     "end_time_for_display": "2026-11-29T21:00:00",
+    "venueslug": "opentap-charlotte-nc",
     "city": null,
     "venue": {
       "id": "1a22b4b0-9e3a-44e9-a338-a42fc4fffb71",
@@ -3221,6 +3307,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-19T17:00:00",
     "end_time_for_display": "2025-10-19T20:00:00",
+    "venueslug": "poplin-place-shopping-center-monroe",
     "city": null,
     "venue": {
       "id": "cmfndfjk30001izdk3ubrkl0s",
@@ -3260,6 +3347,7 @@
     "status_note": null,
     "start_time_for_display": "2025-11-16T18:00:00",
     "end_time_for_display": "2025-11-16T21:00:00",
+    "venueslug": "poplin-place-shopping-center-monroe",
     "city": null,
     "venue": {
       "id": "cmfndfjk30001izdk3ubrkl0s",
@@ -3299,6 +3387,7 @@
     "status_note": null,
     "start_time_for_display": "2025-12-21T18:00:00",
     "end_time_for_display": "2025-12-21T21:00:00",
+    "venueslug": "poplin-place-shopping-center-monroe",
     "city": null,
     "venue": {
       "id": "cmfndfjk30001izdk3ubrkl0s",
@@ -3336,6 +3425,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-19T19:00:00",
     "end_time_for_display": "2025-10-19T22:00:00",
+    "venueslug": "vix-garage-charlotte-nc",
     "city": null,
     "venue": {
       "id": "31da4fd1-f7e8-4313-b704-e44e2d483f99",
@@ -3373,6 +3463,7 @@
     "status_note": null,
     "start_time_for_display": "2025-10-25T12:00:00",
     "end_time_for_display": "2025-10-25T14:30:00",
+    "venueslug": "sun-valley-14-theaters-indian-trail-nc",
     "city": null,
     "venue": {
       "id": "d4bbfd0e-8a5e-4615-81fe-0401bf0dc1d1",
