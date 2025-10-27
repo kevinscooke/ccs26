@@ -6,8 +6,7 @@ import React, { Fragment, useMemo } from "react";
 
 const tabs = [
   { label: "The List", href: "/events/" },
-  { label: "This Weekend", href: "/weekly-car-show-list-charlotte/" },
-  { label: "Daily", href: "/daily/" },
+  { label: "This Week", href: "/weekly-car-show-list-charlotte/" },
 ];
 
 export default function WeeklyControls() {
@@ -21,7 +20,7 @@ export default function WeeklyControls() {
     return 0;
   }, [pathname]);
 
-  const preserveQuery = false; // set true to keep ?q=… filters across tabs
+  const preserveQuery = false;
 
   return (
     <Tab.Group
@@ -44,9 +43,7 @@ export default function WeeklyControls() {
                 className={[
                   "px-3.5 py-1.5 text-sm font-medium rounded-lg outline-none transition",
                   "focus-visible:ring-2 focus-visible:ring-green-600/30",
-                  selected
-                    ? "bg-zinc-900 text-white"
-                    : "text-zinc-700 hover:bg-zinc-50",
+                  selected ? "bg-zinc-900 text-white" : "text-zinc-700 hover:bg-zinc-50",
                 ].join(" ")}
               >
                 {t.label}
@@ -55,8 +52,6 @@ export default function WeeklyControls() {
           </Tab>
         ))}
       </Tab.List>
-
-      {/* Panels are optional here; include hidden panels to satisfy ARIA linkage */}
       <Tab.Panels className="sr-only">
         <Tab.Panel />
         <Tab.Panel />
