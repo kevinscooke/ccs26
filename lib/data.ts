@@ -97,61 +97,13 @@ export async function loadVenues(): Promise<VenueV2[]> {
   return [];
 }
 
+// Prefer local JSON so lists and detail routes match during static export
 export async function loadEvents(): Promise<any[]> {
-  // prefer V2 flat public file if present. Detect whether the file looks like
-  // V2 (snake_case fields) so we don't mistakenly normalize an already-legacy
-  // file that happens to be named `events.json`.
-  const maybe = await readPublicJson<any[]>('events.json');
-  let publicEvents: any[] | null = null;
-  if (maybe && Array.isArray(maybe)) {
-    const looksLikeV2 = maybe.length > 0 && (Object.prototype.hasOwnProperty.call(maybe[0], 'start_at') || Object.prototype.hasOwnProperty.call(maybe[0], 'venue_id'));
-    if (looksLikeV2) {
-      const venues = await loadVenues();
-      publicEvents = normalizeEvents(maybe as EventV2[], venues);
-    } else {
-      publicEvents = maybe as any[];
-    }
-  }
-
-  // Also try to read the snapshot copy under app/data/events.json on the server
-  // so that if the public file is missing items (partial export) we can merge
-  // in missing entries from the snapshot. This helps avoid accidental data
-  // loss in UpcomingSix when the public export is incomplete.
-  let snapshot: any[] = [];
-  if (typeof window === 'undefined') {
-    try {
-      const p = path.join(process.cwd(), 'app', 'data', 'events.json');
-      const raw = await fs.readFile(p, 'utf8');
-      const parsed = JSON.parse(raw) as any[];
-      if (Array.isArray(parsed)) snapshot = parsed;
-    } catch (err) {
-      // ignore
-    }
-  }
-
-  // If we have publicEvents, merge with snapshot: prefer public by slug, but
-  // include any snapshot events missing from public.
-  if (publicEvents) {
-    if (snapshot.length === 0) return publicEvents;
-    const bySlug = new Map<string, any>();
-    for (const e of publicEvents) {
-      if (e && e.slug) bySlug.set(e.slug, e);
-    }
-    for (const s of snapshot) {
-      if (s && s.slug && !bySlug.has(s.slug)) bySlug.set(s.slug, s);
-    }
-    return Array.from(bySlug.values()).sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime() || (a.title || '').localeCompare(b.title || ''));
-  }
-
-  // fallback: try legacy nested data folder inside app/data
-  const legacy = await readPublicJson<any[]>('data/events.json');
-  if (legacy && Array.isArray(legacy)) return legacy;
-
-  // final fallback: try fetching /data/events.json (older code)
   try {
-    const res = await fetch('/data/events.json', { cache: 'no-store' });
-    return res.ok ? res.json() : [];
-  } catch (err) {
+    const mod = await import('@/app/data/events.json');
+    const data = (mod as any).default ?? mod;
+    return Array.isArray(data) ? data : [];
+  } catch {
     return [];
   }
 }

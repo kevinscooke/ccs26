@@ -3700,5 +3700,43 @@
     "cityId": null,
     "venueId": "cmfn8o61r000011ymmqyef2e3",
     "organizerId": null
+  },
+  {
+    "id": "763b58cc-8e75-4383-9687-07a514e1a622",
+    "title": "Gas House Cars & Coffee – Eastridge Mall",
+    "slug": "gas-house-cars-and-coffee-2025-01-01",
+    "description": "All years, makes, and models are welcome! Expect a lively morning with two live DJs, food trucks, and vendor tents—family-friendly vibes to kick off the new year in Gastonia.",
+    "url": "Manual",
+    "startAt": "2025-01-01T13:30:00",
+    "endAt": "2025-01-01T16:00:00",
+    "createdAt": "2025-10-27T22:12:49.525",
+    "updatedAt": "2025-10-27T22:12:49.525",
+    "publishedAt": null,
+    "status": "PUBLISHED",
+    "isFeatured": false,
+    "price": null,
+    "type": "MEET",
+    "size": 100,
+    "isRecurring": false,
+    "socialLinks": [],
+    "public_status": "PUBLISHED",
+    "status_label": "Published",
+    "show_time": true,
+    "status_note": null,
+    "start_time_for_display": "2025-01-01T13:30:00",
+    "end_time_for_display": "2025-01-01T16:00:00",
+    "venueslug": "eastridge-mall-gastonia-nc",
+    "city": null,
+    "venue": {
+      "id": "2f9f8402-3790-4718-bb7e-583239638469",
+      "name": "Eastridge Mall",
+      "address1": "246 E New Hope Road",
+      "city": "Gastonia",
+      "state": "NC"
+    },
+    "seriesId": null,
+    "cityId": null,
+    "venueId": "2f9f8402-3790-4718-bb7e-583239638469",
+    "organizerId": null
   }
 ]
