@@ -255,10 +255,10 @@ export default async function EventPage({ params }: { params: { slug: string } }
                  role="status"
                >
                  {/* Star/burst icon */}
-                <svg className="h-4 w-4 text-green-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                </svg>
-                 <p className="text-sm font-medium">FEATURED EVENT - You don't want to miss this one!</p>
+                 <svg className="h-4 w-4 text-green-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                 </svg>
+                <p className="text-sm font-medium">Featured event</p>
                </div>
              )}
               {/* Display heading font via Tailwind class you’ll map to a display family (e.g., Bebas/Anton) */}
