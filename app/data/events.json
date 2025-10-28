@@ -2989,7 +2989,7 @@
     "updatedAt": "2025-10-18T17:12:11.949",
     "publishedAt": null,
     "status": "PUBLISHED",
-    "isFeatured": true,
+    "isFeatured": false,
     "price": null,
     "type": "MEET",
     "size": 200,

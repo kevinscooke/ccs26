@@ -104,6 +104,9 @@ export default async function EventPage({ params }: { params: { slug: string } }
     ? (ev.url || ev.website || ev.siteUrl || ev.externalUrl).trim()
     : null;
 
+  // Featured flag (supports multiple possible fields)
+  const isFeatured = Boolean(ev.isFeatured ?? (ev as any).featured ?? (ev as any).is_featured);
+
   // Chronological prev/next (by startAt in ET)
   const toMs = (d: string) => (toEtDate(d)?.getTime() ?? new Date(d).getTime());
   const published = events.filter((e) => e.status === "PUBLISHED" && e.slug);
@@ -246,6 +249,18 @@ export default async function EventPage({ params }: { params: { slug: string } }
                   </p>
                 </div>
               )}
+             {isFeatured && (
+               <div
+                 className="mb-4 flex items-start gap-3 rounded-xl border border-green-300 bg-green-50 px-4 py-3 text-green-900 shadow-sm ring-1 ring-green-200"
+                 role="status"
+               >
+                 {/* Star/burst icon */}
+                <svg className="h-4 w-4 text-green-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+                 <p className="text-sm font-medium">FEATURED EVENT - You don't want to miss this one!</p>
+               </div>
+             )}
               {/* Display heading font via Tailwind class you’ll map to a display family (e.g., Bebas/Anton) */}
               <h1 className="font-serif text-balance tracking-tight text-[var(--fg)] leading-tight text-3xl sm:text-4xl lg:text-5xl max-w-[68ch] break-words">
                 {ev.title}
@@ -263,10 +278,15 @@ export default async function EventPage({ params }: { params: { slug: string } }
                 {isCancelled && <span className="inline-flex rounded-full bg-red-50 text-red-700 px-3 py-1">Canceled</span>}
               </div>
 
+              
+
               {desc && (
                 <p className="mt-4 max-w-2xl text-zinc-600 leading-relaxed">{desc}</p>
               )}
-
+{/* Address (between date/time and description) */}
+              <div className="text-sm mt-2 gap-2 flex items-center">
+                  <div className="text-zinc-500">Address: {fmtAddress(ev.venue)}</div>
+              </div>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 {siteUrl && (
                   <a
@@ -309,7 +329,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
           {/* QUICK FACTS */}
           <ul className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-            <li className="rounded-xl border bg-white px-4 py-3 text-zinc-700">📍 {ev.venue ? fmtAddress(ev.venue) : (ev.city?.name || "Charlotte")}</li>
+            <li className="rounded-xl border bg-white px-4 py-3 text-zinc-700">📍 {city}, {state}</li>
             <li className="rounded-xl border bg-white px-4 py-3 text-zinc-700">🅿️ Parking: {parkingInfo}</li>
             <li className="rounded-xl border bg-white px-4 py-3 text-zinc-700">🍔 Food Trucks</li>
             <li className="rounded-xl border bg-white px-4 py-3 text-zinc-700">{isRecurring ? "🔁 Recurring" : "🗓️ One-time"}</li>

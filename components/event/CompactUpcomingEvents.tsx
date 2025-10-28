@@ -54,6 +54,7 @@ export default async function CompactUpcomingEvents() {
         const venueName = clean(event?.venue?.name);
         const cityName = clean(event?.city?.name || event?.venue?.city);
         const location = [venueName, cityName].filter(Boolean).join(", ");
+        const isFeatured = Boolean(event?.isFeatured ?? event?.featured ?? event?.is_featured);
 
         return (
           <Link
@@ -76,9 +77,14 @@ export default async function CompactUpcomingEvents() {
                 {event.title}
               </h3>
               <div className="space-y-1 text-[11px] text-gray-600 leading-snug">
-                <p className="flex items-center gap-1">
+                <p className="flex flex-wrap items-center gap-1">
                   <span aria-hidden>🕒</span>
-                  {timeLabel}
+                  <span>{timeLabel}</span>
+                  {isFeatured && (
+                    <span className="ml-2 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
+                      Featured
+                    </span>
+                  )}
                 </p>
                 {location && (
                   <p className="flex items-start gap-1">

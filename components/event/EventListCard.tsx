@@ -46,18 +46,30 @@ export default function EventListCard({ e }: { e: EventLike }) {
   const venueText = [e.venue?.name, cityState].filter(Boolean).join(" • ");
 
   return (
-    <article className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
+    <article
+      className={`ccs-card group transition-all hover:shadow-lg hover:scale-[1.01] ${e.isFeatured ? "ring-1 ring-green-200" : ""}`}
+      data-featured={e.isFeatured ? "true" : "false"}
+    >
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
         <div className="min-w-0 space-y-3">
           <div>
             <div className="flex items-start gap-3 flex-wrap">
               <h2 className="text-[20px] md:text-[22px] font-semibold leading-tight text-[var(--fg)]">
-                <Link href={`/events/${e.slug}`} className="hover:text-green-600 transition-colors">
+                <Link href={`/events/${e.slug}/`} className="hover:text-green-600 transition-colors">
                   {e.title}
                 </Link>
               </h2>
-              {e.isFeatured && <span className="ccs-badge">Featured</span>}
             </div>
+
+            {e.isFeatured && (
+              <div className="mt-2 flex items-center gap-2 rounded-md border border-green-200 bg-green-50 px-3 py-1.5 text-sm text-green-800">
+                {/* Star/burst icon */}
+                <svg className="h-4 w-4 text-green-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+                <span className="font-medium">FEATURED EVENT - You don't want to miss this one!</span>
+              </div>
+            )}
 
             <div className="mt-2 border-t border-[var(--fg)]/10" />
 
@@ -93,7 +105,7 @@ export default function EventListCard({ e }: { e: EventLike }) {
         </div>
 
         <div className="shrink-0 flex flex-col gap-3 mt-4 md:mt-0 w-full md:w-auto">
-          <Link className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" href={`/events/${e.slug}`}>
+          <Link className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" href={`/events/${e.slug}/`}>
             View Details
           </Link>
           {officialUrl && (
