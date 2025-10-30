@@ -39,15 +39,16 @@ Based on PRD goals G1-G4 and analysis of high-value pages, this document identif
 **Impact:** Direct user value, high-traffic event
 
 **Tasks:**
-- [ ] Create `app/events/charlotte-autofair-2026/page.tsx`
-- [ ] Identify AutoFair event IDs in `app/data/events.json`
-- [ ] Copy Charlotte Auto Show page pattern
-- [ ] Update metadata and structured data
+- [x] Create `app/events/charlotte-auto-fair/page.tsx` ✅
+- [x] Identify AutoFair event IDs in `app/data/events.json` ✅
+  - IDs: 7fb39344-1d13-4c45-882f-82ad90aa9e6c (Thu), 3940ada8-c47a-4c41-b4c0-3a856a703b99 (Fri), be48d403-c249-4453-8453-77baf66e9954 (Sat)
+- [x] Copy Charlotte Auto Show page pattern ✅
+- [x] Update metadata and structured data ✅
 - [ ] Add to navigation/sitemap if needed
-- [ ] Test and verify functionality
+- [ ] Test and verify functionality after deploy
 
 **Files Affected:**
-- New: `app/events/charlotte-autofair-2026/page.tsx`
+- [x] New: `app/events/charlotte-auto-fair/page.tsx` ✅
 - Update: `app/(marketing)/page.tsx` (add link if needed)
 - Update: `app/sitemap.xml/route.ts` (if needed)
 

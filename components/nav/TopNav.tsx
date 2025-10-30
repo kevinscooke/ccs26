@@ -77,6 +77,16 @@ export default function TopNav() {
                         </Link>
                       )}
                     </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/events/charlotte-autofair"
+                          className={`block rounded-xl px-3 py-2 text-[var(--fg)] ${active ? 'bg-zinc-100' : ''}`}
+                        >
+                          Charlotte AutoFair
+                        </Link>
+                      )}
+                    </Menu.Item>
                   </Menu.Items>
                 </Transition>
               </>
@@ -167,6 +177,9 @@ export default function TopNav() {
             </Link>
             <Link href="/events/charlotte-auto-show/" className="ccs-btn" onClick={() => setMobileOpen(false)}>
               Charlotte Auto Show
+            </Link>
+            <Link href="/events/charlotte-autofair" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+              Charlotte AutoFair
             </Link>
             <Link href="/guide-to-charlotte-car-shows" className="ccs-btn" onClick={() => setMobileOpen(false)}>
               Guide to Charlotte Car Shows

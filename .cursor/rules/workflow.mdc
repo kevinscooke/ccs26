@@ -36,3 +36,12 @@ pnpm lint && pnpm typecheck && pnpm validate:jsonld
 
 ## Releases
 - Tag with `vX.Y.Z`; generate changelog from Conventional Commits.
+
+## Change Confirmation Protocol
+**IMPORTANT:** Before making structural changes (file moves, URL changes, route restructuring):
+1. **Confirm the intended URL/path** - Ask user to confirm the exact URL format before changing links
+2. **Verify file location** - Check if files should be in `/events/` vs root `/` before moving
+3. **Check existing patterns** - Look at similar pages (e.g., Charlotte Auto Show) to match URL patterns
+4. **Update all references** - When changing URLs, update Footer, TopNav, metadata, and breadcrumbs together
+
+**When in doubt about URLs or file structure, ask the user for confirmation before proceeding.**
