@@ -183,7 +183,9 @@ export function buildEventItemListSchema(
       return {
         "@type": "ListItem",
         position: i + 1,
-        url: `${baseUrl}/events/${event.slug}/`,
+        // For Google carousels: ListItem should have EITHER 'url' OR 'item', not both
+        // Since we're embedding full Event schema (which includes its own url property),
+        // we only use 'item' here
         item: eventSchema,
       };
     }),
