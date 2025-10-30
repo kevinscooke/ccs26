@@ -1,0 +1,28 @@
+---
+alwaysApply: false
+---
+# Generate — Next.js
+
+## Codegen Defaults
+- For each task, output: affected file paths, minimal diffs, and test updates.
+- Use TypeScript with strict types.
+- Follow component patterns from `.cursor/rules/patterns.mdc`.
+- Follow styling guidelines from `.cursor/rules/style.mdc`.
+- Include SEO metadata and JSON-LD schema where appropriate.
+
+## Component Generation
+- **Server Components:** Default (no `'use client'` unless needed)
+- **Client Components:** Mark with `'use client'` at top
+- **Layout:** Use `Container` component, include `Breadcrumbs`
+- **Event Pages:** Use `EventListCard` for lists, `EventCard` for details
+- **Metadata:** Always include complete `Metadata` object
+
+## Docs
+- When codegen modifies contracts, update `Docs/Implementation.md` "Decisions" and PRD acceptance criteria.
+- Update `Docs/Bug_Tracking.md` if addressing known issues.
+- Update `Docs/Project_Structure.md` for new files/folders.
+
+## Testing
+- Run `pnpm lint` and `pnpm typecheck` before submitting.
+- Test on mobile and desktop viewports.
+- Verify SEO metadata and JSON-LD schema.

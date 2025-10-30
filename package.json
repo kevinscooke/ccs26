@@ -11,7 +11,8 @@
     "build:search-index": "tsx scripts/build-search-index.ts",
     "predev": "pnpm build:search-index",
     "prebuild": "pnpm build:search-index",
-    "export:json": "node scripts/export-json.mjs"
+    "export:json": "node scripts/export-json.mjs",
+    "validate:jsonld": "node scripts/validate-jsonld.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

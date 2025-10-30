@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 
 export const metadata: Metadata = {
   title: "Privacy Policy – Charlotte Car Shows",
@@ -8,12 +10,38 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Privacy Policy", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/privacy" }
+  );
+
   return (
     <Container>
-      <h1 className="text-3xl font-bold">Privacy Policy</h1>
-      <p className="mt-2 text-sm text-gray-600">Last updated: September 17, 2025</p>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Privacy Policy", current: true },
+          ]}
+        />
 
-      <div className="prose mt-6">
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            Privacy Policy
+          </h1>
+          <p className="text-sm text-[var(--fg)]/60">Last updated: September 17, 2025</p>
+        </header>
+
+        <div className="prose max-w-3xl text-[var(--fg)]/80 leading-relaxed space-y-4">
         <h2>Information We Collect</h2>
         <p>
           Basic analytics, form submissions (e.g., event submissions, contact forms),
@@ -37,15 +65,16 @@ export default function PrivacyPage() {
         <h2>Data Retention</h2>
         <p>We keep data only as long as necessary for the purposes above.</p>
 
-        <h2>Your Rights</h2>
-        <ul>
-          <li>Access, update, or delete your information</li>
-          <li>Opt out of non-essential communications</li>
-        </ul>
+          <h2>Your Rights</h2>
+          <ul>
+            <li>Access, update, or delete your information</li>
+            <li>Opt out of non-essential communications</li>
+          </ul>
 
-        <h2>Contact</h2>
-        <p>Email: hello@charlottecarshows.com</p>
-      </div>
+          <h2>Contact</h2>
+          <p>Email: hello@charlottecarshows.com</p>
+        </div>
+      </section>
     </Container>
   );
 }

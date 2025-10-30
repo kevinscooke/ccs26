@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import { loadEvents } from "@/lib/data";
 import EventListCard from "@/components/event/EventListCard";
 import { nowInET, startOfWeekET, endOfWeekET, toEtDate } from "@/lib/et";
+import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/eventSchema";
 
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
@@ -95,6 +96,21 @@ export default async function WeeklyCarShowListPage() {
   const headingRange =
     `${rangeFmt.format(weekStart)}–${rangeFmt.format(weekEnd)}`;
 
+  // Build JSON-LD ItemList with Event schemas
+  const itemListSchema = buildEventItemListSchema(weekly.slice(0, 100), {
+    name: `This Week's Charlotte Car Shows (${headingRange})`,
+    limit: 100,
+  });
+
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Events this Week", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/weekly-car-show-list-charlotte/" }
+  );
+
   return (
     <Container>
       <section className="w-full space-y-8 lg:space-y-10">
@@ -116,6 +132,16 @@ export default async function WeeklyCarShowListPage() {
             </Suspense>
           </div>
         </div>
+
+        {/* JSON-LD schemas */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
 
         {/* Header text (match tone from /events/) */}
         <header className="space-y-2 text-left">

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 
 export const metadata: Metadata = {
   title: "Accessibility – Charlotte Car Shows",
@@ -8,12 +10,38 @@ export const metadata: Metadata = {
 };
 
 export default function AccessibilityPage() {
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Accessibility", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/accessibility" }
+  );
+
   return (
     <Container>
-      <h1 className="text-3xl font-bold">Accessibility</h1>
-      <p className="mt-2 text-sm text-gray-600">Last updated: September 17, 2025</p>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Accessibility", current: true },
+          ]}
+        />
 
-      <div className="prose mt-6">
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            Accessibility
+          </h1>
+          <p className="text-sm text-[var(--fg)]/60">Last updated: September 17, 2025</p>
+        </header>
+
+        <div className="prose max-w-3xl text-[var(--fg)]/80 leading-relaxed space-y-4">
         <p>
           We aim to meet WCAG 2.1 AA guidelines and continuously improve the
           accessibility of CharlotteCarShows.com.
@@ -27,12 +55,13 @@ export default function AccessibilityPage() {
           <li>Alt text for images where meaningful</li>
         </ul>
 
-        <h2>Feedback</h2>
-        <p>
-          If you encounter barriers, email <a href="mailto:hello@charlottecarshows.com">hello@charlottecarshows.com</a>
-          with the page URL and description. We’ll work to resolve it promptly.
-        </p>
-      </div>
+          <h2>Feedback</h2>
+          <p>
+            If you encounter barriers, email <a href="mailto:hello@charlottecarshows.com" className="underline hover:text-brand-700">hello@charlottecarshows.com</a>
+            with the page URL and description. We'll work to resolve it promptly.
+          </p>
+        </div>
+      </section>
     </Container>
   );
 }

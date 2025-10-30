@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 
 export const metadata: Metadata = {
   title: "Pricing & Plans – Charlotte Car Shows",
@@ -21,6 +24,15 @@ export const metadata: Metadata = {
 };
 
 export default function Pricing() {
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Pricing", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/pricing/" }
+  );
+
   const tiers = [
     {
       name: "Free",
@@ -50,15 +62,19 @@ export default function Pricing() {
   ];
 
   return (
-    <div
-      className="space-y-16 py-0"
-      style={{
-        fontFamily:
-          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      }}
-    >
-      {/* Top Notice Banner */}
-      <div className="bg-green-50 text-center py-3 px-4 text-sm md:text-base text-green-800">
+    <Container>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Pricing", current: true },
+          ]}
+        />
+
+        {/* Top Notice Banner */}
+      <div className="sticky top-14 lg:top-16 z-30 bg-green-50 text-center py-3 px-4 text-sm md:text-base text-green-800">
         🚗 <strong>Free event listings are always available!</strong>&nbsp; Just{" "}
         <a href="/submit-event/" className="underline font-medium">
           submit your event
@@ -70,19 +86,19 @@ export default function Pricing() {
         . <a href="#faq" className="ml-2 underline">See FAQ ↓</a>
       </div>
 
-      {/* Hero Section */}
-      <section className="text-center space-y-4 py-8">
-        <h1
-          className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]"
-          style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
-        >
-          Pricing &amp; Plans
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          List your event for free — or feature it for just $25 to reach
-          thousands of Charlotte car enthusiasts.
-        </p>
-      </section>
+        {/* Hero Section */}
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            Pricing &amp; Plans
+          </h1>
+          <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
+            List your event for free — or feature it for just $25 to reach
+            thousands of Charlotte car enthusiasts.
+          </p>
+        </header>
 
       {/* Pricing Tiers */}
       <section id="pricing" className="grid gap-8 md:grid-cols-3 max-w-7xl mx-auto px-4">
@@ -279,6 +295,7 @@ export default function Pricing() {
           </div>
         </div>
       </section>
-    </div>
+      </section>
+    </Container>
   );
 }

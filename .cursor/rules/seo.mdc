@@ -1,0 +1,155 @@
+---
+alwaysApply: false
+---
+# SEO — Charlotte Car Shows
+
+## Metadata Patterns
+
+### Required Metadata (Every Page)
+- `title`: Use descriptive title (template from root layout)
+- `description`: Concise, keyword-rich description
+- `alternates.canonical`: Absolute URL (`https://charlottecarshows.com/...`)
+- `openGraph`: title, description, url, type, images
+- `twitter`: card type, title, description, images
+
+### Metadata Example
+```typescript
+export const metadata: Metadata = {
+  title: "Page Title | Charlotte Car Shows",
+  description: "Page description here...",
+  alternates: { canonical: "https://charlottecarshows.com/path/" },
+  openGraph: {
+    title: "Page Title",
+    description: "Page description...",
+    url: "https://charlottecarshows.com/path/",
+    type: "website",
+    images: [{ url: "https://charlottecarshows.com/images/...", alt: "..." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Page Title",
+    description: "Page description...",
+    images: ["https://charlottecarshows.com/images/..."],
+  },
+};
+```
+
+## Structured Data (JSON-LD)
+
+### Schema Patterns
+
+**Organization (Home Page):**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Charlotte Car Shows",
+  "url": "https://charlottecarshows.com",
+  "logo": "https://charlottecarshows.com/icon-512x512.png",
+  "sameAs": [
+    "https://www.instagram.com/charlottecarshows/",
+    "https://www.facebook.com/CharlotteCarShows/"
+  ]
+}
+```
+
+**WebSite (Home Page):**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://charlottecarshows.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://charlottecarshows.com/search?q={query}",
+    "query-input": "required name=query"
+  }
+}
+```
+
+**ItemList (List Pages):**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": events.slice(0, 100).map((e, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `https://charlottecarshows.com/events/${e.slug}/`,
+    "name": e.title,
+  }))
+}
+```
+
+**Event (Event Detail Pages):**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Event Title",
+  "startDate": "2024-01-01T10:00:00-05:00",
+  "endDate": "2024-01-01T18:00:00-05:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Venue Name",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "...",
+      "addressLocality": "Charlotte",
+      "addressRegion": "NC",
+      "postalCode": "28202",
+      "addressCountry": "US"
+    }
+  }
+}
+```
+
+### Implementation
+- Use `<script type="application/ld+json">` with `dangerouslySetInnerHTML`
+- Place JSON-LD in page component (not layout)
+- Validate with [Google Rich Results Test](https://search.google.com/test/rich-results)
+
+## SEO Best Practices
+
+### URLs
+- **Canonical:** Always include canonical URL (absolute)
+- **Structure:** Use descriptive, keyword-rich URLs
+- **Slugs:** Use kebab-case for event/venue slugs
+
+### Images
+- **Alt Text:** Always include descriptive `alt` text
+- **Optimization:** Use Next.js `Image` component
+- **Open Graph:** Include OG images for social sharing
+
+### Content
+- **Headings:** Use semantic heading hierarchy (h1 → h2 → h3)
+- **Keywords:** Natural keyword usage in content
+- **Internal Links:** Link to related pages (events, venues)
+
+### Performance
+- **Core Web Vitals:** Monitor LCP, CLS, INP
+- **Lighthouse:** Target 90+ scores
+- **Mobile:** Mobile-first design, test on devices
+
+## Accessibility (Related to SEO)
+
+### ARIA Labels
+- Use `aria-label` for interactive elements without visible text
+- Use `aria-current="page"` for current page in navigation
+- Use `aria-hidden="true"` for decorative elements
+
+### Semantic HTML
+- Use semantic elements (`<nav>`, `<article>`, `<section>`)
+- Use proper heading hierarchy
+- Use descriptive link text
+
+## Testing
+- **Rich Results Test:** [Google Rich Results Test](https://search.google.com/test/rich-results)
+- **Lighthouse:** Run audits on all high-value pages
+- **Mobile-Friendly Test:** [Google Mobile-Friendly Test](https://search.google.com/test/mobile-friendly)
+
+## Documentation
+- Update `Docs/Bug_Tracking.md` when fixing SEO issues
+- Track SEO improvements in `Docs/Implementation.md`

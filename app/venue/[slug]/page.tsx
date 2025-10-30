@@ -8,6 +8,10 @@ import eventsData from '../../data/events.json';
 import EventCard from '@/components/event/EventCard'; // adjust path if needed
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Container from '@/components/Container';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { buildEventItemListSchema, buildBreadcrumbListSchema } from '@/lib/eventSchema';
+import { toEtDate, nowInET } from '@/lib/et';
 
 export const dynamic = 'force-static';
 
@@ -62,20 +66,22 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
   if (!venue) notFound();
 
   // ET helpers to keep consistent with the rest of the site
-  const toET = (x: string | number | Date) =>
-    new Date(new Date(x).toLocaleString("en-US", { timeZone: "America/New_York" }));
-  const nowET = toET(new Date());
+  const nowET = nowInET();
 
   const upcoming = events
     .filter((e) => {
       const matchesSlug = e.venue?.slug === venue.slug;
       const matchesId = e.venue?.id === venue.id || e.venueId === venue.id;
       const isPublished = e.status === 'PUBLISHED';
-      const startsAt = e.startAt ? toET(e.startAt) : null;
+      const startsAt = toEtDate(e.startAt);
       const isFuture = startsAt ? startsAt >= nowET : false;
       return isPublished && (matchesSlug || matchesId) && isFuture;
     })
-    .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime())
+    .sort((a, b) => {
+      const ta = toEtDate(a.startAt)?.getTime() ?? 0;
+      const tb = toEtDate(b.startAt)?.getTime() ?? 0;
+      return ta - tb || a.title.localeCompare(b.title);
+    })
     .slice(0, 8);
 
   // NEW: Past events for this venue (most recent first)
@@ -84,11 +90,15 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
       const matchesSlug = e.venue?.slug === venue.slug;
       const matchesId = e.venue?.id === venue.id || e.venueId === venue.id;
       const isPublished = e.status === 'PUBLISHED';
-      const startsAt = e.startAt ? toET(e.startAt) : null;
+      const startsAt = toEtDate(e.startAt);
       const isPast = startsAt ? startsAt < nowET : false;
       return isPublished && (matchesSlug || matchesId) && isPast;
     })
-    .sort((a, b) => new Date(b.startAt).getTime() - new Date(a.startAt).getTime())
+    .sort((a, b) => {
+      const ta = toEtDate(a.startAt)?.getTime() ?? 0;
+      const tb = toEtDate(b.startAt)?.getTime() ?? 0;
+      return tb - ta || a.title.localeCompare(b.title);
+    })
     .slice(0, 10); // show the 10 most recent past events
 
   const fmt = new Intl.DateTimeFormat('en-US', {
@@ -130,103 +140,105 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
       ? { geo: { '@type': 'GeoCoordinates', latitude: lat, longitude: lng } }
       : {}),
   };
-  const itemListLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+  // Build standardized Event schema ItemList
+  const itemListLd = buildEventItemListSchema(upcoming.slice(0, 100) as any[], {
     name: `Upcoming events at ${venue.name}`,
-    itemListElement: upcoming.map((e: any, i: number) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'Event',
-        name: e.title,
-        startDate: e.startAt,
-        endDate: e.endAt || e.startAt,
-        url: `https://charlottecarshows.com/events/${e.slug}/`,
-        location: { '@id': placeId },
-      },
-    })),
-  };
+    limit: 100,
+  });
+
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Venues", href: "/venues/" },
+      { label: venue.name, current: true },
+    ],
+    { currentPageUrl: canonical }
+  );
 
   return (
-    <main className="max-w-6xl mx-auto p-4 space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">{venue.name}</h1>
-        {venue.description && <p className="text-lg text-[var(--fg)]/80">{venue.description}</p>}
-        <div className="text-sm text-[var(--fg)]/70">
-          {venue.address1 && <div>{venue.address1}</div>}
-          <div>{[venue.city, venue.state, venue.postal_code].filter(Boolean).join(', ')}</div>
-          {venue.url && (
-            <a className="underline" href={venue.url} target="_blank" rel="noreferrer">Website</a>
-          )}
-        </div>
-      </header>
+    <Container>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Venues", href: "/venues/" },
+            { label: venue.name, current: true },
+          ]}
+        />
 
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <h2 className="text-2xl font-semibold mb-4">Upcoming events at {venue.name}</h2>
-          {upcoming.length === 0 ? (
-            <p className="text-zinc-500">No upcoming events listed for this venue.</p>
-          ) : (
-            <div className="space-y-4">
-              {upcoming.map((e: any) => (
-                <EventCard key={e.id} e={e} />
-              ))}
-            </div>
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            {venue.name}
+          </h1>
+          {venue.description && (
+            <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">{venue.description}</p>
           )}
+        </header>
 
-          {/* NEW: Past events section */}
-          <h2 className="text-2xl font-semibold mt-10 mb-4">Past events at {venue.name}</h2>
-          {past.length === 0 ? (
-             <p className="text-zinc-500">No past events listed for this venue.</p>
-           ) : (
-             <div className="space-y-4">
-              {past.map((e: any) => (
-                <EventCard key={e.id} e={e} />
-              ))}
-            </div>
-          )}
-        </div>
-
-        <aside className="ccs-card">
-          <h3 className="text-xl font-semibold mb-3">Location</h3>
-          <div className="text-sm text-[var(--fg)]/70 mb-4">
-            {venue.address1 && <div>{venue.address1}</div>}
-            <div>{[venue.city, venue.state, venue.postal_code].filter(Boolean).join(', ')}</div>
-            {venue.url && (
-              <div className="mt-2">
-                <a className="underline" href={venue.url} target="_blank" rel="noreferrer">Website</a>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="space-y-5 lg:col-span-8">
+            <h2 className="text-2xl font-semibold mb-4">Upcoming events at {venue.name}</h2>
+            {upcoming.length === 0 ? (
+              <div className="ccs-card text-[var(--fg)]/70">No upcoming events listed for this venue.</div>
+            ) : (
+              <div className="space-y-5">
+                {upcoming.map((e: any) => (
+                  <EventCard key={e.id} e={e} />
+                ))}
               </div>
+            )}
+
+            {/* NEW: Past events section */}
+            {past.length > 0 && (
+              <>
+                <h2 className="text-2xl font-semibold mt-10 mb-4">Past events at {venue.name}</h2>
+                <div className="space-y-5">
+                  {past.map((e: any) => (
+                    <EventCard key={e.id} e={e} />
+                  ))}
+                </div>
+              </>
             )}
           </div>
 
-          <div className="aspect-[16/9] w-full overflow-hidden rounded-md border">
-            <iframe
-              title={`Map for ${venue.name}`}
-              width="100%"
-              height="100%"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
-            />
-          </div>
-        </aside>
-        
+          <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <div className="ccs-card">
+          <h3 className="text-xl font-semibold mb-3">Location</h3>
+              <div className="text-sm text-[var(--fg)]/70 mb-4">
+                {venue.address1 && <div>{venue.address1}</div>}
+                <div>{[venue.city, venue.state, venue.postal_code].filter(Boolean).join(', ')}</div>
+                {venue.url && (
+                  <div className="mt-2">
+                    <a className="underline" href={venue.url} target="_blank" rel="noreferrer">Website</a>
+                  </div>
+                )}
+              </div>
+
+              <div className="aspect-[16/9] w-full overflow-hidden rounded-md border">
+                <iframe
+                  title={`Map for ${venue.name}`}
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+                />
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {/* JSON-LD schemas */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        {upcoming.length > 0 && (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
+        )}
       </section>
-      <div
-          dangerouslySetInnerHTML={{
-            __html: `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514406406537630" crossorigin="anonymous"></script>
-<!-- CCS-2026 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514406406537630" data-ad-slot="7335717776" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-`
-          }}
-        />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeLd) }} />
-      {upcoming.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
-      )}
-    </main>
+    </Container>
   );
 }

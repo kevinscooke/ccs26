@@ -1,14 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useEffect, useState } from "react";
-import EventCard from "@/components/EventCard";
+import { useMemo, useEffect, useState, Suspense } from "react";
+import type { Metadata } from "next";
 import EventListCard from "@/components/event/EventListCard";
 import eventsData from "@/app/data/events.json";
+import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import WeeklyControls from "@/components/WeeklyControls.client";
+import weeklyStyles from "@/components/Weekly.module.css";
+import { SearchBox } from "@/components/search/SearchBox";
+import dynamic from "next/dynamic";
+import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/eventSchema";
+import { toEtDate, nowInET } from "@/lib/et";
+
+const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 const PAGE_SIZE = 15;
 
-export default function PastEventsPage() {
+function PastEventsClient() {
   // Read ?page= on the client only to avoid prerender errors
   const [page, setPage] = useState(1);
   useEffect(() => {
@@ -22,20 +32,21 @@ export default function PastEventsPage() {
   }, []);
 
   // Use ET for consistent cutoff
-  const nowET = useMemo(
-    () => new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" })),
-    []
-  );
+  const nowET = useMemo(() => nowInET(), []);
 
   type EventType = (typeof eventsData)[number];
   const pastEvents = useMemo(() => {
     return (eventsData as EventType[])
-      .filter((e) => new Date(e.startAt) < nowET)
-      .sort(
-        (a, b) =>
-          new Date(b.startAt).getTime() - new Date(a.startAt).getTime() ||
-          a.title.localeCompare(b.title)
-      );
+      .filter((e) => {
+        if (e.status !== "PUBLISHED") return false;
+        const dt = toEtDate(e.startAt);
+        return !!dt && dt.getTime() < nowET.getTime();
+      })
+      .sort((a, b) => {
+        const ta = toEtDate(a.startAt)?.getTime() ?? 0;
+        const tb = toEtDate(b.startAt)?.getTime() ?? 0;
+        return tb - ta || a.title.localeCompare(b.title);
+      });
   }, [nowET]);
 
   const totalPages = Math.max(1, Math.ceil(pastEvents.length / PAGE_SIZE));
@@ -43,68 +54,139 @@ export default function PastEventsPage() {
   const items = pastEvents.slice(start, start + PAGE_SIZE);
   const nextHref = page < totalPages ? `/events/past/?page=${page + 1}` : null;
 
+  // Build JSON-LD ItemList with Event schemas (client-side)
+  const itemList = useMemo(() => {
+    return buildEventItemListSchema(items.slice(0, 100) as any[], {
+      name: "Past Charlotte Car Shows",
+      limit: 100,
+    });
+  }, [items]);
+
+  // Build BreadcrumbList schema (client-side)
+  const breadcrumbSchema = useMemo(() => {
+    return buildBreadcrumbListSchema(
+      [
+        { label: "Home", href: "/" },
+        { label: "All Events", href: "/events/" },
+        { label: "Past Events", current: true },
+      ],
+      { currentPageUrl: "https://charlottecarshows.com/events/past/" }
+    );
+  }, []);
+
+  const monthFmt = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "America/New_York",
+  });
+
+  // track last rendered month when mapping events
+  let lastMonth: string | null = null;
+
   return (
-    <section className="container max-w-7xl mx-auto px-4 py-8 md:py-12">
-      {/* Top bar: breadcrumbs (left) + List/Week/Day toggle (right) */}
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/70">
-          <ol className="flex items-center gap-1">
-            <li><Link href="/" className="hover:underline">Home</Link></li>
-            <li className="px-1">/</li>
-            <li><Link href="/events/" className="hover:underline">Events</Link></li>
-            <li className="px-1">/</li>
-            <li aria-current="page" className="font-medium text-[var(--fg)]">Past</li>
-          </ol>
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Link href="/events/" className="ccs-btn px-3 py-1.5" aria-current="page">List</Link>
-          <Link
-            href="/weekly-car-show-list-charlotte/"
-            className="ccs-btn px-3 py-1.5"
-          >
-            Week
-          </Link>
-          <Link
-            href="/daily/"
-            className="ccs-btn px-3 py-1.5"
-          >
-            Day
-          </Link>
+    <Container>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <div className={`${weeklyStyles.headerRow} gap-4`}>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "All Events", href: "/events/" },
+              { label: "Past Events", current: true },
+            ]}
+          />
+          <div className={weeklyStyles.headerControlsWrap}>
+            <Suspense fallback={<div className="h-9 w-64 rounded-md bg-zinc-100" aria-hidden="true" />}>
+              <WeeklyControls />
+            </Suspense>
+          </div>
         </div>
-      </div>
 
-      <header className="space-y-2 text-left">
-        <h1
-          className="text-balance font-serif text-3xl lg:text-4xl font-bold tracking-tight text-[var(--fg)]"
-        >
-          Past Charlotte Car Shows
-        </h1>
-        <p className="max-w-3xl text-[13.5px] md:text-[15px] text-[var(--fg)]/70">
-          Recently ended Cars &amp; Coffee, meets, cruise-ins, and automotive events across the Charlotte area.
-        </p>
-      </header>
+        {/* JSON-LD schemas */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
 
-      <div className="space-y-6 mb-12">
-        {items.map((e) => (
-          // Same EventCard used on /events (green button + location)
-          <EventCard key={e.id} e={e} />
-        ))}
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            Past Charlotte Car Shows
+          </h1>
+          <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
+            Recently ended Cars & Coffee, meets, cruise-ins, and automotive events across the Charlotte area.
+          </p>
+        </header>
 
-        {items.length === 0 && (
-          <div className="text-center py-12 text-[var(--fg)]/70">No past events found.</div>
-        )}
-      </div>
+        <div className="mb-6 md:mb-8">
+          <div className="max-w-xl">
+            <SearchBox />
+          </div>
+        </div>
 
-      {/* Same pagination controls as /events */}
-      <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
-        <Link href="/events/" className="ccs-btn px-4 py-2">Previous events</Link>
-        {nextHref ? (
-          <Link href={nextHref} className="ccs-btn px-4 py-2">Next Page</Link>
-        ) : (
-          <span className="ccs-btn px-4 py-2 opacity-50 pointer-events-none">Next Page</span>
-        )}
-      </nav>
-    </section>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="space-y-5 lg:col-span-8">
+            {items.map((e: EventType) => {
+              const monthLabel = monthFmt.format(toEtDate(e.startAt) ?? new Date(e.startAt));
+              const showMonth = monthLabel !== lastMonth;
+              lastMonth = monthLabel;
+
+              return (
+                <div key={e.id}>
+                  {showMonth && (
+                    <div className="my-4 flex items-center gap-3">
+                      <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                      <div className="text-xs font-medium uppercase tracking-wide text-[var(--fg)]/60">
+                        {monthLabel}
+                      </div>
+                      <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                    </div>
+                  )}
+                  <EventListCard e={e} />
+                </div>
+              );
+            })}
+
+            {items.length === 0 && (
+              <div className="ccs-card text-[var(--fg)]/70">No past events found.</div>
+            )}
+
+            <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
+              <Link href="/events/" className="ccs-btn px-4 py-2 text-sm">
+                All Events
+              </Link>
+              {nextHref ? (
+                <Link href={nextHref} className="ccs-btn px-4 py-2 text-sm">
+                  Next Page
+                </Link>
+              ) : (
+                <span className="ccs-btn px-4 py-2 text-sm opacity-50 pointer-events-none">Next Page</span>
+              )}
+            </nav>
+          </div>
+
+          <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <div className="flex items-center justify-center">
+              <AdSlot
+                slot="7335717776"
+                sizes={[
+                  { media: "(min-width: 1024px)", width: 300, height: 600 }, // desktop skyscraper
+                  { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile fallback
+                ]}
+              />
+            </div>
+          </aside>
+        </div>
+      </section>
+    </Container>
   );
+}
+
+export default function PastEventsPage() {
+  return <PastEventsClient />;
 }

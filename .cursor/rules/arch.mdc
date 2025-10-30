@@ -1,0 +1,57 @@
+---
+alwaysApply: false
+---
+# Architecture — Charlotte Car Shows
+
+## Tech Stack
+- **Framework:** Next.js 14.2.5 (App Router), static export to Netlify
+- **Styling:** Tailwind CSS 3.4.13 with custom design tokens
+- **Database:** Supabase (PostgreSQL) with Prisma ORM
+- **Data:** JSON exports from Supabase (`app/data/events.json`, `venues.json`)
+- **Search:** Client-side index (`public/search-index.json`)
+
+## Project Structure
+- **Pages:** `app/` directory (App Router)
+- **Components:** `components/` organized by feature (`event/`, `search/`, `ads/`)
+- **UI Primitives:** `components/ui/` (shadcn/ui pattern)
+- **Data:** JSON exports in `app/data/`, mirrored to `public/data/`
+- **Docs:** `Docs/` folder for implementation plans and tracking
+
+## Architecture Patterns
+
+### Component Patterns
+- **Container:** Always use `Container` component for page wrappers
+- **Breadcrumbs:** Use `Breadcrumbs` component for navigation context
+- **Event Cards:** Use `EventListCard` for list views, `EventCard` for detail views
+- **Metadata:** Always include complete `Metadata` object per page
+
+### Data Loading
+- **Runtime:** Use `loadEvents()` from `@/lib/data` for dynamic data
+- **Static:** Export to JSON for build-time generation
+- **Search Index:** Generate on build via `build:search-index` script
+
+### Client vs Server Components
+- **Default:** Server Components (default in App Router)
+- **Client:** Use `'use client'` only when needed (interactivity, hooks, browser APIs)
+- **Ad Components:** Use dynamic import with `ssr: false` (AdSlot pattern)
+
+### Routing
+- **Route Groups:** Use parentheses for logical grouping without affecting URLs
+- **Dynamic Routes:** Use `[slug]` for dynamic segments
+- **Special Pages:** Use descriptive folders for series pages (`charlotte-auto-show/`)
+
+## Security
+- Secrets only via env; never committed. Use parameterized queries only (Prisma default).
+- Database queries: Always use Prisma client (parameterized by default)
+- Environment variables: Use `NEXT_PUBLIC_*` prefix only for client-safe values
+
+## Performance
+- **Images:** Use Next.js `Image` component with `priority` for above-fold
+- **Code Splitting:** Use dynamic imports for heavy client components
+- **Static Generation:** Prefer static generation where possible
+- **JSON Data:** Export from Supabase to JSON for faster builds
+
+## Documentation
+- Update `Docs/Implementation.md` when making architectural changes
+- Update `Docs/Project_Structure.md` for structural changes
+- Track issues in `Docs/Bug_Tracking.md`

@@ -1,7 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 // Use the same card as /events (NOT the compact one in components/event/)
 import EventCard from "@/components/EventCard";
 import eventsData from "@/app/data/events.json";
+import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/eventSchema";
 
 const SERIES_SLUG = "charlotte-auto-show";
 const OFFICIAL_SITE_URL = "https://www.charlotteautoshow.com";
@@ -75,52 +79,32 @@ export default function CharlotteAutoShowPage() {
     `${VENUE_NAME}, ${VENUE_ADDRESS}`
   )}&output=embed`;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
+  // Build standardized Event schema ItemList
+  const jsonLd = buildEventItemListSchema(thisYearEvents as any[], {
     name: "Charlotte Auto Show Events",
-    itemListElement: thisYearEvents.map((e, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `https://www.charlottecarshows.com/events/${e.slug}/`,
-      item: {
-        "@type": "Event",
-        name: e.title,
-        startDate: e.startAt,
-        endDate: e.endAt || e.startAt,
-        eventStatus: "https://schema.org/EventScheduled",
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-        location: {
-          "@type": "Place",
-          name: e.venue?.name || VENUE_NAME,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: e.venue?.address1 || VENUE_ADDRESS.split(",")[0],
-            addressLocality: e.venue?.city || "Charlotte",
-            addressRegion: e.venue?.state || "NC",
-            postalCode:
-              ((e as any).venue?.postal_code ??
-               (e as any).venue?.postalCode ??
-               "28202"),
-            addressCountry: "US",
-          },
-        },
-      },
-    })),
-  };
+    limit: 100,
+  });
+
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Events", href: "/events/" },
+      { label: "Charlotte Auto Show", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/events/charlotte-auto-show/" }
+  );
 
   return (
-    <main className="container max-w-7xl mx-auto px-4 py-8 md:py-12">
-      {/* Breadcrumbs only (no List/Week/Day toggle) */}
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-[var(--fg)]/70">
-        <ol className="flex items-center gap-1">
-          <li><Link href="/" className="hover:underline">Home</Link></li>
-          <li className="px-1">/</li>
-          <li><Link href="/events/" className="hover:underline">Events</Link></li>
-          <li className="px-1">/</li>
-          <li aria-current="page" className="font-medium text-[var(--fg)]">Charlotte Auto Show</li>
-        </ol>
-      </nav>
+    <Container>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Events", href: "/events/" },
+            { label: "Charlotte Auto Show", current: true },
+          ]}
+        />
 
       <header className="text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Charlotte Auto Show</h1>
@@ -201,7 +185,9 @@ export default function CharlotteAutoShowPage() {
         </section>
       )}
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    </main>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      </section>
+    </Container>
   );
 }

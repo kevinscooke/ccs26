@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
 import { toEtDate, nowInET, formatDateET, formatTimeET } from "@/lib/et";
+import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/eventSchema";
 import Container from '@/components/Container';
 import EventListCard from "@/components/event/EventListCard";
 import WeeklyControls from "@/components/WeeklyControls.client";
@@ -57,18 +58,18 @@ export default async function EventsAllPage() {
     // sanitize URL field so a non-http value won't render as a site link
     .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
 
-  // --- JSON-LD: ItemList of event detail URLs (good for discovery on list pages) ---
+  // --- JSON-LD: ItemList with Event schemas (standardized format) ---
   // Keep it reasonable in size; cap at 100 items to avoid huge script tags.
-  const itemList = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-  itemListElement: events.slice(0, 100).map((e: EventType, i: number) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `https://charlottecarshows.com/events/${e.slug}`,
-      name: e.title,
-    })),
-  };
+  const itemList = buildEventItemListSchema(events.slice(0, 100) as any[], {
+    name: "All Charlotte Car Shows",
+    limit: 100,
+  });
+
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [{ label: "Home", href: "/" }, { label: "All Events", current: true }],
+    { currentPageUrl: "https://charlottecarshows.com/events/" }
+  );
 
   const urlFor = (p: number) => (p <= 1 ? "/events/" : `/events/page/${p}/`);
 
@@ -98,6 +99,10 @@ export default async function EventsAllPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
 
         <header className="space-y-2 text-left">

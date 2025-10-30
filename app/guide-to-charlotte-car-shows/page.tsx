@@ -2,6 +2,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 export const runtime = "nodejs";
@@ -63,38 +66,45 @@ export default function GuidePage() {
     },
   };
 
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Resources", href: "/resources/" },
+      { label: "Guide to Charlotte Car Shows", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/guide-to-charlotte-car-shows" }
+  );
+
   return (
-    <div className="max-w-6xl mx-auto px-4 space-y-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <Container>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60">
-        <ol className="flex items-center gap-2">
-          <li>
-            <Link href="/" className="hover:underline text-[var(--fg)]">Home</Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link href="/resources" className="hover:underline text-[var(--fg)]">Resources</Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-[var(--fg)]/80">Guide to Charlotte Car Shows</li>
-        </ol>
-      </nav>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Resources", href: "/resources/" },
+            { label: "Guide to Charlotte Car Shows", current: true },
+          ]}
+        />
 
-      {/* Header */}
-      <header className="space-y-4">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
-          The Guide to Charlotte Car Shows
-        </h1>
-        <p className="text-lg text-[var(--fg)]/70 max-w-2xl">
-          New to local shows or looking to plan your weekends? This guide covers monthly staples,
-          annual highlights, and helpful resources across the greater Charlotte area.
-          For up-to-date dates and times, always check the
-          {" "}
-          <Link className="underline hover:text-green-700" href="/events/">events calendar</Link>.
-        </p>
-      </header>
+        {/* Header */}
+        <header className="space-y-2 text-left">
+          <h1
+            className="text-3xl font-bold tracking-tight text-[var(--fg)] lg:text-[34px]"
+            style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
+          >
+            The Guide to Charlotte Car Shows
+          </h1>
+          <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
+            New to local shows or looking to plan your weekends? This guide covers monthly staples,
+            annual highlights, and helpful resources across the greater Charlotte area.
+            For up-to-date dates and times, always check the{" "}
+            <Link className="underline hover:text-brand-700" href="/events/">events calendar</Link>.
+          </p>
+        </header>
 
       {/* Layout: content + right-rail ToC */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
@@ -242,6 +252,7 @@ export default function GuidePage() {
           </div>
         </aside>
       </div>
-    </div>
+      </section>
+    </Container>
   );
 }

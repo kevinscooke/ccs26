@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+## Branching
+- feat/*, fix/*, chore/*.
+- One logical scope per PR.
+
+## PR Checklist
+- Linked issue or PRD section.
+- Lint + typecheck + unit tests pass.
+- Screenshots for UI, `curl` for API, or task-runner output.
+- DB change? Include migration + rollback plan.
+
+## Local DB
+- Use `.env.local` for DATABASE_URL.
+
+## CI
+- Steps: install → typecheck → lint → unit tests → build → `prisma migrate deploy`.
+- For e2e: spin ephemeral Postgres, run seeds, Playwright tests.
+
+## Releases
+- Tag with `vX.Y.Z`; generate changelog from Conventional Commits.

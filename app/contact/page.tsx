@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Container from '@/components/Container';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 import dynamicImport from "next/dynamic"; // rename to avoid clashing with `export const dynamic`
 const AdSlot = dynamicImport(() => import("@/components/ads/AdSlot"), { ssr: false });
 
@@ -23,9 +25,27 @@ export const metadata: Metadata = {
 };
 
 export default function Contact() {
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Contact", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/contact" }
+  );
+
   return (
     <Container>
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <section className="w-full space-y-8 lg:space-y-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Contact", current: true },
+          ]}
+        />
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left: contact content ~60% (col-span-7/12 ≈ 58.3%) */}
         <div className="md:col-span-7">
           <section className="ccs-card">
@@ -101,7 +121,8 @@ export default function Contact() {
             </div>
           </div>
         </aside>
-      </div>
+        </div>
+      </section>
     </Container>
   );
 }

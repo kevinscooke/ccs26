@@ -5,8 +5,10 @@ import Link from "next/link";
 import eventsData from "@/app/data/events.json";
 // import venuesData from "@/app/data/venues.json"; // not used here
 import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { Calendar } from "lucide-react";
 import { formatDateET, formatTimeET, toEtDate } from "@/lib/et";
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -196,15 +198,15 @@ export default async function EventPage({ params }: { params: { slug: string } }
     ...(isCancelled ? { eventStatus: "https://schema.org/EventCancelled" } : {}),
   };
 
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://charlottecarshows.com/" },
-      { "@type": "ListItem", position: 2, name: "All Events", item: "https://charlottecarshows.com/events/" },
-      { "@type": "ListItem", position: 3, name: ev.title, item: canonical },
+  // Build BreadcrumbList schema using helper
+  const breadcrumbLd = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "All Events", href: "/events/" },
+      { label: ev.title, current: true },
     ],
-  };
+    { currentPageUrl: canonical }
+  );
 
   return (
     <Container>
@@ -214,15 +216,13 @@ export default async function EventPage({ params }: { params: { slug: string } }
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
         {/* Breadcrumbs */}
-        <nav aria-label="Breadcrumb" className="text-sm text-[var(--fg)]/60">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li><Link href="/" className="text-[var(--fg)] hover:underline">Home</Link></li>
-            <li aria-hidden="true">/</li>
-            <li><Link href="/events/" className="text-[var(--fg)] hover:underline">All Events</Link></li>
-            <li aria-hidden="true">/</li>
-            <li aria-current="page" className="max-w-[60ch] truncate text-[var(--fg)]/80">{ev.title}</li>
-          </ol>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "All Events", href: "/events/" },
+            { label: ev.title, current: true },
+          ]}
+        />
 
         {/* ===== HERO ===== */}
         <section className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white/70 backdrop-blur p-6 sm:p-8">

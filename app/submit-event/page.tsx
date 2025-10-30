@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Container from '@/components/Container';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { buildBreadcrumbListSchema } from "@/lib/eventSchema";
 
 export const dynamic = "force-static";
 
@@ -23,8 +26,27 @@ export const metadata: Metadata = {
 };
 
 export default function SubmitEventPage() {
+  // Build BreadcrumbList schema
+  const breadcrumbSchema = buildBreadcrumbListSchema(
+    [
+      { label: "Home", href: "/" },
+      { label: "Submit Event", current: true },
+    ],
+    { currentPageUrl: "https://charlottecarshows.com/submit-event" }
+  );
+
   return (
-    <section className="ccs-card max-w-2xl mx-auto">
+    <Container>
+      <section className="w-full space-y-8 lg:space-y-10">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Submit Event", current: true },
+          ]}
+        />
+        <div className="ccs-card max-w-2xl mx-auto">
       <h1 className="text-3xl font-semibold tracking-tight mb-2">
         Submit Your Event
       </h1>
@@ -145,6 +167,8 @@ export default function SubmitEventPage() {
           </div>
         </div>
       </form>
-    </section>
+        </div>
+      </section>
+    </Container>
   );
 }

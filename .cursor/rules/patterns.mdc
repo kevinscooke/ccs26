@@ -1,0 +1,260 @@
+---
+alwaysApply: false
+---
+# Component Patterns — Charlotte Car Shows
+
+## Page Components (Server Components)
+
+### Standard Page Structure
+```typescript
+import type { Metadata } from "next";
+import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+
+export const metadata: Metadata = {
+  // ... complete metadata
+};
+
+export default async function PageName() {
+  // Load data (Server Component)
+  const data = await loadData();
+  
+  return (
+    <Container>
+      <Breadcrumbs items={[...]} />
+      <header>
+        <h1>Page Title</h1>
+        <p>Description</p>
+      </header>
+      {/* Page content */}
+    </Container>
+  );
+}
+```
+
+### Events List Page Pattern
+```typescript
+import EventListCard from "@/components/event/EventListCard";
+import { SearchBox } from "@/components/search/SearchBox";
+import { loadEvents } from "@/lib/data";
+
+export default async function EventsPage() {
+  const events = await loadEvents();
+  // Filter, sort, paginate
+  
+  return (
+    <Container>
+      <Breadcrumbs items={[...]} />
+      <SearchBox />
+      <div className="grid grid-cols-1 lg:grid-cols-12">
+        <main className="lg:col-span-8">
+          {events.map(e => <EventListCard key={e.id} e={e} />)}
+        </main>
+        <aside className="lg:col-span-4 lg:sticky lg:top-24">
+          {/* Sidebar content */}
+        </aside>
+      </div>
+    </Container>
+  );
+}
+```
+
+### Series Page Pattern (Charlotte Auto Show)
+```typescript
+import EventCard from "@/components/EventCard";
+import eventsData from "@/app/data/events.json";
+
+const SERIES_SLUG = "series-slug";
+const CURRENT_YEAR_EVENT_IDS = ["id1", "id2"];
+
+export default function SeriesPage() {
+  const now = toET(new Date());
+  const currentYear = now.getFullYear();
+  
+  // Filter events by series
+  const seriesEvents = eventsData.filter(e => 
+    CURRENT_YEAR_EVENT_IDS.includes(String(e.id)) ||
+    e.slug?.includes(SERIES_SLUG)
+  );
+  
+  // Separate upcoming and past
+  const upcoming = seriesEvents.filter(e => toET(e.startAt) >= now);
+  const past = seriesEvents.filter(e => toET(e.startAt) < now);
+  
+  return (
+    <Container>
+      <Breadcrumbs items={[...]} />
+      <header>
+        <h1>Series Name</h1>
+      </header>
+      {upcoming.length > 0 && (
+        <section>
+          <h2>{currentYear} Schedule</h2>
+          {upcoming.map(e => <EventCard key={e.id} e={e} />)}
+        </section>
+      )}
+      {past.length > 0 && (
+        <section>
+          <h2>Past Years</h2>
+          {past.map(e => <EventCard key={e.id} e={e} />)}
+        </section>
+      )}
+    </Container>
+  );
+}
+```
+
+## Component Patterns
+
+### Container Component
+- Always use `Container` from `@/components/Container` for page wrappers
+- Provides max-width, padding, centering
+- No need for wrapper divs
+
+### Breadcrumbs Component
+- Use `Breadcrumbs` from `@/components/Breadcrumbs`
+- Pass array of `{label, href, current?}` items
+- Always include Home as first item
+
+### Event Cards
+- **List Views:** Use `EventListCard` from `@/components/event/EventListCard`
+  - Props: `e` (event object)
+  - Used in: `/events/`, `/weekly-car-show-list-charlotte/`
+- **Detail Views:** Use `EventCard` from `@/components/EventCard`
+  - Props: `e` (event object)
+  - Used in: series pages (`charlotte-auto-show/`)
+
+### Search Components
+- Use `SearchBox` from `@/components/search/SearchBox`
+- Wrap app in `SearchProvider` (done in root layout)
+- Search index loaded automatically
+
+### Button Components
+- Use `Button` from `@/components/ui/button` (shadcn/ui)
+- Variants: `default` (green), `secondary` (gray), `outline`, `ghost`
+- Sizes: `sm`, `default`, `lg`
+- Can use `asChild` for link buttons
+
+### Ad Components
+- Use `AdSlot` from `@/components/ads/AdSlot` (dynamic import, ssr: false)
+- Responsive sizes via `sizes` prop
+- Header/Footer: `HeaderAdBar`, `FooterAdBar`
+
+## Data Loading Patterns
+
+### Load Events
+```typescript
+import { loadEvents } from "@/lib/data";
+
+const events = await loadEvents();
+// Filter, sort, paginate in Server Component
+```
+
+### Timezone Handling
+```typescript
+import { nowInET, toEtDate, formatDateET, formatTimeET } from "@/lib/et";
+
+const now = nowInET();
+const eventDate = toEtDate(event.startAt);
+const formatted = formatDateET(eventDate);
+```
+
+### Event Filtering
+```typescript
+const events = (await loadEvents())
+  .filter(e => e.status === "PUBLISHED")
+  .filter(e => {
+    const dt = toEtDate(e.startAt);
+    return dt && dt >= now;
+  })
+  .sort((a, b) => {
+    const ta = toEtDate(a.startAt)?.getTime() ?? 0;
+    const tb = toEtDate(b.startAt)?.getTime() ?? 0;
+    return ta - tb || a.title.localeCompare(b.title);
+  });
+```
+
+## Styling Patterns
+
+### Card Styling
+```tsx
+<div className="ccs-card">
+  {/* Content */}
+</div>
+```
+
+### Button Styling
+```tsx
+<Button variant="default">Primary Action</Button>
+<Button variant="secondary">Secondary Action</Button>
+<a className="ccs-btn" href="...">Link Button</a>
+```
+
+### Responsive Typography
+```tsx
+<h1 className="text-3xl font-bold lg:text-5xl font-heading">
+  Title
+</h1>
+```
+
+### Responsive Grids
+```tsx
+<div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+  <main className="lg:col-span-8">Main</main>
+  <aside className="lg:col-span-4">Sidebar</aside>
+</div>
+```
+
+### Spacing
+```tsx
+<section className="space-y-8 lg:space-y-10">
+  {/* Content */}
+</section>
+```
+
+## Metadata Patterns
+
+### Standard Metadata
+```typescript
+export const metadata: Metadata = {
+  title: "Page Title | Charlotte Car Shows",
+  description: "Page description...",
+  alternates: { canonical: "https://charlottecarshows.com/path/" },
+  openGraph: {
+    title: "Page Title",
+    description: "Page description...",
+    url: "https://charlottecarshows.com/path/",
+    type: "website",
+    images: [{ url: "...", alt: "..." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Page Title",
+    description: "Page description...",
+    images: ["..."],
+  },
+};
+```
+
+## JSON-LD Patterns
+
+### Organization (Home Page)
+- Include in home page only
+- Reference social media profiles
+
+### WebSite (Home Page)
+- Include SearchAction for site search
+
+### ItemList (List Pages)
+- Include on list pages (`/events/`, `/weekly-car-show-list-charlotte/`)
+- Limit to 100 items to avoid large script tags
+- Map events to ListItem with position, url, name
+
+### Event (Detail Pages)
+- Include on event detail pages
+- Include location, dates, status
+
+## Documentation
+- Document new patterns in `Docs/Implementation.md`
+- Update `Docs/Project_Structure.md` for structural changes
+- Track pattern issues in `Docs/Bug_Tracking.md`

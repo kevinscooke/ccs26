@@ -1,0 +1,62 @@
+---
+alwaysApply: true
+---
+
+# Style — Charlotte Car Shows
+
+## Markdown
+- Links: relative where possible; no bare URLs—always descriptive text.
+
+## Styling Guidelines
+
+### Design Token Usage
+- **Preferred:** Use CSS custom properties (`var(--brand-500)`, `var(--fg)`)
+- **Tailwind Integration:** Design tokens mapped in `tailwind.config.js`
+- **Brand Colors:** Use `brand-*` or `green-*` (brand-600 = green-600)
+- **Neutral Colors:** Use `gray-*` for neutral colors
+- **Avoid:** Hard-coded colors or mixing patterns inconsistently
+
+### Component Classes
+- **Cards:** Use `.ccs-card` for content cards (white bg, border, shadow)
+- **Buttons:** Use `Button` component from `@/components/ui/button` or `.ccs-btn` / `.ccs-btn-primary`
+- **Badges:** Use `.ccs-badge` for tags/labels
+- **Containers:** Use `Container` component from `@/components/Container`
+
+### Typography
+- **Headings:** Use `font-heading` (Source Serif 4) via `var(--font-heading)`
+- **Body:** Use `font-sans` (Inter) via `var(--font-sans)` or default
+- **Sizes:** Use Tailwind classes (`text-3xl`, `text-base`, `text-sm`)
+- **Responsive:** Use responsive prefixes (`lg:text-5xl` for desktop)
+
+### Spacing
+- **Preferred:** Tailwind spacing scale (`p-4`, `gap-6`, `space-y-8`)
+- **Tokens:** Design token spacing available but prefer Tailwind
+- **Patterns:** Container padding `px-4` (mobile) → `px-6` (desktop)
+- **Section Spacing:** `space-y-8` → `space-y-10` (lg)
+
+### Responsive Design
+- **Mobile-First:** Default styles for mobile, use breakpoints for larger screens
+- **Breakpoints:** `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px)
+- **Patterns:** `text-3xl lg:text-5xl` for responsive typography
+- **Grids:** `grid-cols-1 lg:grid-cols-12` for responsive layouts
+
+### Layout Patterns
+- **Two-Column:** Main content `lg:col-span-8`, sidebar `lg:col-span-4`
+- **Three-Column:** `md:grid-cols-3` for feature grids
+- **Sticky Sidebars:** `lg:sticky lg:top-24` for desktop
+
+## CSS File Organization
+- **Global Styles:** `app/globals.css` contains design tokens and component classes
+- **Module Styles:** Use `.module.css` for component-specific styles if needed
+- **Design Tokens:** Defined in `:root` in `globals.css`, mapped in Tailwind config
+
+## Code Style
+- **TypeScript:** Use strict mode, type all props and functions
+- **Components:** Use functional components with TypeScript
+- **Props:** Type all component props explicitly
+- **Imports:** Use path aliases (`@/components/...`)
+
+## Commits
+- Conventional Commits: `feat|fix|docs|chore|refactor|test|build|ci`
+- Format: `type(scope): description`
+- Examples: `feat(events): add weekly view`, `fix(seo): add missing JSON-LD schema`
