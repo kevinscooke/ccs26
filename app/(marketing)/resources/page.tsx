@@ -114,7 +114,7 @@ export default function ResourcesPage() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4">Want to be listed?</h2>
-              <p className="text-[var(--fg)]/80">Don't see your business listed? <Link href="/contact" className="underline hover:text-brand-700">Send us a message</Link> and we'll get it added for free.</p>
+              <p className="text-[var(--fg)]/80">Don&apos;t see your business listed? <Link href="/contact" className="underline hover:text-brand-700">Send us a message</Link> and we&apos;ll get it added for free.</p>
             </section>
           </div>
 

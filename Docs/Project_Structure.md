@@ -326,12 +326,29 @@ out/
 4. Test locally: `pnpm dev`
 5. Commit changes: JSON files should be committed
 
+### Pre-Push Checklist
+**See `Docs/Pre_Push_Checklist.md` for complete checklist.**
+
+**Quick validation before pushing:**
+```bash
+pnpm lint && pnpm typecheck && pnpm validate:jsonld
+```
+
+**Required checks:**
+- [ ] Lint passes (`pnpm lint`)
+- [ ] Type check passes (`pnpm typecheck`)
+- [ ] JSON-LD validation (`pnpm validate:jsonld`)
+- [ ] Build succeeds (`pnpm build`)
+- [ ] Test JSON-LD after Netlify deploy with [Google Rich Results Test](https://search.google.com/test/rich-results)
+
 ### Deployment
-1. Push to main branch
-2. Netlify builds automatically
-3. Build runs: `pnpm build:search-index`, `pnpm build`
-4. Static files deployed to CDN
-5. Redirects and headers applied
+1. **Before pushing:** Run pre-push checklist (see `Docs/Pre_Push_Checklist.md`)
+2. Push to main branch
+3. Netlify builds automatically
+4. Build runs: `pnpm build:search-index`, `pnpm build`
+5. Static files deployed to CDN
+6. Redirects and headers applied
+7. **After deploy:** Validate JSON-LD with Google Rich Results Test
 
 ## Future Structure Considerations
 

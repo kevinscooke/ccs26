@@ -58,7 +58,7 @@ export default function AccessibilityPage() {
           <h2>Feedback</h2>
           <p>
             If you encounter barriers, email <a href="mailto:hello@charlottecarshows.com" className="underline hover:text-brand-700">hello@charlottecarshows.com</a>
-            with the page URL and description. We'll work to resolve it promptly.
+            with the page URL and description. We&apos;ll work to resolve it promptly.
           </p>
         </div>
       </section>

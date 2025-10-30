@@ -5,11 +5,27 @@ alwaysApply: true
 - feat/*, fix/*, chore/*.
 - One logical scope per PR.
 
+## Pre-Push Checklist
+Before pushing to main/Netlify, see `Docs/Pre_Push_Checklist.md` for full checklist.
+
+**Quick validation:**
+```bash
+pnpm lint && pnpm typecheck && pnpm validate:jsonld
+```
+
+**Required checks:**
+- [ ] `pnpm lint` passes
+- [ ] `pnpm typecheck` passes
+- [ ] `pnpm validate:jsonld` — review JSON-LD pages
+- [ ] `pnpm build` succeeds
+- [ ] Test JSON-LD after Netlify deploy with Google Rich Results Test
+
 ## PR Checklist
 - Linked issue or PRD section.
 - Lint + typecheck + unit tests pass.
 - Screenshots for UI, `curl` for API, or task-runner output.
 - DB change? Include migration + rollback plan.
+- JSON-LD changes? Validate with `pnpm validate:jsonld` and test after deploy.
 
 ## Local DB
 - Use `.env.local` for DATABASE_URL.
