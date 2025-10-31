@@ -141,11 +141,38 @@ The workflow file is: `.github/workflows/update-events-and-deploy.yml`
 
 ## Troubleshooting Checklist
 
-- [ ] GitHub Actions has permission to push to repository
+- [ ] **GitHub Actions has write permissions** (CRITICAL - see below)
 - [ ] Workflow file syntax is valid (YAML)
 - [ ] `.github/build-trigger.txt` file exists (or can be created)
 - [ ] Netlify auto-deploy is enabled OR `NETLIFY_DEPLOY_HOOK` secret is configured
 - [ ] Can manually push to the branch
+
+### Fixing "Permission denied" Error (403)
+
+If you see `Permission to ... denied to github-actions[bot]`:
+
+**Solution 1: Enable Workflow Permissions (Easiest)**
+1. Go to your repository: `Settings` → `Actions` → `General`
+2. Scroll to **"Workflow permissions"**
+3. Select **"Read and write permissions"**
+4. Check **"Allow GitHub Actions to create and approve pull requests"** (if needed)
+5. Click **Save**
+
+**Solution 2: Use Personal Access Token (If Solution 1 doesn't work)**
+1. Create a Personal Access Token (PAT) with `repo` scope:
+   - GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+   - Generate new token with `repo` scope
+2. Add as repository secret:
+   - Repository → Settings → Secrets → Actions → New repository secret
+   - Name: `PAT_TOKEN`
+   - Value: Your PAT
+3. Update workflow to use PAT:
+   ```yaml
+   - uses: actions/checkout@v4
+     with:
+       token: ${{ secrets.PAT_TOKEN }}
+       persist-credentials: true
+   ```
 
 ---
 
