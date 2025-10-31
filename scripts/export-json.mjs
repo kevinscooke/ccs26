@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 
 // Load env from .env (and .env.local for Next-style projects)
+// Note: dotenv.config() won't override existing env vars, so GitHub Actions secrets work
 dotenv.config();
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
@@ -14,6 +15,7 @@ const SUPABASE_ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON) {
   console.error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY in env.");
+  console.error("Current env keys:", Object.keys(process.env).filter(k => k.includes('SUPABASE')).join(', ') || 'none found');
   process.exit(1);
 }
 

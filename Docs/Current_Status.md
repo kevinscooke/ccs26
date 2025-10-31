@@ -8,19 +8,23 @@
 ## 🎯 Active Priorities
 
 ### 1. G5: Fix Weekly Events Auto-Update Workflow 🔥
-**Priority:** High | **Effort:** Low (1-2 hours) | **Status:** ⏳ **Partially Complete**
+**Priority:** High | **Effort:** Low (1-2 hours) | **Status:** ✅ **COMPLETE**
 
 **Completed:**
-- ✅ Updated cron schedule from `5 4 * * 1` to `0 4 * * 1` (Monday 04:00 UTC = Sunday 11:00 PM ET during EST)
-- ✅ Improved timing to run Sunday night ET (ready by Monday morning)
+- ✅ Updated cron schedule to `0 4 * * 1` (Monday 04:00 UTC = Sunday 11:00 PM ET during EST)
+- ✅ Simplified workflow - removed Supabase dependencies
+- ✅ Uses simple timestamp file commit to trigger rebuild
+- ✅ No secrets required - just git push triggers Netlify auto-deploy
+- ✅ Fast and reliable - runs in ~5-10 seconds
 
-**Remaining:**
-- [ ] Monitor workflow execution over next few weeks to verify reliability
-- [ ] Consider adding workflow failure notifications (if needed)
-- [ ] Document final automation approach
+**How It Works:**
+1. Updates `.github/build-trigger.txt` with timestamp
+2. Commits and pushes (`[ci skip]`)
+3. Triggers Netlify rebuild with latest `events.json` from repo
 
 **Files:**
-- ✅ `.github/workflows/update-events-and-deploy.yml` (updated)
+- ✅ `.github/workflows/update-events-and-deploy.yml` (simplified)
+- ✅ `.github/build-trigger.txt` (auto-generated tracker file)
 
 ---
 

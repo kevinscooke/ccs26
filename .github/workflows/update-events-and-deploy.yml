@@ -1,4 +1,4 @@
-name: Weekly events export & deploy
+name: Weekly rebuild trigger
 
 on:
   schedule:
@@ -8,47 +8,23 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  export-and-deploy:
+  trigger-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: |
-          pnpm install --frozen-lockfile
-
-      - name: Run exporter (writes public/data & app/data)
-        env:
-          NODE_ENV: production
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        run: |
-          node ./scripts/export-json.mjs
-
-      - name: Commit updated data (if any)
+      - name: Update build trigger timestamp
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/data events public/data || true
-          if ! git diff --quiet --cached; then
-            git commit -m "chore(data): weekly events snapshot [ci skip]"
-            git push
-          else
-            echo "No data changes"
-          fi
+          # Update a simple comment file to trigger rebuild
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "# Weekly build trigger - $TIMESTAMP" > .github/build-trigger.txt
+          git add .github/build-trigger.txt
+          git commit -m "chore: weekly build trigger [ci skip]" || exit 0
+          git push
 
       # Option A: rely on push -> Netlify Build (if Netlify auto-deploy is set)
       # Option B: Or call a Netlify build hook directly:
@@ -58,5 +34,5 @@ jobs:
             echo "Triggering Netlify deploy hook..."
             curl -sS -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}" || true
           else
-            echo "No NETLIFY_DEPLOY_HOOK secret configured — skipping deploy hook."
+            echo "No NETLIFY_DEPLOY_HOOK secret configured — relying on auto-deploy from git push."
           fi

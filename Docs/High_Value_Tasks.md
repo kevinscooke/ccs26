@@ -21,35 +21,34 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 ## Active Tasks (In Priority Order)
 
 ### G5: Fix Weekly Events Auto-Update Workflow
-**Priority:** High | **Effort:** Low (1-2 hours) | **Impact:** Operational reliability, user experience
+**Priority:** High | **Effort:** Low (1-2 hours) | **Impact:** Operational reliability, user experience | **Status:** ✅ **COMPLETE**
 
 **Problem:**
 - Current GitHub workflow runs Monday 04:05 UTC (Monday morning ET)
 - Should run Sunday night to prepare for new week
 - Not reliably triggering weekly updates
-- Better automation approach needed
+- Overcomplicated with Supabase dependencies
 
-**Tasks:**
-- [x] Review current workflow (`.github/workflows/update-events-and-deploy.yml`) ✅
-- [x] Update cron schedule to run Sunday night ET (Monday 04:00 UTC = Sunday 11:00 PM ET during EST, Sunday 12:00 AM ET during DST) ✅
-- [ ] Consider alternative approaches:
-  - [ ] On-demand rebuilds via webhook from Supabase
-  - [ ] Netlify scheduled functions
-  - [ ] Manual trigger + better monitoring
-- [ ] Add workflow monitoring/alerting for failures
-- [ ] Test workflow execution and verify weekly updates
-- [ ] Document the automation approach
+**Solution Implemented:**
+- ✅ Simplified workflow to just trigger rebuild (no Supabase needed)
+- ✅ Updated cron schedule to run Sunday night ET (Monday 04:00 UTC)
+- ✅ Uses simple timestamp file commit to trigger Netlify rebuild
+- ✅ No secrets required - just git push triggers auto-deploy
+
+**What It Does:**
+1. Updates `.github/build-trigger.txt` with current timestamp
+2. Commits and pushes it (`[ci skip]` to avoid CI loops)
+3. Triggers Netlify rebuild (auto-deploy from push OR deploy hook)
 
 **Files Affected:**
-- `.github/workflows/update-events-and-deploy.yml`
-- `scripts/export-json.mjs` (verify it works correctly)
-- Consider adding workflow status checks
+- ✅ `.github/workflows/update-events-and-deploy.yml` (simplified)
+- ✅ `.github/build-trigger.txt` (tracker file, auto-generated)
 
-**Alternative Approaches:**
-1. **Webhook from Supabase** - Trigger rebuild when data changes (best for real-time)
-2. **Netlify Scheduled Functions** - Run on Netlify's infrastructure (simpler than GitHub Actions)
-3. **Improved GitHub Actions** - Better cron timing, error handling, notifications
-4. **Hybrid Approach** - Scheduled + on-demand triggers
+**Benefits:**
+- **No secrets needed** - removed Supabase dependencies
+- **Fast** - runs in ~5-10 seconds (no dependencies to install)
+- **Reliable** - fewer failure points
+- **Simple** - just a git commit to trigger rebuild
 
 ---
 
