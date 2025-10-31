@@ -168,9 +168,9 @@ export function SearchBox({ className = "" }: { className?: string }) {
       {open && q && (
         <div 
           className="absolute z-20 mt-2 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
-          role="combobox"
+          role="listbox"
           aria-expanded={open}
-          aria-haspopup="listbox"
+          aria-label="Search results"
         >
           {loading && <div className="p-3 text-sm text-gray-600" role="status" aria-live="polite">Loading index…</div>}
           {error && <div className="p-3 text-sm text-red-700 bg-red-50" role="alert" aria-live="assertive">Failed to load search index.</div>}

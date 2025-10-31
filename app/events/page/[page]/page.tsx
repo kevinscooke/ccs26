@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import eventsData from "../../../data/events.json";
+import { loadEvents } from "@/lib/data";
 import EventListCard from "@/components/event/EventListCard";
 import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
