@@ -10,6 +10,7 @@ Charlotte Car Shows is the ultimate car show, event and activity website for the
 - G1: Analyze current high-value pages (Home, /events/, /weekly-car.../,) and update Docs and Rules to standardize
 - G2: Track which pages need work (CSS, SEO, etc.)
 - G3: Determine high-value tasks to prioritize next.
+- G5: Fix GitHub workflow to auto-update weekly events on Sunday night (better scheduling/automation approach)
 
 ### Completed Goals
 - ✅ **G4: Copy Charlotte Auto Show page and create 2026 autofair** — COMPLETE
@@ -17,6 +18,14 @@ Charlotte Car Shows is the ultimate car show, event and activity website for the
   - Added to Footer and TopNav navigation
   - Added sidebar with skyscraper ad matching `/events/` layout
   - Complete metadata and JSON-LD structured data
+
+- ✅ **Event Component Standardization & Tailwind Migration** — COMPLETE
+  - Consolidated EventCard → EventListCard (single component standard)
+  - Migrated all `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` to Tailwind utilities
+  - Removed unused shadcn components (Dialog, DropdownMenu, Button)
+  - Cleaned up CSS files (`globals.css`, `Weekly.module.css`)
+  - All buttons now use Tailwind: `bg-brand-600` (primary) / `bg-gray-100` (secondary)
+  - All cards now use Tailwind: `bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow`
 
 ## Response Style
 - Be professional and technically accurate

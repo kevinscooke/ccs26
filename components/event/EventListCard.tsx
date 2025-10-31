@@ -4,14 +4,17 @@ import { toEtDate } from "@/lib/et";
 
 type EventLike = {
   id?: string | number;
-  slug: string;
-  title: string;
+  slug?: string;
+  title?: string;
   startAt: string | number | Date;
   endAt?: string | number | Date | null;
   isFeatured?: boolean;
   description?: string | null;
+  descriptionShort?: string | null;
+  shortDescription?: string | null;
   url?: string | null;
-  venue?: { name?: string; city?: string; state?: string } | null;
+  tags?: string[] | null;
+  venue?: { name?: string; city?: string; state?: string; slug?: string | null } | null;
 };
 
 function isValidHttp(u: any): u is string {
@@ -31,9 +34,21 @@ const timeFmt = new Intl.DateTimeFormat("en-US", {
   timeZone: "America/New_York",
 });
 
+function slugify(s: string) {
+  return s.toLowerCase().trim().replace(/[\s/]+/g, "-").replace(/[^a-z0-9-]+/g, "").replace(/-+/g, "-");
+}
+
 export default function EventListCard({ e }: { e: EventLike }) {
-  const desc = (e.description || "").toString().trim();
-  const descShort = desc.length > 220 ? desc.slice(0, 220).replace(/\s+\S*$/, "") + "…" : desc;
+  if (!e || !e.startAt) return null;
+
+  // Handle multiple description fields (for backward compatibility with EventCard)
+  const desc =
+    (e as any).shortDescription ??
+    e.descriptionShort ??
+    e.description ??
+    "";
+  const descStr = String(desc).trim();
+  const descShort = descStr.length > 220 ? descStr.slice(0, 220).replace(/\s+\S*$/, "") + "…" : descStr;
 
   const dt = toEtDate(e.startAt) ?? new Date(e.startAt as any);
   const dateLabel = dateFmt.format(dt);
@@ -45,9 +60,19 @@ export default function EventListCard({ e }: { e: EventLike }) {
   const cityState = [e.venue?.city, e.venue?.state].filter(Boolean).join(", ");
   const venueText = [e.venue?.name, cityState].filter(Boolean).join(" • ");
 
+  // Handle optional slug (for backward compatibility with EventCard)
+  const slug = e.slug || (e.title ? slugify(e.title) : null);
+  const eventHref = slug ? `/events/${slug}/` : null;
+  const eventTitle = e.title || "Untitled event";
+
+  // Handle venue slug for linking
+  const venueName = e.venue?.name ?? null;
+  const venueSlug = e.venue?.slug ?? (venueName ? slugify(venueName) : null);
+  const venueHref = venueSlug ? `/venue/${venueSlug}/` : null;
+
   return (
     <article
-      className={`ccs-card group transition-all hover:shadow-lg hover:scale-[1.01] ${e.isFeatured ? "ring-1 ring-green-200" : ""}`}
+      className={`bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow group transition-all hover:shadow-lg hover:scale-[1.01] ${e.isFeatured ? "ring-1 ring-green-200" : ""}`}
       data-featured={e.isFeatured ? "true" : "false"}
     >
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
@@ -55,9 +80,13 @@ export default function EventListCard({ e }: { e: EventLike }) {
           <div>
             <div className="flex items-start gap-3 flex-wrap">
               <h2 className="text-[20px] md:text-[22px] font-semibold leading-tight text-[var(--fg)]">
-                <Link href={`/events/${e.slug}/`} className="hover:text-green-600 transition-colors">
-                  {e.title}
-                </Link>
+                {eventHref ? (
+                  <Link href={eventHref} className="hover:text-green-600 transition-colors">
+                    {eventTitle}
+                  </Link>
+                ) : (
+                  <span>{eventTitle}</span>
+                )}
               </h2>
             </div>
 
@@ -91,25 +120,44 @@ export default function EventListCard({ e }: { e: EventLike }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                           d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span className="truncate">{venueText}</span>
+                  {venueHref ? (
+                    <Link href={venueHref} className="hover:underline truncate">
+                      {venueText}
+                    </Link>
+                  ) : (
+                    <span className="truncate">{venueText}</span>
+                  )}
                 </div>
               )}
             </div>
           </div>
 
-          {desc && (
+          {descStr && (
             <p className="text-[13.5px] md:text-[15px] text-[var(--fg)]/70 leading-relaxed">
               {descShort}
             </p>
           )}
+
+          {/* Tags support (optional, for backward compatibility with EventCard) */}
+          {Array.isArray(e.tags) && e.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {e.tags.slice(0, 5).map((t) => (
+                <span key={t} className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full text-xs font-medium border border-gray-200">
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="shrink-0 flex flex-col gap-3 mt-4 md:mt-0 w-full md:w-auto">
-          <Link className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" href={`/events/${e.slug}/`}>
-            View Details
-          </Link>
+          {eventHref && (
+            <Link className="bg-brand-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-brand-700 group-hover:scale-105 transition-transform w-full md:w-auto" href={eventHref}>
+              View Details
+            </Link>
+          )}
           {officialUrl && (
-            <a className="ccs-btn px-5 py-2.5 w-full md:w-auto" href={officialUrl} target="_blank" rel="noreferrer">
+            <a className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-800 px-5 py-2.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30 w-full md:w-auto" href={officialUrl} target="_blank" rel="noreferrer">
               Official Site
             </a>
           )}

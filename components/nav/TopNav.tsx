@@ -21,7 +21,7 @@ export default function TopNav() {
             {({ open }) => (
               <>
                 <Menu.Button
-                  className="ccs-btn inline-flex items-center gap-1"
+                  className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
                   aria-label="Open Charlotte Events menu"
                 >
                   Charlotte Events
@@ -98,7 +98,7 @@ export default function TopNav() {
             {({ open }) => (
               <>
                 <Menu.Button
-                  className="ccs-btn inline-flex items-center gap-1"
+                  className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
                   aria-label="Open Resources menu"
                 >
                   Resources
@@ -150,13 +150,13 @@ export default function TopNav() {
             )}
           </Menu>
 
-          <Link href="/pricing" className="ccs-btn">Pricing</Link>
-          <Link href="/contact" className="ccs-btn">Contact</Link>
+          <Link href="/pricing" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Pricing</Link>
+          <Link href="/contact" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Contact</Link>
         </nav>
 
         {/* Mobile: simple menu button */}
         <button
-          className="md:hidden ccs-btn"
+          className="md:hidden inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen(v => !v)}
@@ -169,24 +169,24 @@ export default function TopNav() {
       {mobileOpen && (
         <div className="md:hidden border-t border-zinc-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80">
           <nav className="container py-2 flex flex-col gap-2">
-            <Link href="/events/" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+            <Link href="/events/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>
               All Charlotte Events
             </Link>
-            <Link href="/weekly-car-show-list-charlotte" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+            <Link href="/weekly-car-show-list-charlotte" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>
               Weekly Car Show List (Charlotte)
             </Link>
-            <Link href="/events/charlotte-auto-show/" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+            <Link href="/events/charlotte-auto-show/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>
               Charlotte Auto Show
             </Link>
-            <Link href="/events/charlotte-autofair" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+            <Link href="/events/charlotte-autofair" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>
               Charlotte AutoFair
             </Link>
-            <Link href="/guide-to-charlotte-car-shows" className="ccs-btn" onClick={() => setMobileOpen(false)}>
+            <Link href="/guide-to-charlotte-car-shows" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>
               Guide to Charlotte Car Shows
             </Link>
-            <Link href="/resources" className="ccs-btn" onClick={() => setMobileOpen(false)}>Resources</Link>
-            <Link href="/pricing" className="ccs-btn" onClick={() => setMobileOpen(false)}>Pricing</Link>
-            <Link href="/contact" className="ccs-btn" onClick={() => setMobileOpen(false)}>Contact</Link>
+            <Link href="/resources" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>Resources</Link>
+            <Link href="/pricing" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>Pricing</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30" onClick={() => setMobileOpen(false)}>Contact</Link>
           </nav>
         </div>
       )}

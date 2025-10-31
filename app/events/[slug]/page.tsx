@@ -339,7 +339,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
         {/* Full-width two-column section: Location (wide) + Event details (skinny) */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Location (left, wider) */}
-          <section className="ccs-card space-y-5 lg:col-span-8">
+          <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow space-y-5 lg:col-span-8">
             <h2 className="font-[var(--font-heading,_inherit)] text-2xl sm:text-3xl text-zinc-900 flex items-center gap-2">
               📍 Location
             </h2>
@@ -391,7 +391,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
           </section>
 
           {/* Event details (right, skinny; stacked 1xN) */}
-          <section className="ccs-card space-y-5 lg:col-span-4">
+          <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow space-y-5 lg:col-span-4">
             <h2 className="font-[var(--font-heading,_inherit)] text-2xl sm:text-3xl text-zinc-900 flex items-center gap-2">
               ℹ️ Event details
             </h2>
@@ -442,7 +442,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
         {/* Prev/Next now full width under the two columns */}
         {(prev || next) && (
-          <nav className="ccs-card mt-0 flex items-center justify-between text-sm">
+          <nav className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow mt-0 flex items-center justify-between text-sm">
             <div>
               {prev ? (
                 <Link

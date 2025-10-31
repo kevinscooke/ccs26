@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import venuesData from '../../data/venues.json';
 import eventsData from '../../data/events.json';
-import EventCard from '@/components/event/EventCard'; // adjust path if needed
+import EventListCard from '@/components/event/EventListCard';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Container from '@/components/Container';
@@ -183,11 +183,11 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
           <div className="space-y-5 lg:col-span-8">
             <h2 className="text-2xl font-semibold mb-4">Upcoming events at {venue.name}</h2>
             {upcoming.length === 0 ? (
-              <div className="ccs-card text-[var(--fg)]/70">No upcoming events listed for this venue.</div>
+              <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow text-[var(--fg)]/70">No upcoming events listed for this venue.</div>
             ) : (
               <div className="space-y-5">
                 {upcoming.map((e: any) => (
-                  <EventCard key={e.id} e={e} />
+                  <EventListCard key={e.id} e={e} />
                 ))}
               </div>
             )}
@@ -198,7 +198,7 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
                 <h2 className="text-2xl font-semibold mt-10 mb-4">Past events at {venue.name}</h2>
                 <div className="space-y-5">
                   {past.map((e: any) => (
-                    <EventCard key={e.id} e={e} />
+                    <EventListCard key={e.id} e={e} />
                   ))}
                 </div>
               </>
@@ -206,7 +206,7 @@ export default function VenuePage({ params }: { params: { slug: string } }) {
           </div>
 
           <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
-            <div className="ccs-card">
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
           <h3 className="text-xl font-semibold mb-3">Location</h3>
               <div className="text-sm text-[var(--fg)]/70 mb-4">
                 {venue.address1 && <div>{venue.address1}</div>}

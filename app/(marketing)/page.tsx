@@ -6,7 +6,6 @@ import CompactUpcomingEvents from "@/components/event/CompactUpcomingEvents";
 import FeaturedEventsGrid from "@/components/event/FeaturedEventsGrid";
 import { TAGS } from "@/lib/tags";
 import dynamic from "next/dynamic";
-import { Button } from "@/components/ui/button";
 import { SearchBox } from "@/components/search/SearchBox"; // added
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
@@ -122,12 +121,12 @@ export default function MarketingHomePage() {
 
               <div className="flex flex-col gap-1.5">
                 <div className="flex flex-wrap items-start gap-3">
-                  <Button asChild>
-                    <a href="/events/?when=weekend">This weekend</a>
-                  </Button>
-                  <Button asChild variant="secondary">
-                    <a href="/pricing/">Featured listings + IG shoutout • from $25</a>
-                  </Button>
+                  <a href="/events/?when=weekend" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-brand-600 text-white shadow hover:bg-brand-700 px-4 py-2">
+                    This weekend
+                  </a>
+                  <a href="/pricing/" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2">
+                    Featured listings + IG shoutout • from $25
+                  </a>
                 </div>
                 <p className="pt-1 text-xs text-gray-500">
                   Est. 2015 — Free to list, easy to find.
@@ -157,9 +156,9 @@ export default function MarketingHomePage() {
                   </p>
                 </div>
                 <div>
-                  <Button asChild className="shadow-lg">
-                    <a href="/events/charlotte-auto-show/">Explore show schedule</a>
-                  </Button>
+                  <a href="/events/charlotte-auto-show/" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-brand-600 text-white shadow-lg hover:bg-brand-700 px-4 py-2">
+                    Explore show schedule
+                  </a>
                 </div>
               </div>
             </div>
@@ -259,7 +258,7 @@ export default function MarketingHomePage() {
               icon: "🌟"
             }
           ].map(prop => (
-            <div key={prop.title} className="ccs-card">
+            <div key={prop.title} className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
               <div className="text-3xl mb-4">{prop.icon}</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">{prop.title}</h3>
               <p className="text-gray-600 leading-relaxed">{prop.description}</p>
@@ -269,24 +268,24 @@ export default function MarketingHomePage() {
 
         {/* Featured Locations */}
         <section className="grid gap-8 md:grid-cols-2">
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-2xl font-semibold text-gray-900 mb-3">Cars &amp; Coffee at CMS</h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
               Join hundreds of enthusiasts at Charlotte Motor Speedway every third Saturday. Free admission, family-friendly atmosphere, and amazing vehicles.
             </p>
-            <a className="ccs-btn inline-block" href="/events/">View Schedule</a>
+            <a className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2" href="/events/">View Schedule</a>
           </div>
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-2xl font-semibold text-gray-900 mb-3">Major Shows</h3>
               <p className="text-gray-600 mb-4 leading-relaxed">
               Don&apos;t miss Charlotte&apos;s biggest automotive events, including AutoFair, Charlotte Auto Show, and special exhibitions.
             </p>
-            <a className="ccs-btn inline-block" href="/events/charlotte-auto-show/">Charlotte Auto Show</a>
+            <a className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2" href="/events/charlotte-auto-show/">Charlotte Auto Show</a>
           </div>
         </section>
 
         {/* Guide promo */}
-        <section className="ccs-card">
+        <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 font-heading">
@@ -294,14 +293,14 @@ export default function MarketingHomePage() {
               </h2>
               <p className="text-gray-600">Monthly staples, annual shows, and local resources—all in one place.</p>
             </div>
-            <Button asChild>
-              <a href="/guide-to-charlotte-car-shows">Read the Guide</a>
-            </Button>
+            <a href="/guide-to-charlotte-car-shows" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-brand-600 text-white shadow hover:bg-brand-700 px-4 py-2">
+              Read the Guide
+            </a>
           </div>
         </section>
 
         {/* Community Section */}
-        <section className="ccs-card text-center">
+        <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4 font-heading">
             Join Our Community
           </h2>
@@ -309,16 +308,12 @@ export default function MarketingHomePage() {
             Follow us for daily updates, event highlights, and exclusive content. Connect with thousands of local car enthusiasts.
           </p>
           <div className="flex justify-center gap-4">
-            <Button asChild className="px-6 py-3">
-              <a href="https://www.instagram.com/charlottecarshows/" target="_blank" rel="noreferrer">
-                Follow on Instagram
-              </a>
-            </Button>
-            <Button asChild variant="secondary" className="px-6 py-3">
-              <a href="https://www.facebook.com/CharlotteCarShows/" target="_blank" rel="noreferrer">
-                Join on Facebook
-              </a>
-            </Button>
+            <a href="https://www.instagram.com/charlottecarshows/" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-brand-600 text-white shadow hover:bg-brand-700 px-6 py-3">
+              Follow on Instagram
+            </a>
+            <a href="https://www.facebook.com/CharlotteCarShows/" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-6 py-3">
+              Join on Facebook
+            </a>
           </div>
         </section>
       </div>

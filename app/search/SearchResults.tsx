@@ -65,7 +65,7 @@ export default function SearchResults() {
 
   if (!q) {
     return (
-      <div className="ccs-card p-6">
+      <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow">
         <p className="text-[var(--fg)]/70">Enter a search term in the search box above to find events.</p>
       </div>
     );
@@ -73,7 +73,7 @@ export default function SearchResults() {
 
   if (results.length === 0) {
     return (
-      <div className="ccs-card p-6">
+      <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow">
         <p className="text-[var(--fg)]/70">No results found for &ldquo;{qParam}&rdquo;. Try different search terms.</p>
       </div>
     );

@@ -213,10 +213,7 @@
 .todayMarker { margin-left: 0.35rem; opacity: 0.9; }
 .tabCount { margin-left: 0.5rem; opacity: 0.65; font-size: 0.85rem; }
 
-/* tighten event card vertical padding a little */
-.ccs-card {
-  padding: 0.9rem; /* from 1rem -> 0.9rem */
-}
+/* Event card padding removed - migrated to Tailwind utilities */
 
 /* Mobile-specific tweaks */
 @media (max-width: 480px) {

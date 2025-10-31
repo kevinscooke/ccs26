@@ -64,37 +64,37 @@ export default function ResourcesPage() {
               <h2 className="text-2xl font-semibold mb-4">Featured Repair</h2>
         <div className="grid gap-6 mb-8">
           {/* Eurowise Performance */}
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-bold">Eurowise Performance</h3>
             <p className="mb-2">Eurowise Performance is Charlotte’s premier European auto specialist, offering performance upgrades, maintenance, and custom builds for VW, Audi, Porsche, BMW, and more. Trusted by enthusiasts for their expertise and quality service.</p>
             <p className="mb-1 text-sm text-zinc-600">441 Springbrook Rd, Charlotte, NC 28217</p>
-            <a href="https://eurowise.com/" target="_blank" rel="noopener" className="ccs-btn mt-2">Visit Website</a>
+            <a href="https://eurowise.com/" target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2 mt-2">Visit Website</a>
           </div>
             </div>
             <h2 className="text-2xl font-semibold mb-4 mt-8">Featured Dealerships</h2>
         <div className="grid gap-6">
           {/* Lamborghini Charlotte */}
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-bold">Lamborghini Charlotte</h3>
             <p className="mb-2">Experience the luxury difference at Lamborghini Charlotte. Offering the very best new and pre-owned luxury vehicles. Order your Lamborghini today in Charlotte and have it delivered across the Carolinas.</p>
             <p className="mb-1 text-sm text-zinc-600">6500 E Independence Blvd, Charlotte, NC 28212</p>
             <p className="mb-1 text-sm text-zinc-600">Models: Aventador, Huracan, Huracan STO, Urus</p>
-            <a href="https://www.lamborghinicharlotte.com/" target="_blank" rel="noopener" className="ccs-btn mt-2">Visit Website</a>
+            <a href="https://www.lamborghinicharlotte.com/" target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2 mt-2">Visit Website</a>
           </div>
           
           {/* Foreign Cars Charlotte */}
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-bold">Foreign Cars Charlotte</h3>
             <p className="mb-2">Foreign Cars Charlotte offers a curated selection of luxury and exotic vehicles, including Ferrari, Maserati, Aston Martin, and Porsche. Their team provides a personalized buying experience for discerning clients.</p>
             <p className="mb-1 text-sm text-zinc-600">416 Tyvola Rd, Charlotte, NC 28217</p>
-            <a href="https://www.foreigncarscharlotte.com/" target="_blank" rel="noopener" className="ccs-btn mt-2">Visit Website</a>
+            <a href="https://www.foreigncarscharlotte.com/" target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2 mt-2">Visit Website</a>
           </div>
           {/* Chicago Motor Cars of SC */}
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-bold">Chicago Motor Cars of SC</h3>
             <p className="mb-2">Chicago Motor Cars of SC brings high-end performance and luxury vehicles to the Carolinas, specializing in rare and collectible cars. Their knowledgeable staff can help you find your dream car.</p>
             <p className="mb-1 text-sm text-zinc-600">Charlotte, NC & South Carolina</p>
-            <a href="https://www.chicagomotorcars.com/" target="_blank" rel="noopener" className="ccs-btn mt-2">Visit Website</a>
+            <a href="https://www.chicagomotorcars.com/" target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200 px-4 py-2 mt-2">Visit Website</a>
           </div>
             </div>
             </section>

@@ -153,19 +153,19 @@ function PastEventsClient() {
             })}
 
             {items.length === 0 && (
-              <div className="ccs-card text-[var(--fg)]/70">No past events found.</div>
+              <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow text-[var(--fg)]/70">No past events found.</div>
             )}
 
             <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
-              <Link href="/events/" className="ccs-btn px-4 py-2 text-sm">
+              <Link href="/events/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
                 All Events
               </Link>
               {nextHref ? (
-                <Link href={nextHref} className="ccs-btn px-4 py-2 text-sm">
+                <Link href={nextHref} className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
                   Next Page
                 </Link>
               ) : (
-                <span className="ccs-btn px-4 py-2 text-sm opacity-50 pointer-events-none">Next Page</span>
+                <span className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 opacity-50 pointer-events-none">Next Page</span>
               )}
             </nav>
           </div>

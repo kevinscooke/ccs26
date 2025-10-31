@@ -175,15 +175,15 @@ export default function EventsPage({ params }: { params: { page: string } }) {
 
             <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
               {pageNum > 1 && (
-                <Link href={pageNum === 2 ? "/events/" : `/events/page/${pageNum - 1}/`} className="ccs-btn px-4 py-2 text-sm">
+                <Link href={pageNum === 2 ? "/events/" : `/events/page/${pageNum - 1}/`} className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
                   Previous
                 </Link>
               )}
-              <Link href="/events/past/" className="ccs-btn px-4 py-2 text-sm">
+              <Link href="/events/past/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
                 Previous events
               </Link>
               {pageNum < totalPages && (
-                <Link href={`/events/page/${pageNum + 1}/`} className="ccs-btn px-4 py-2 text-sm">
+                <Link href={`/events/page/${pageNum + 1}/`} className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
                   Next page
                 </Link>
               )}

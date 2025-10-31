@@ -105,7 +105,7 @@ export default function Pricing() {
         {tiers.map((t) => (
           <div
             key={t.name}
-            className={`ccs-card relative ${
+            className={`bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow relative ${
               t.highlight
                 ? "ring-2 ring-green-600 before:content-['Most_Popular'] before:absolute before:-top-3 before:left-1/2 before:-translate-x-1/2 before:text-sm before:font-medium before:px-4 before:py-1 before:rounded-full before:bg-green-50 before:text-green-700"
                 : ""
@@ -133,7 +133,7 @@ export default function Pricing() {
               <div className="pt-4">
                 {t.name === "Free" ? (
                   <a
-                    className={`w-full text-center ${t.highlight ? "ccs-btn-primary" : "ccs-btn"}`}
+                    className={`w-full text-center inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors ${t.highlight ? "bg-brand-600 text-white shadow hover:bg-brand-700" : "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200"} px-4 py-2`}
                     href="/submit-event/"
                   >
                     {t.cta}
@@ -174,7 +174,7 @@ export default function Pricing() {
                         value="PP-BuyNowBF:btn_buynow_LG.gif:NonHosted"
                       />
 
-                      <button type="submit" className="w-full ccs-btn-primary">
+                      <button type="submit" className="w-full inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-brand-600 text-white shadow hover:bg-brand-700 px-4 py-2">
                         {t.cta}
                       </button>
                       <p className="mt-2 text-xs text-gray-500 text-center">
@@ -184,7 +184,7 @@ export default function Pricing() {
                   </div>
                 ) : (
                   <a
-                    className={`w-full text-center ${t.highlight ? "ccs-btn-primary" : "ccs-btn"}`}
+                    className={`w-full text-center inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors ${t.highlight ? "bg-brand-600 text-white shadow hover:bg-brand-700" : "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 border border-gray-200"} px-4 py-2`}
                     href="/contact/"
                   >
                     {t.cta}
@@ -210,7 +210,7 @@ export default function Pricing() {
 
       {/* Additional Info Sections */}
       <section className="grid gap-8 md:grid-cols-2 max-w-6xl mx-auto px-4 py-8">
-        <div className="ccs-card">
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
           <h2
             className="text-2xl font-semibold mb-4 text-[var(--fg)]"
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
@@ -228,7 +228,7 @@ export default function Pricing() {
             </p>
           </div>
         </div>
-        <div className="ccs-card">
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
           <h2
             className="text-2xl font-semibold mb-4 text-[var(--fg)]"
             style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}
@@ -269,25 +269,25 @@ export default function Pricing() {
           Frequently Asked Questions
         </h2>
         <div className="space-y-4">
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-semibold text-[var(--fg)]">Can I list my event for free?</h3>
             <p className="mt-2 text-[var(--fg)] leading-relaxed">
               Yes! All event listings are free. The Featured option is only for organizers who want extra exposure and promotion.
             </p>
           </div>
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-semibold text-[var(--fg)]">How long does a Featured listing last?</h3>
             <p className="mt-2 text-[var(--fg)] leading-relaxed">
               Featured listings remain prominent for 30 days from the purchase date, ensuring maximum visibility leading up to your event.
             </p>
           </div>
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-semibold text-[var(--fg)]">What&apos;s included in social promotion?</h3>
             <p className="mt-2 text-[var(--fg)] leading-relaxed">
               Featured events receive dedicated posts on our Instagram and Facebook channels, reaching thousands of local car enthusiasts.
             </p>
           </div>
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h3 className="text-lg font-semibold text-[var(--fg)]">Can I upgrade my listing later?</h3>
             <p className="mt-2 text-[var(--fg)] leading-relaxed">
               Yes! You can upgrade a standard listing to Featured at any time. Contact us for seamless plan changes.

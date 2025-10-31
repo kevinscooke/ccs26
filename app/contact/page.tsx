@@ -48,7 +48,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left: contact content ~60% (col-span-7/12 ≈ 58.3%) */}
         <div className="md:col-span-7">
-          <section className="ccs-card">
+          <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h1 className="text-3xl font-semibold tracking-tight mb-2 text-zinc-900">Contact Charlotte Car Shows</h1>
             <p className="mb-4 text-zinc-700">
               Have a question, want to partner, or just want to say hello? Use the form below.
@@ -94,7 +94,7 @@ export default function Contact() {
                   />
                 </label>
                 <div className="pt-2">
-                  <button type="submit" className="ccs-btn">Send Message</button>
+                  <button type="submit" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Send Message</button>
                 </div>
               </div>
             </form>
@@ -102,14 +102,14 @@ export default function Contact() {
             <div className="mt-8">
               <h2 className="text-xl font-semibold mb-2 text-zinc-900">Want to submit an event?</h2>
               <p className="mb-2 text-zinc-700">If you want to add your car show, meet, or automotive event to our calendar, use our dedicated event submission form.</p>
-              <a href="/submit-event" className="ccs-btn">Submit Your Event</a>
+              <a href="/submit-event" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Submit Your Event</a>
             </div>
           </section>
         </div>
 
         {/* Right: skyscraper ad ~40% (col-span-5/12 ≈ 41.7%) */}
         <aside className="md:col-span-5">
-          <div className="ccs-card p-4">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow">
             <div className="flex items-center justify-center">
               <AdSlot
                 slot="7335717776"

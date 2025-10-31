@@ -192,7 +192,7 @@ export default async function WeeklyCarShowListPage() {
               ))}
 
             {!weekly.length && (
-              <div className="ccs-card text-[var(--fg)]/70">
+              <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow text-[var(--fg)]/70">
                 No events for this week yet.
               </div>
             )}

@@ -8,25 +8,91 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 - ✅ **JSON-LD Schema Implementation** — COMPLETE
 - ✅ **AutoFair 2026 Page (G4)** — COMPLETE  
 - ✅ **Documentation Structure** — COMPLETE
-- ⏳ **Next Priorities:** Accessibility audit, Performance optimization, Design token consistency
+- ✅ **Event Component Standardization & Tailwind Migration** — COMPLETE
+  - Consolidated EventCard → EventListCard
+  - Migrated all `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary` to Tailwind
+  - Removed shadcn components (Dialog, DropdownMenu, Button)
+  - Cleaned up CSS files
+- 🔥 **High Priority (G5):** Fix Weekly Events Auto-Update Workflow — Sunday night scheduling issue
+- ⏳ **Next Priorities:** Accessibility audit, Performance optimization
 
 ---
 
 ## Active Tasks (In Priority Order)
 
-### 4. Design Token Consistency
-**Priority:** Medium | **Effort:** Medium (6-8 hours) | **Impact:** Maintainability, code quality
+### G5: Fix Weekly Events Auto-Update Workflow
+**Priority:** High | **Effort:** Low (1-2 hours) | **Impact:** Operational reliability, user experience
+
+**Problem:**
+- Current GitHub workflow runs Monday 04:05 UTC (Monday morning ET)
+- Should run Sunday night to prepare for new week
+- Not reliably triggering weekly updates
+- Better automation approach needed
 
 **Tasks:**
-- [ ] Audit all components for token usage
-- [ ] Document preferred pattern (tokens vs Tailwind)
-- [ ] Migrate mixed usage to consistent pattern
-- [ ] Create migration guide
+- [ ] Review current workflow (`.github/workflows/update-events-and-deploy.yml`)
+- [ ] Update cron schedule to run Sunday night ET (23:00 ET Sunday = Monday 04:00 UTC during DST, 05:00 UTC during EST)
+- [ ] Consider alternative approaches:
+  - [ ] On-demand rebuilds via webhook from Supabase
+  - [ ] Netlify scheduled functions
+  - [ ] Manual trigger + better monitoring
+- [ ] Add workflow monitoring/alerting for failures
+- [ ] Test workflow execution and verify weekly updates
+- [ ] Document the automation approach
 
 **Files Affected:**
-- All component files using colors/spacing
-- `app/globals.css` (verify token definitions)
-- `tailwind.config.js` (verify token mapping)
+- `.github/workflows/update-events-and-deploy.yml`
+- `scripts/export-json.mjs` (verify it works correctly)
+- Consider adding workflow status checks
+
+**Alternative Approaches:**
+1. **Webhook from Supabase** - Trigger rebuild when data changes (best for real-time)
+2. **Netlify Scheduled Functions** - Run on Netlify's infrastructure (simpler than GitHub Actions)
+3. **Improved GitHub Actions** - Better cron timing, error handling, notifications
+4. **Hybrid Approach** - Scheduled + on-demand triggers
+
+---
+
+### 4. Standardize Event Components & Migrate to Tailwind
+**Priority:** Medium | **Effort:** Medium (6-8 hours) | **Impact:** Maintainability, code quality | **Status:** ✅ **COMPLETE**
+
+**Recommendation:** **EventListCard component IS the standard** (EventCard consolidated into EventListCard)
+
+**Component Usage Pattern:**
+- **EventListCard** - Used site-wide: `/events/`, `/events/page/[page]/`, `/events/past/`, `/weekly-car-show-list-charlotte/`, `/search/`, `/events/charlotte-auto-show/`, `/events/charlotte-autofair/`, `/venue/[slug]/` ✅
+- **`.ccs-card`** - **REMOVED** - All instances migrated to Tailwind utilities ✅
+- **`.ccs-btn`/`.ccs-btn-primary`** - **REMOVED** - All instances migrated to Tailwind utilities ✅
+
+**Completed Tasks:**
+- [x] Consolidated EventCard into EventListCard (enhanced EventListCard to handle optional slug, multiple description fields, tags) ✅
+- [x] Deleted EventCard components (`components/event/EventCard.tsx`, `components/EventCard.tsx`) ✅
+- [x] Migrated EventListCard from `.ccs-card` to Tailwind utilities ✅
+- [x] Migrated EventListCard buttons from `.ccs-btn`/`.ccs-btn-primary` to Tailwind utilities ✅
+- [x] Replaced all `.ccs-card` instances in non-component contexts (empty states, info cards, pages) ✅
+- [x] Replaced all `.ccs-btn`/`.ccs-btn-primary` instances across all pages and components ✅
+- [x] Replaced `.ccs-badge` with Tailwind utilities ✅
+- [x] Removed unused shadcn components (Dialog, DropdownMenu, Button) ✅
+- [x] Cleaned up `app/globals.css` (removed `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` definitions) ✅
+- [x] Cleaned up `components/Weekly.module.css` (removed `.ccs-card` override) ✅
+- [x] Design tokens remain in Tailwind config (brand-*, gray-*) ✅
+
+**Files Modified:**
+- ✅ `components/event/EventListCard.tsx` (migrated to Tailwind, enhanced to handle optional cases)
+- ✅ All pages using EventCard → replaced with EventListCard
+- ✅ All pages using `.ccs-card` → replaced with Tailwind utilities
+- ✅ All pages using `.ccs-btn`/`.ccs-btn-primary` → replaced with Tailwind utilities
+- ✅ `components/nav/TopNav.tsx` (buttons migrated to Tailwind)
+- ✅ `components/event/UpcomingSix.tsx` (card and button migrated to Tailwind)
+- ✅ `app/globals.css` (removed utility class definitions)
+- ✅ `components/Weekly.module.css` (removed `.ccs-card` override)
+- ✅ Deleted: `components/ui/dialog.tsx`, `components/ui/dropdown-menu.tsx`, `components/ui/button.tsx`
+- ✅ Deleted: `components/event/EventCard.tsx`, `components/EventCard.tsx`
+
+**Result:**
+- ✅ All `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` classes removed from codebase
+- ✅ All styling now uses Tailwind utilities directly
+- ✅ Single event component standard: `EventListCard` (used everywhere)
+- ✅ Cleaner, more maintainable codebase
 
 ---
 
@@ -64,17 +130,18 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 ---
 
 ### 7. Component Pattern Documentation
-**Priority:** Low | **Effort:** Low (2-3 hours) | **Impact:** Developer experience
+**Priority:** Low | **Effort:** Low (1-2 hours) | **Impact:** Developer experience
 
 **Tasks:**
-- [ ] Document component usage patterns
+- [ ] Document component usage patterns (EventListCard is now the standard)
 - [ ] Create component examples
 - [ ] Standardize prop interfaces
-- [ ] Consider EventCard vs EventListCard consolidation
+- [x] EventCard vs EventListCard consolidation ✅ **COMPLETE** (consolidated into EventListCard)
 
 **Files Affected:**
 - Component files
 - `Docs/UI_UX_doc.md` (update)
+- `.cursor/rules/patterns.mdc` (update to reflect EventListCard as standard)
 
 ---
 
@@ -205,6 +272,24 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ---
 
+### 4. Event Component Standardization & Tailwind Migration
+**Priority:** Medium | **Effort:** Medium (6-8 hours) | **Impact:** Maintainability, code quality | **Status:** ✅ **COMPLETE**
+
+**Summary:**
+- Consolidated EventCard into EventListCard (single component standard)
+- Migrated all `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` to Tailwind utilities
+- Removed unused shadcn components (Dialog, DropdownMenu, Button)
+- Cleaned up CSS files (`globals.css`, `Weekly.module.css`)
+
+**Key Changes:**
+- ✅ Enhanced EventListCard to handle optional slug, multiple description fields, tags
+- ✅ Replaced all EventCard usages with EventListCard
+- ✅ All buttons now use Tailwind utilities (consistent `bg-brand-600` for primary, `bg-gray-100` for secondary)
+- ✅ All cards now use Tailwind utilities (`bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow`)
+- ✅ Removed 69+ instances of `.ccs-*` utility classes across 25+ files
+
+---
+
 ## Task Summary by Goal
 
 ### G1: Analyze High-Value Pages & Standardize Documentation
@@ -220,7 +305,13 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 ### G3: Determine High-Value Tasks to Prioritize Next
 - ✅ **Completed:** This document created with prioritized tasks
 - ✅ **Completed:** Tasks prioritized and ordered
-- **Next Steps:** Continue with accessibility and performance tasks
+- **Next Steps:** Continue with G5 (workflow fix), accessibility and performance tasks
+
+### G5: Fix GitHub Workflow for Weekly Events Auto-Update
+- 🔥 **Active:** Workflow not running reliably on Sunday night
+- **Issue:** Current schedule runs Monday morning, should run Sunday night
+- **Approach:** Review cron timing, consider better automation (webhooks, Netlify functions)
+- **See Task:** G5: Fix Weekly Events Auto-Update Workflow
 
 ### G4: Copy Charlotte Auto Show Page for 2026 AutoFair
 - ✅ **Completed:** AutoFair 2026 page created and live

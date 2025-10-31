@@ -10,17 +10,19 @@ alwaysApply: true
 ## Styling Guidelines
 
 ### Design Token Usage
-- **Preferred:** Use CSS custom properties (`var(--brand-500)`, `var(--fg)`)
-- **Tailwind Integration:** Design tokens mapped in `tailwind.config.js`
-- **Brand Colors:** Use `brand-*` or `green-*` (brand-600 = green-600)
-- **Neutral Colors:** Use `gray-*` for neutral colors
-- **Avoid:** Hard-coded colors or mixing patterns inconsistently
+- **Preferred:** Use Tailwind utilities with token-mapped colors (`bg-brand-600`, `text-gray-800`)
+- **Token Mapping:** Design tokens (brand-*, gray-*) mapped in `tailwind.config.js`
+- **Brand Colors:** Use `brand-*` Tailwind classes (`bg-brand-600`, `text-brand-700`)
+- **Neutral Colors:** Use `gray-*` Tailwind classes (`bg-gray-100`, `text-gray-800`, `border-gray-200`)
+- **Avoid:** CSS custom properties in components (use Tailwind classes instead)
+- **Avoid:** `.ccs-*` classes (deprecated, migrate to Tailwind utilities)
 
 ### Component Classes
-- **Cards:** Use `.ccs-card` for content cards (white bg, border, shadow)
-- **Buttons:** Use `Button` component from `@/components/ui/button` or `.ccs-btn` / `.ccs-btn-primary`
-- **Badges:** Use `.ccs-badge` for tags/labels
+- **Cards:** Use Tailwind utilities: `bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow` (not `.ccs-card`)
+- **Buttons:** Use Tailwind utilities: `bg-brand-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-brand-700` (or Button component if variants needed)
+- **Badges:** Use Tailwind utilities: `bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full text-xs font-medium border border-gray-200`
 - **Containers:** Use `Container` component from `@/components/Container`
+- **Note:** `.ccs-*` classes are deprecated. Migrate to Tailwind utilities.
 
 ### Typography
 - **Headings:** Use `font-heading` (Source Serif 4) via `var(--font-heading)`

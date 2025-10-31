@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import styles from "@/components/Weekly.module.css";
-import EventCard from "@/components/EventCard";
+import EventListCard from "@/components/event/EventListCard";
 import { getEventSlug } from "@/lib/eventSlug";
 import { formatDateET } from "@/lib/formatET";
 
@@ -93,7 +93,7 @@ export default function WeeklyList({ events }: { events?: any[] }) {
         <p className="text-sm text-zinc-600">No events for the selected day.</p>
       ) : filtered.map((e) => (
         // ensure any fallback links inside EventCard still match canonical slug
-        <EventCard key={getEventSlug(e)} event={e} />
+        <EventListCard key={getEventSlug(e)} e={e} />
       ))}
     </div>
   );

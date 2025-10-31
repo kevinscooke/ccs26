@@ -13,8 +13,8 @@ export default function NotFound() {
   <p className="mt-2 text-sm text-[var(--fg)]/70">We could not find the page you requested. We recently launched a new site. Try one of the quick links below.</p>
 
         <div className="mt-3 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/events/" className="ccs-btn-secondary px-4 py-2 w-full sm:w-auto text-center">All Events</Link>
-          <Link href="/weekly-car-show-list-charlotte/" className="ccs-btn-primary px-4 py-2 w-full sm:w-auto text-center">Weekly Shows</Link>
+          <Link href="/events/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30 w-full sm:w-auto text-center">All Events</Link>
+          <Link href="/weekly-car-show-list-charlotte/" className="inline-flex items-center justify-center rounded-xl bg-brand-600 text-white px-4 py-2 text-sm font-semibold hover:bg-brand-700 transition focus:outline-none focus:ring-2 focus:ring-brand-500/40 w-full sm:w-auto text-center">Weekly Shows</Link>
         </div>
       </section>
 

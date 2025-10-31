@@ -30,7 +30,7 @@ export default async function UpcomingSix() {
   return (
     <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full">
       {events.map((e) => (
-        <article key={e.id} className="ccs-card flex flex-col gap-3 w-full max-w-md mx-auto">
+        <article key={e.id} className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow flex flex-col gap-3 w-full max-w-md mx-auto">
           <div className="min-w-0 break-words w-full">
             <h3 className="text-base font-semibold leading-snug text-center sm:text-left break-words">
               <Link className="hover:underline" href={`/events/${e.slug}/`}>
@@ -85,7 +85,7 @@ export default async function UpcomingSix() {
 
           <div className="mt-3 flex justify-center">
             <Link
-              className="ccs-btn px-4 py-2 w-full max-w-xs text-center"
+              className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30 w-full max-w-xs text-center"
               href={`/events/${e.slug}/`}
             >
               Details

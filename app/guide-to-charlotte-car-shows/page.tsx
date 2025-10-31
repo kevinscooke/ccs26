@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="ccs-card scroll-mt-24">
+    <section id={id} className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow scroll-mt-24">
       <h2 className="text-2xl md:text-3xl font-bold text-[var(--fg)] mb-4" style={{ fontFamily: "'Source Serif Pro', Georgia, serif" }}>
         {title}
       </h2>
@@ -111,7 +111,7 @@ export default function GuidePage() {
         {/* Main content */}
         <div className="space-y-10">
           {/* Mobile ToC */}
-          <nav className="lg:hidden ccs-card">
+          <nav className="lg:hidden bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h2 className="text-xl font-semibold text-[var(--fg)] mb-3">On this page</h2>
             <ul className="list-disc pl-6 space-y-1 text-[var(--fg)]/80">
               <li><a className="hover:underline" href="#first-weekend">First Weekend Of The Month</a></li>
@@ -228,7 +228,7 @@ export default function GuidePage() {
 
         {/* Right rail ToC (sticky on desktop) */}
         <aside className="hidden lg:block self-start sticky top-20">
-          <div className="ccs-card">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
             <h2 className="text-base font-semibold text-[var(--fg)] mb-3">On this page</h2>
             <ul className="space-y-2 text-[var(--fg)]/80">
               <li><a className="hover:underline" href="#first-weekend">First Weekend Of The Month</a></li>

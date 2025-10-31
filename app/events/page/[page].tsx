@@ -35,7 +35,7 @@ export default function EventsPage({ params }: { params: { page: string } }) {
       </header>
       <div className="space-y-6">
         {paginatedEvents.map((e: EventType) => (
-          <article key={e.id} className="ccs-card group transition-all hover:shadow-lg hover:scale-[1.01]">
+          <article key={e.id} className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow group transition-all hover:shadow-lg hover:scale-[1.01]">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
               <div className="min-w-0 space-y-3">
                 <div>
@@ -46,7 +46,7 @@ export default function EventsPage({ params }: { params: { page: string } }) {
                       </Link>
                     </h2>
                     {e.isFeatured && (
-                      <span className="ccs-badge">Featured</span>
+                      <span className="inline-flex items-center rounded-full bg-gray-100 text-gray-700 px-2.5 py-1 text-xs font-medium border border-gray-200">Featured</span>
                     )}
                   </div>
                   <div className="mt-2 border-t border-[var(--fg)]/10" />
@@ -79,9 +79,9 @@ export default function EventsPage({ params }: { params: { page: string } }) {
                 )}
               </div>
               <div className="shrink-0 flex flex-col gap-3 mt-4 md:mt-0 w-full md:w-auto">
-                <Link className="ccs-btn-primary px-5 py-2.5 group-hover:scale-105 transition-transform w-full md:w-auto" href={`/events/${e.slug}`}>View Details</Link>
+                <Link className="bg-brand-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-brand-700 group-hover:scale-105 transition-transform w-full md:w-auto" href={`/events/${e.slug}`}>View Details</Link>
                 {e.url && (
-                  <a className="ccs-btn px-5 py-2.5 w-full md:w-auto" href={e.url} target="_blank" rel="noreferrer">Official Site</a>
+                  <a className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-5 py-2.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30 w-full md:w-auto" href={e.url} target="_blank" rel="noreferrer">Official Site</a>
                 )}
               </div>
             </div>
@@ -91,20 +91,20 @@ export default function EventsPage({ params }: { params: { page: string } }) {
   {/* Pagination Controls */}
       <nav className="flex justify-center gap-2 mt-8" aria-label="Pagination">
         {pageNum > 1 && (
-          <Link href={pageNum === 2 ? "/events/" : `/events/page/${pageNum - 1}/`} className="ccs-btn px-4 py-2">Previous</Link>
+          <Link href={pageNum === 2 ? "/events/" : `/events/page/${pageNum - 1}/`} className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Previous</Link>
         )}
         {Array.from({ length: totalPages }, (_, i) => (
           <Link
             key={i + 1}
             href={i === 0 ? "/events" : `/events/page/${i + 1}`}
-            className={`ccs-btn px-4 py-2${i + 1 === pageNum ? " ccs-btn-primary" : ""}`}
+            className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 ${i + 1 === pageNum ? "bg-brand-600 text-white hover:bg-brand-700 focus:ring-brand-500/40" : "bg-gray-100 text-gray-900 border border-gray-200 hover:bg-gray-200 focus:ring-brand-500/30"}`}
             aria-current={i + 1 === pageNum ? "page" : undefined}
           >
             {i + 1}
           </Link>
         ))}
         {pageNum < totalPages && (
-          <Link href={`/events/page/${pageNum + 1}`} className="ccs-btn px-4 py-2">Next</Link>
+          <Link href={`/events/page/${pageNum + 1}`} className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Next</Link>
         )}
       </nav>
     </section>

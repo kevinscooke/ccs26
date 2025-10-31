@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 // Use the same card as /events (NOT the compact one in components/event/)
-import EventCard from "@/components/EventCard";
+import EventListCard from "@/components/event/EventListCard";
 import eventsData from "@/app/data/events.json";
 import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -127,7 +127,7 @@ export default function CharlotteAutoShowPage() {
               {upcomingThisYear.length > 0 && (
                 <div className="space-y-4">
                   {upcomingThisYear.map((e) => (
-                    <EventCard key={e.id} e={e} />
+                    <EventListCard key={e.id} e={e} />
                   ))}
                 </div>
               )}
@@ -137,7 +137,7 @@ export default function CharlotteAutoShowPage() {
                   <h3 className="text-xl font-semibold mt-6">Earlier this year</h3>
                   <div className="space-y-4">
                     {pastThisYear.map((e) => (
-                      <EventCard key={e.id} e={e} />
+                      <EventListCard key={e.id} e={e} />
                     ))}
                   </div>
                 </>
@@ -150,7 +150,7 @@ export default function CharlotteAutoShowPage() {
 
             {/* Location + Map */}
             <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <article className="md:col-span-2 ccs-card">
+              <article className="md:col-span-2 bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
                 <h2 className="text-2xl font-semibold mb-3">About the Charlotte Auto Show</h2>
                 <p className="text-[var(--fg)]/80">
                   The Charlotte Auto Show features new model debuts, specialty exhibits, and family-friendly attractions in Uptown Charlotte.
@@ -162,7 +162,7 @@ export default function CharlotteAutoShowPage() {
                 </p>
               </article>
 
-              <aside className="ccs-card">
+              <aside className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
                 <h3 className="text-xl font-semibold mb-3">Map</h3>
                 <div className="aspect-[16/9] w-full overflow-hidden rounded-md border">
                   <iframe
@@ -175,8 +175,8 @@ export default function CharlotteAutoShowPage() {
                   />
                 </div>
                 <div className="mt-4 flex gap-3">
-                  <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="ccs-btn px-3 py-1.5">Official Site</a>
-                  <a href={directionsHref} target="_blank" rel="noreferrer" className="ccs-btn px-3 py-1.5">Get Directions</a>
+                  <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Official Site</a>
+                  <a href={directionsHref} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Get Directions</a>
                 </div>
               </aside>
             </section>
@@ -186,7 +186,7 @@ export default function CharlotteAutoShowPage() {
                 <h2 className="text-2xl font-semibold">Past Years</h2>
                 <div className="space-y-4">
                   {pastOtherYears.map((e) => (
-                    <EventCard key={e.id} e={e} />
+                    <EventListCard key={e.id} e={e} />
                   ))}
                 </div>
               </section>
