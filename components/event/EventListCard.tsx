@@ -38,7 +38,13 @@ function slugify(s: string) {
   return s.toLowerCase().trim().replace(/[\s/]+/g, "-").replace(/[^a-z0-9-]+/g, "").replace(/-+/g, "-");
 }
 
-export default function EventListCard({ e }: { e: EventLike }) {
+export default function EventListCard({ 
+  e, 
+  disableVenueLink = false 
+}: { 
+  e: EventLike;
+  disableVenueLink?: boolean;
+}) {
   if (!e || !e.startAt) return null;
 
   // Handle multiple description fields (for backward compatibility with EventCard)
@@ -120,7 +126,7 @@ export default function EventListCard({ e }: { e: EventLike }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                           d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  {venueHref ? (
+                  {!disableVenueLink && venueHref ? (
                     <Link href={venueHref} className="hover:underline truncate">
                       {venueText}
                     </Link>

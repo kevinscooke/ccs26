@@ -168,7 +168,7 @@ export default function EventsPage({ params }: { params: { page: string } }) {
                       <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
                     </div>
                   )}
-                  <EventListCard e={e} />
+                  <EventListCard e={e} disableVenueLink />
                 </React.Fragment>
               );
             })}

@@ -4,17 +4,20 @@
 
 This document identifies prioritized tasks based on PRD goals G1-G4 and analysis of high-value pages. **Active tasks are listed first for quick reference; completed tasks are at the bottom for historical context.**
 
-**Quick Status:**
+**Quick Status Summary:**
 - ✅ **JSON-LD Schema Implementation** — COMPLETE
 - ✅ **AutoFair 2026 Page (G4)** — COMPLETE  
 - ✅ **Documentation Structure** — COMPLETE
 - ✅ **Event Component Standardization & Tailwind Migration** — COMPLETE
-- ✅ **Auto Show & AutoFair Pages UX/SEO Improvements** — COMPLETE (Recent)
-- ✅ **Venues Index Page** — COMPLETE (Today)
-- ✅ **Accessibility Audit (Automated Checks)** — COMPLETE (Today)
-  - Automated checks complete, issues fixed, ready for manual testing
+- ✅ **Auto Show & AutoFair Pages UX/SEO Improvements** — COMPLETE
+- ✅ **Venues Index Page** — COMPLETE
+- ✅ **Accessibility Audit (Automated Checks)** — COMPLETE (browser audits pending)
+- ✅ **Weekly Events Page Improvements** — COMPLETE (Monday-Sunday ordering, venue links disabled on list pages)
 - 🔥 **High Priority (G5):** Fix Weekly Events Auto-Update Workflow — Sunday night scheduling issue
-- ⏳ **Next Priorities:** Browser-based accessibility audits (tomorrow), Performance optimization
+- ⏳ **Next Priorities:** Browser-based accessibility audits, Performance optimization
+
+**Recent Rollback:**
+- ⚠️ Venue slug normalization work rolled back to commit `25478d7` (Oct 30, 2025) — changes preserved on branch `venue-slug-changes`, site stable
 
 ---
 
@@ -53,111 +56,6 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ---
 
-### 4. Standardize Event Components & Migrate to Tailwind
-**Priority:** Medium | **Effort:** Medium (6-8 hours) | **Impact:** Maintainability, code quality | **Status:** ✅ **COMPLETE**
-
-**Recommendation:** **EventListCard component IS the standard** (EventCard consolidated into EventListCard)
-
-**Component Usage Pattern:**
-- **EventListCard** - Used site-wide: `/events/`, `/events/page/[page]/`, `/events/past/`, `/weekly-car-show-list-charlotte/`, `/search/`, `/events/charlotte-auto-show/`, `/events/charlotte-autofair/`, `/venue/[slug]/` ✅
-- **`.ccs-card`** - **REMOVED** - All instances migrated to Tailwind utilities ✅
-- **`.ccs-btn`/`.ccs-btn-primary`** - **REMOVED** - All instances migrated to Tailwind utilities ✅
-
-**Completed Tasks:**
-- [x] Consolidated EventCard into EventListCard (enhanced EventListCard to handle optional slug, multiple description fields, tags) ✅
-- [x] Deleted EventCard components (`components/event/EventCard.tsx`, `components/EventCard.tsx`) ✅
-- [x] Migrated EventListCard from `.ccs-card` to Tailwind utilities ✅
-- [x] Migrated EventListCard buttons from `.ccs-btn`/`.ccs-btn-primary` to Tailwind utilities ✅
-- [x] Replaced all `.ccs-card` instances in non-component contexts (empty states, info cards, pages) ✅
-- [x] Replaced all `.ccs-btn`/`.ccs-btn-primary` instances across all pages and components ✅
-- [x] Replaced `.ccs-badge` with Tailwind utilities ✅
-- [x] Removed unused shadcn components (Dialog, DropdownMenu, Button) ✅
-- [x] Cleaned up `app/globals.css` (removed `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` definitions) ✅
-- [x] Cleaned up `components/Weekly.module.css` (removed `.ccs-card` override) ✅
-- [x] Design tokens remain in Tailwind config (brand-*, gray-*) ✅
-
-**Files Modified:**
-- ✅ `components/event/EventListCard.tsx` (migrated to Tailwind, enhanced to handle optional cases)
-- ✅ All pages using EventCard → replaced with EventListCard
-- ✅ All pages using `.ccs-card` → replaced with Tailwind utilities
-- ✅ All pages using `.ccs-btn`/`.ccs-btn-primary` → replaced with Tailwind utilities
-- ✅ `components/nav/TopNav.tsx` (buttons migrated to Tailwind)
-- ✅ `components/event/UpcomingSix.tsx` (card and button migrated to Tailwind)
-- ✅ `app/globals.css` (removed utility class definitions)
-- ✅ `components/Weekly.module.css` (removed `.ccs-card` override)
-- ✅ Deleted: `components/ui/dialog.tsx`, `components/ui/dropdown-menu.tsx`, `components/ui/button.tsx`
-- ✅ Deleted: `components/event/EventCard.tsx`, `components/EventCard.tsx`
-
-**Result:**
-- ✅ All `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` classes removed from codebase
-- ✅ All styling now uses Tailwind utilities directly
-- ✅ Single event component standard: `EventListCard` (used everywhere)
-- ✅ Cleaner, more maintainable codebase
-
----
-
-### 5. Auto Show & AutoFair Pages UX/SEO Improvements
-**Priority:** Medium | **Effort:** Medium (4-5 hours) | **Impact:** User experience, SEO | **Status:** ✅ **COMPLETE**
-
-**Completed Tasks:**
-- [x] Reorganized page layout: Quick Info card → Schedule → Extended About ✅
-- [x] Improved SEO copywriting (removed duplicate content, enhanced unique value props) ✅
-- [x] Applied brand guidelines (icons, typography hierarchy matching EventListCard) ✅
-- [x] Condensed mobile experience (sidebar ads hidden on mobile) ✅
-- [x] Fixed duplicate content between quick info cards and extended about sections ✅
-
-**Files Modified:**
-- ✅ `app/events/charlotte-auto-show/page.tsx` (UX reorganization, SEO improvements, brand guidelines)
-- ✅ `app/events/charlotte-autofair/page.tsx` (UX reorganization, SEO improvements, brand guidelines)
-
-**Key Improvements:**
-- ✅ Better UX: Schedule (primary CTA) appears immediately after condensed info card
-- ✅ SEO: No duplicate content, unique copy for each event
-- ✅ Brand consistency: Icons, typography, spacing match EventListCard patterns
-- ✅ Mobile optimization: Sidebar ads removed on mobile (top/bottom ads already present)
-
----
-
-### 6. Accessibility Audit & Fixes
-**Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** Compliance, usability | **Status:** ✅ **COMPLETE** (Subtasks 2-3: ARIA labels & keyboard navigation)
-
-**Completed Tasks:**
-- [x] Add ARIA labels to interactive elements ✅
-  - CalendarButtons: Added aria-labels for "Add to Google" and "Download .ics"
-  - EventListCard: Added aria-labels for "View Details" and "Official Site" buttons
-  - Pagination links: Added descriptive aria-labels (e.g., "Go to page 2", "View previous events")
-  - Month separators: Added role="separator" with aria-label for screen readers
-  - SearchBox: Added comprehensive ARIA labels for results listbox items
-  - TopNav: Already had aria-expanded on mobile menu button ✅
-- [x] Ensure keyboard navigation ✅
-  - SearchBox: Full keyboard navigation with arrow keys (Up/Down), Enter to select, Escape to close
-  - All interactive elements: Focus states visible with `focus:ring-2 focus:ring-brand-500/30`
-  - CalendarButtons: Added focus states
-  - EventListCard buttons: Already had focus states ✅
-
-**Files Modified:**
-- ✅ `components/event/CalendarButtons.tsx` (ARIA labels, focus states)
-- ✅ `components/event/EventListCard.tsx` (ARIA labels for action buttons)
-- ✅ `components/search/SearchBox.tsx` (ARIA labels, keyboard navigation with arrow keys)
-- ✅ `app/events/page.tsx` (month separators, pagination aria-labels)
-- ✅ `app/events/page/[page]/page.tsx` (month separators, pagination aria-labels)
-- ✅ `app/events/past/page.tsx` (pagination aria-labels)
-
-**Remaining Tasks (In Progress):**
-- [x] Run accessibility audit (automated checks) - ✅ **COMPLETE**
-  - Created `Docs/Accessibility_Audit.md` with audit checklist
-  - Created `Docs/Accessibility_Audit_Summary.md` for quick reference
-  - Created `scripts/accessibility-audit.md` step-by-step guide
-  - Created `scripts/check-accessibility.sh` automated check script
-  - Fixed empty alt text on event images ✅
-  - Fixed form inputs without explicit id/htmlFor associations ✅
-  - Fixed links with incomplete rel attributes ✅
-  - **Next:** Manual testing and browser-based audits (Lighthouse, axe DevTools) - Scheduled for tomorrow
-- [ ] Test with screen readers - Next step (after browser audits)
-- [ ] Document accessibility patterns - After audit completion
-
----
-
 ### 7. Performance Optimization
 **Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** User experience, SEO
 
@@ -182,7 +80,6 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 - [ ] Document component usage patterns (EventListCard is now the standard)
 - [ ] Create component examples
 - [ ] Standardize prop interfaces
-- [x] EventCard vs EventListCard consolidation ✅ **COMPLETE** (consolidated into EventListCard)
 
 **Files Affected:**
 - Component files
@@ -227,7 +124,7 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 1. **Immediate (Next Sprint):**
    - G5: Fix GitHub workflow for weekly events — Operational reliability
-   - Task 6: Accessibility audit & fixes — Compliance
+   - Browser-based accessibility audits — Compliance
    - Task 7: Performance optimization — User experience
 
 2. **Short-term (Next Month):**
@@ -328,50 +225,152 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 - Removed unused shadcn components (Dialog, DropdownMenu, Button)
 - Cleaned up CSS files (`globals.css`, `Weekly.module.css`)
 
-**Key Changes:**
-- ✅ Enhanced EventListCard to handle optional slug, multiple description fields, tags
-- ✅ Replaced all EventCard usages with EventListCard
-- ✅ All buttons now use Tailwind utilities (consistent `bg-brand-600` for primary, `bg-gray-100` for secondary)
-- ✅ All cards now use Tailwind utilities (`bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow`)
-- ✅ Removed 69+ instances of `.ccs-*` utility classes across 25+ files
+**Component Usage Pattern:**
+- **EventListCard** - Used site-wide: `/events/`, `/events/page/[page]/`, `/events/past/`, `/weekly-car-show-list-charlotte/`, `/search/`, `/events/charlotte-auto-show/`, `/events/charlotte-autofair/`, `/venue/[slug]/` ✅
+- **`.ccs-card`** - **REMOVED** - All instances migrated to Tailwind utilities ✅
+- **`.ccs-btn`/`.ccs-btn-primary`** - **REMOVED** - All instances migrated to Tailwind utilities ✅
+
+**Completed Tasks:**
+- [x] Consolidated EventCard into EventListCard (enhanced EventListCard to handle optional slug, multiple description fields, tags) ✅
+- [x] Deleted EventCard components (`components/event/EventCard.tsx`, `components/EventCard.tsx`) ✅
+- [x] Migrated EventListCard from `.ccs-card` to Tailwind utilities ✅
+- [x] Migrated EventListCard buttons from `.ccs-btn`/`.ccs-btn-primary` to Tailwind utilities ✅
+- [x] Replaced all `.ccs-card` instances in non-component contexts (empty states, info cards, pages) ✅
+- [x] Replaced all `.ccs-btn`/`.ccs-btn-primary` instances across all pages and components ✅
+- [x] Replaced `.ccs-badge` with Tailwind utilities ✅
+- [x] Removed unused shadcn components (Dialog, DropdownMenu, Button) ✅
+- [x] Cleaned up `app/globals.css` (removed `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` definitions) ✅
+- [x] Cleaned up `components/Weekly.module.css` (removed `.ccs-card` override) ✅
+- [x] Design tokens remain in Tailwind config (brand-*, gray-*) ✅
+
+**Files Modified:**
+- ✅ `components/event/EventListCard.tsx` (migrated to Tailwind, enhanced to handle optional cases)
+- ✅ All pages using EventCard → replaced with EventListCard
+- ✅ All pages using `.ccs-card` → replaced with Tailwind utilities
+- ✅ All pages using `.ccs-btn`/`.ccs-btn-primary` → replaced with Tailwind utilities
+- ✅ `components/nav/TopNav.tsx` (buttons migrated to Tailwind)
+- ✅ `components/event/UpcomingSix.tsx` (card and button migrated to Tailwind)
+- ✅ `app/globals.css` (removed utility class definitions)
+- ✅ `components/Weekly.module.css` (removed `.ccs-card` override)
+- ✅ Deleted: `components/ui/dialog.tsx`, `components/ui/dropdown-menu.tsx`, `components/ui/button.tsx`
+- ✅ Deleted: `components/event/EventCard.tsx`, `components/EventCard.tsx`
+
+**Result:**
+- ✅ All `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary`, `.ccs-badge` classes removed from codebase
+- ✅ All styling now uses Tailwind utilities directly
+- ✅ Single event component standard: `EventListCard` (used everywhere)
+- ✅ Cleaner, more maintainable codebase
 
 ---
 
-## Task Summary by Goal
+### 5. Auto Show & AutoFair Pages UX/SEO Improvements
+**Priority:** Medium | **Effort:** Medium (4-5 hours) | **Impact:** User experience, SEO | **Status:** ✅ **COMPLETE**
 
-### G1: Analyze High-Value Pages & Standardize Documentation
-- ✅ **Completed:** All high-value pages analyzed
-- ✅ **Completed:** Documentation structure created
-- ⏳ **In Progress:** Standardize patterns (see Task 4, 7)
+**Completed Tasks:**
+- [x] Reorganized page layout: Quick Info card → Schedule → Extended About ✅
+- [x] Improved SEO copywriting (removed duplicate content, enhanced unique value props) ✅
+- [x] Applied brand guidelines (icons, typography hierarchy matching EventListCard) ✅
+- [x] Condensed mobile experience (sidebar ads hidden on mobile) ✅
+- [x] Fixed duplicate content between quick info cards and extended about sections ✅
 
-### G2: Track Pages Needing Work (CSS, SEO, etc.)
-- ✅ **Completed:** Pages documented in `Docs/Bug_Tracking.md`
-- ✅ **Completed:** JSON-LD implementation complete
-- ⏳ **In Progress:** Fix remaining issues (see Tasks 5, 6)
+**Files Modified:**
+- ✅ `app/events/charlotte-auto-show/page.tsx` (UX reorganization, SEO improvements, brand guidelines)
+- ✅ `app/events/charlotte-autofair/page.tsx` (UX reorganization, SEO improvements, brand guidelines)
 
-### G3: Determine High-Value Tasks to Prioritize Next
-- ✅ **Completed:** This document created with prioritized tasks
-- ✅ **Completed:** Tasks prioritized and ordered
-- **Next Steps:** Continue with G5 (workflow fix), accessibility and performance tasks
-
-### G5: Fix GitHub Workflow for Weekly Events Auto-Update
-- 🔥 **Active:** Workflow not running reliably on Sunday night
-- **Issue:** Current schedule runs Monday morning, should run Sunday night
-- **Approach:** Review cron timing, consider better automation (webhooks, Netlify functions)
-- **See Task:** G5: Fix Weekly Events Auto-Update Workflow
-
-### G4: Copy Charlotte Auto Show Page for 2026 AutoFair
-- ✅ **Completed:** AutoFair 2026 page created and live
-  - Page: `/events/charlotte-autofair`
-  - Navigation: Added to Footer and TopNav
-  - Layout: Sidebar with skyscraper ad (matches `/events/`)
-  - Complete metadata and JSON-LD structured data
+**Key Improvements:**
+- ✅ Better UX: Schedule (primary CTA) appears immediately after condensed info card
+- ✅ SEO: No duplicate content, unique copy for each event
+- ✅ Brand consistency: Icons, typography, spacing match EventListCard patterns
+- ✅ Mobile optimization: Sidebar ads removed on mobile (top/bottom ads already present)
 
 ---
 
-## Notes
+### 6. Accessibility Audit & Fixes
+**Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** Compliance, usability | **Status:** ✅ **COMPLETE** (Automated checks complete; browser audits pending)
 
-- **Prioritize user-facing features** (accessibility, performance) over technical debt
-- **Track progress** in `Docs/Implementation.md` and update checkboxes
-- **Update this document** when tasks are completed (move to Completed Tasks section)
-- **Keep context at top** for easy understanding of project status
+**Completed Tasks:**
+- [x] Add ARIA labels to interactive elements ✅
+  - CalendarButtons: Added aria-labels for "Add to Google" and "Download .ics"
+  - EventListCard: Added aria-labels for "View Details" and "Official Site" buttons
+  - Pagination links: Added descriptive aria-labels (e.g., "Go to page 2", "View previous events")
+  - Month separators: Added role="separator" with aria-label for screen readers
+  - SearchBox: Added comprehensive ARIA labels for results listbox items
+  - TopNav: Already had aria-expanded on mobile menu button ✅
+- [x] Ensure keyboard navigation ✅
+  - SearchBox: Full keyboard navigation with arrow keys (Up/Down), Enter to select, Escape to close
+  - All interactive elements: Focus states visible with `focus:ring-2 focus:ring-brand-500/30`
+  - CalendarButtons: Added focus states
+  - EventListCard buttons: Already had focus states ✅
+- [x] Run accessibility audit (automated checks) - ✅ **COMPLETE**
+  - Created `Docs/Accessibility_Audit.md` with audit checklist
+  - Created `Docs/Accessibility_Audit_Summary.md` for quick reference
+  - Created `scripts/accessibility-audit.md` step-by-step guide
+  - Created `scripts/check-accessibility.sh` automated check script
+  - Fixed empty alt text on event images ✅
+  - Fixed form inputs without explicit id/htmlFor associations ✅
+  - Fixed links with incomplete rel attributes ✅
+
+**Files Modified:**
+- ✅ `components/event/CalendarButtons.tsx` (ARIA labels, focus states)
+- ✅ `components/event/EventListCard.tsx` (ARIA labels for action buttons)
+- ✅ `components/search/SearchBox.tsx` (ARIA labels, keyboard navigation with arrow keys)
+- ✅ `app/events/page.tsx` (month separators, pagination aria-labels)
+- ✅ `app/events/page/[page]/page.tsx` (month separators, pagination aria-labels)
+- ✅ `app/events/past/page.tsx` (pagination aria-labels)
+
+**Remaining Tasks:**
+- [ ] Manual testing and browser-based audits (Lighthouse, axe DevTools) - Scheduled
+- [ ] Test with screen readers - Next step (after browser audits)
+- [ ] Document accessibility patterns - After audit completion
+
+---
+
+### 7. Weekly Events Page Improvements
+**Priority:** Medium | **Effort:** Low (1-2 hours) | **Impact:** User experience | **Status:** ✅ **COMPLETE**
+
+**Completed Tasks:**
+- [x] Fixed event day ordering to Monday-Sunday (previously Sunday was appearing before Saturday) ✅
+- [x] Fixed heading range to show Monday-Sunday correctly (was showing Monday-next Monday) ✅
+- [x] Disabled venue links on weekly car show list page ✅
+- [x] Disabled venue links on events list pages (`/events/` and `/events/page/[page]/`) ✅
+- [x] Added `disableVenueLink` prop to EventListCard component for flexibility ✅
+
+**Files Modified:**
+- ✅ `app/weekly-car-show-list-charlotte/page.tsx` (day ordering, heading range, venue links)
+- ✅ `app/events/page.tsx` (venue links disabled)
+- ✅ `app/events/page/[page]/page.tsx` (venue links disabled)
+- ✅ `components/event/EventListCard.tsx` (added `disableVenueLink` prop)
+
+**Result:**
+- ✅ Events now display in correct Monday-Sunday order on weekly page
+- ✅ Heading range correctly shows Monday through Sunday (e.g., "October 26–November 2")
+- ✅ Venue names display as plain text (non-clickable) on list pages for better UX
+- ✅ EventListCard component maintains backward compatibility (venue links enabled by default)
+
+---
+
+## Recent Rollback (October 30, 2025)
+
+### Venue Slug Normalization Work — Rolled Back
+
+**Action Taken:**
+- Rolled back recent venue slug normalization work (commits `6f18f30`, `f233c98`, `2a3ec4b`, `8aa32e2`, `312c98e`)
+- Restored `main` branch to commit `25478d7` ("last push of the night?")
+- All venue slug changes saved to branch `venue-slug-changes` for future reference
+- Site successfully rebuilt and deployed from rollback commit
+
+**What Was Rolled Back:**
+- Venue slug normalization enhancements to `lib/data.ts`
+- Changes to `app/events/page/[page]/page.tsx` related to venue slug handling
+- Any other venue-related normalization work
+
+**Why:**
+- Build failures on Netlify causing site 404s
+- TypeScript errors in `normalizeEvents` function (venue variable scope issues)
+- Need for site stability after recent changes
+
+**Current State:**
+- Site is stable and deployed
+- Main branch is clean and working
+- Venue slug work can be revisited later if needed (all changes preserved on branch)
+- Focus on completing other high-value tasks that don't affect data normalization

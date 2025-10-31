@@ -59,7 +59,7 @@ export default async function WeeklyCarShowListPage() {
       return ta - tb || a.title.localeCompare(b.title);
     });
 
-  // Build an ordered list of day labels for this week (Sun–Sat)
+  // Build an ordered list of day labels for this week (Mon–Sun)
   const dayLabelFmt = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
@@ -71,13 +71,15 @@ export default async function WeeklyCarShowListPage() {
     timeZone: "America/New_York",
   });
 
-  // Group events by day
+  // Group events by day (Monday-Sunday order)
   const groups = new Map<string, { label: string; items: EventType[] }>();
+  const dayOrder: string[] = []; // Track Monday-Sunday order
   for (let i = 0; i < 7; i++) {
     const d = new Date(weekStart);
     d.setDate(weekStart.getDate() + i);
-    const key = dayKeyFmt.format(d); // "Sunday"
-    const label = dayLabelFmt.format(d); // "Sunday, May 12"
+    const key = dayKeyFmt.format(d); // "Monday", "Tuesday", etc.
+    const label = dayLabelFmt.format(d); // "Monday, May 12"
+    dayOrder.push(key); // Track order
     groups.set(key, { label, items: [] });
   }
   for (const e of weekly) {
@@ -87,14 +89,16 @@ export default async function WeeklyCarShowListPage() {
     if (g) g.items.push(e);
   }
 
-  // Heading range (e.g., “May 12–18”)
+  // Heading range (e.g., "May 12–18") - Monday through Sunday
   const rangeFmt = new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
     timeZone: "America/New_York",
   });
+  const weekSunday = new Date(weekStart);
+  weekSunday.setDate(weekStart.getDate() + 6); // Sunday is 6 days after Monday
   const headingRange =
-    `${rangeFmt.format(weekStart)}–${rangeFmt.format(weekEnd)}`;
+    `${rangeFmt.format(weekStart)}–${rangeFmt.format(weekSunday)}`;
 
   // Build JSON-LD ItemList with Event schemas
   const itemListSchema = buildEventItemListSchema(weekly.slice(0, 100), {
@@ -174,8 +178,9 @@ export default async function WeeklyCarShowListPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Main column */}
           <div className="space-y-5 lg:col-span-8">
-            {[...groups.values()]
-              .filter((g) => g.items.length > 0)
+            {dayOrder
+              .map((key) => groups.get(key))
+              .filter((g): g is { label: string; items: EventType[] } => g !== undefined && g.items.length > 0)
               .map((g) => (
                 <React.Fragment key={g.label}>
                   <div className="my-4 flex items-center gap-3">
@@ -186,7 +191,7 @@ export default async function WeeklyCarShowListPage() {
                     <div className="h-px flex-1 bg-[var(--fg)]/10" />
                   </div>
                   {g.items.map((e) => (
-                    <EventListCard key={e.id} e={e} />
+                    <EventListCard key={e.id} e={e} disableVenueLink />
                   ))}
                 </React.Fragment>
               ))}
