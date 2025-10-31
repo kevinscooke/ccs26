@@ -7,17 +7,40 @@ Charlotte Car Shows is the ultimate car show, event and activity website for the
 ## 2. Goals
 
 ### Active Goals
-- G1: Analyze current high-value pages (Home, /events/, /weekly-car.../,) and update Docs and Rules to standardize
-- G2: Track which pages need work (CSS, SEO, etc.)
-- G3: Determine high-value tasks to prioritize next.
-- G5: Fix GitHub workflow to auto-update weekly events on Sunday night (better scheduling/automation approach)
+- 🔥 **G5: Fix GitHub workflow to auto-update weekly events on Sunday night** — High Priority
+  - Current workflow runs Monday 04:05 UTC (should run Sunday night ET)
+  - Need better scheduling/automation approach
+  
+- ⏳ **G1: Complete standardization across high-value pages** — In Progress
+  - ✅ Documentation structure complete
+  - ✅ JSON-LD schema standardized
+  - ✅ Component patterns standardized
+  - ⏳ UX improvements (Auto Show/AutoFair pages - recent work)
+  - ⏳ Accessibility audit needed
+
+- ⏳ **G2: Track and fix remaining issues** — In Progress
+  - ✅ CSS/Tailwind migration complete
+  - ✅ SEO improvements (JSON-LD, metadata)
+  - ⏳ Accessibility fixes needed
+  - ⏳ Performance optimization needed
+
+- ✅ **G3: Determine high-value tasks** — COMPLETE
+  - Prioritized task list created in `Docs/High_Value_Tasks.md`
+  - Next steps clearly defined
 
 ### Completed Goals
-- ✅ **G4: Copy Charlotte Auto Show page and create 2026 autofair** — COMPLETE
+- ✅ **G4: Copy Charlotte Auto Show page and create 2026 AutoFair** — COMPLETE
   - Created `app/events/charlotte-autofair/page.tsx`
   - Added to Footer and TopNav navigation
   - Added sidebar with skyscraper ad matching `/events/` layout
   - Complete metadata and JSON-LD structured data
+  - **Recent improvements:** UX reorganization (About → Schedule), SEO copywriting, duplicate content removal, brand guideline alignment
+
+- ✅ **Auto Show & AutoFair Pages UX/SEO Improvements** — COMPLETE (Recent)
+  - Reorganized layout: Quick Info card → Schedule (primary CTA) → Extended About
+  - Improved SEO copywriting (removed duplicates, enhanced unique content)
+  - Applied brand guidelines (icons, typography hierarchy, EventListCard styling)
+  - Condensed mobile experience (removed sidebar ads, better content flow)
 
 - ✅ **Event Component Standardization & Tailwind Migration** — COMPLETE
   - Consolidated EventCard → EventListCard (single component standard)

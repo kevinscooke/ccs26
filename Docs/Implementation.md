@@ -55,6 +55,15 @@ Based on PRD.md, we have four primary goals:
 - Added to Footer and TopNav navigation ✅
 - Added sidebar with skyscraper ad (matches `/events/` layout) ✅
 - Metadata and structured data (JSON-LD) complete ✅
+- **Recent improvements:** UX reorganization, SEO copywriting, brand guideline alignment ✅
+
+### Auto Show & AutoFair Pages UX/SEO Improvements
+**Status:** ✅ Complete (Recent Work)
+- Reorganized layout: Quick Info → Schedule (primary CTA) → Extended About
+- Improved SEO copywriting (removed duplicates, enhanced unique content)
+- Applied brand guidelines (icons, typography matching EventListCard)
+- Mobile optimization (sidebar ads hidden, better content flow)
+- Duplicate content removed between quick info and extended about sections
 
 ## Feature Analysis
 

@@ -136,12 +136,12 @@ export default async function EventsAllPage() {
               return (
                 <React.Fragment key={e.id}>
                   {showMonth && (
-                    <div className="my-4 flex items-center gap-3" key={`m-${monthLabel}`}>
-                      <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                    <div className="my-4 flex items-center gap-3" key={`m-${monthLabel}`} role="separator" aria-label={`Events in ${monthLabel}`}>
+                      <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
                       <div className="text-xs font-medium uppercase tracking-wide text-[var(--fg)]/60">
                         {monthLabel}
                       </div>
-                      <div className="h-px flex-1 bg-[var(--fg)]/10" />
+                      <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
                     </div>
                   )}
                   <EventListCard e={e} />
@@ -150,10 +150,18 @@ export default async function EventsAllPage() {
             })}
 
             <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
-              <Link href="/events/past/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
+              <Link 
+                href="/events/past/" 
+                className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                aria-label="View previous events"
+              >
                 Previous events
               </Link>
-              <Link href="/events/page/2/" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">
+              <Link 
+                href="/events/page/2/" 
+                className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                aria-label="Go to page 2"
+              >
                 Next page
               </Link>
             </nav>

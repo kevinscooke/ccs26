@@ -63,9 +63,10 @@ export default function Contact() {
             >
               <input type="hidden" name="form-name" value="contact" />
               <div className="grid gap-4">
-                <label className="flex flex-col gap-2">
+                <label htmlFor="contact-name" className="flex flex-col gap-2">
                   <span className="text-sm text-zinc-400">Name<span className="text-red-500">*</span></span>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     required
@@ -73,9 +74,10 @@ export default function Contact() {
                     placeholder="Your name"
                   />
                 </label>
-                <label className="flex flex-col gap-2">
+                <label htmlFor="contact-email" className="flex flex-col gap-2">
                   <span className="text-sm text-zinc-400">Email<span className="text-red-500">*</span></span>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     required
@@ -83,9 +85,10 @@ export default function Contact() {
                     placeholder="you@example.com"
                   />
                 </label>
-                <label className="flex flex-col gap-2">
+                <label htmlFor="contact-message" className="flex flex-col gap-2">
                   <span className="text-sm text-zinc-400">Message<span className="text-red-500">*</span></span>
                   <textarea
+                    id="contact-message"
                     name="message"
                     required
                     rows={5}

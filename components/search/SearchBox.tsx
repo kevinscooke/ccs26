@@ -10,6 +10,7 @@ export function SearchBox({ className = "" }: { className?: string }) {
   const { data, loading, error, clean, ensureLoaded } = useSearchIndex();
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const boxRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -28,7 +29,13 @@ export function SearchBox({ className = "" }: { className?: string }) {
   useEffect(() => {
     // close dropdown on navigation
     setOpen(false);
+    setSelectedIndex(-1);
   }, [pathname]);
+
+  useEffect(() => {
+    // Reset selected index when query changes
+    setSelectedIndex(-1);
+  }, [q]);
 
   const results = useMemo(() => {
     if (!data || !q.trim()) return [];
@@ -102,7 +109,51 @@ export function SearchBox({ className = "" }: { className?: string }) {
           onKeyDown={(e) => {
             if (e.key === "Escape") {
               setOpen(false);
+              setSelectedIndex(-1);
               (e.target as HTMLInputElement).blur();
+            } else if (e.key === "ArrowDown" && results.length > 0) {
+              e.preventDefault();
+              const nextIndex = selectedIndex < results.length ? selectedIndex + 1 : 0;
+              setSelectedIndex(nextIndex);
+              // Focus the corresponding link element
+              const links = boxRef.current?.querySelectorAll<HTMLElement>('[role="option"] a');
+              if (links && links[nextIndex]) {
+                links[nextIndex].focus();
+              }
+            } else if (e.key === "ArrowUp" && results.length > 0) {
+              e.preventDefault();
+              const prevIndex = selectedIndex > 0 ? selectedIndex - 1 : results.length;
+              setSelectedIndex(prevIndex);
+              // Focus the corresponding link element
+              const links = boxRef.current?.querySelectorAll<HTMLElement>('[role="option"] a');
+              if (links && links[prevIndex]) {
+                links[prevIndex].focus();
+              }
+            } else if (e.key === "Enter" && open && selectedIndex >= 0 && selectedIndex <= results.length) {
+              // Navigate to selected result or "see all" link
+              e.preventDefault();
+              if (selectedIndex < results.length) {
+                const selectedResult = results[selectedIndex];
+                if (selectedResult) {
+                  router.push(`/events/${selectedResult.slug}/`);
+                  setOpen(false);
+                  setSelectedIndex(-1);
+                }
+              } else {
+                // Navigate to "see all" link
+                router.push(`/search?q=${encodeURIComponent(q.trim())}`);
+                setOpen(false);
+                setSelectedIndex(-1);
+              }
+            } else if (e.key === "Enter" && open && results.length > 0 && selectedIndex === -1) {
+              // If no result selected but Enter pressed, navigate to first result
+              e.preventDefault();
+              const firstResult = results[0];
+              if (firstResult) {
+                router.push(`/events/${firstResult.slug}/`);
+                setOpen(false);
+                setSelectedIndex(-1);
+              }
             }
           }}
           inputMode="search"
@@ -115,30 +166,44 @@ export function SearchBox({ className = "" }: { className?: string }) {
       </form>
 
       {open && q && (
-        <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg">
-          {loading && <div className="p-3 text-sm text-gray-600">Loading index…</div>}
-          {error && <div className="p-3 text-sm text-red-700 bg-red-50">Failed to load search index.</div>}
-          {!loading && !error && results.length === 0 && <div className="p-3 text-sm text-gray-600">No matches.</div>}
+        <div 
+          className="absolute z-20 mt-2 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
+          role="combobox"
+          aria-expanded={open}
+          aria-haspopup="listbox"
+        >
+          {loading && <div className="p-3 text-sm text-gray-600" role="status" aria-live="polite">Loading index…</div>}
+          {error && <div className="p-3 text-sm text-red-700 bg-red-50" role="alert" aria-live="assertive">Failed to load search index.</div>}
+          {!loading && !error && results.length === 0 && <div className="p-3 text-sm text-gray-600" role="status" aria-live="polite">No matches.</div>}
           {!loading && !error && results.length > 0 && (
-            <ul className="max-h-80 overflow-auto divide-y divide-gray-100" role="listbox">
-              {results.map((e) => {
+            <ul 
+              className="max-h-80 overflow-auto divide-y divide-gray-100" 
+              role="listbox"
+              aria-label={`${results.length} search result${results.length !== 1 ? 's' : ''}`}
+            >
+              {results.map((e, idx) => {
                 const dateLabel = formatStartLabel(e.startAt);
                 const location = [e.venue?.name, e.city?.name || e.venue?.city]
                   .filter(Boolean)
                   .join(", ");
+                const isSelected = selectedIndex === idx;
 
                 return (
-                  <li key={e.id}>
+                  <li key={e.id} role="option" aria-selected={isSelected}>
                     <Link
                       href={`/events/${e.slug}/`}
+                      onFocus={() => setSelectedIndex(idx)}
                       onClick={() => {
                         setOpen(false);
+                        setSelectedIndex(-1);
                         (document.activeElement as HTMLElement | null)?.blur();
                       }}
-                      className="block px-3 py-2 text-sm hover:bg-gray-50"
+                      className={`block px-3 py-2 text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:ring-2 focus:ring-brand-500/30 ${isSelected ? 'bg-gray-50' : ''}`}
+                      aria-label={`${e.title}${dateLabel ? `, ${dateLabel}` : ''}${location ? `, ${location}` : ''}`}
+                      tabIndex={-1}
                     >
                       <div className="font-medium text-gray-900">{e.title}</div>
-                      <div className="text-gray-600">
+                      <div className="text-gray-600" aria-hidden="true">
                         {dateLabel && <span className="mr-2">🗓 {dateLabel}</span>}
                         {location && <span>📍 {location}</span>}
                       </div>
@@ -146,11 +211,17 @@ export function SearchBox({ className = "" }: { className?: string }) {
                   </li>
                 );
               })}
-              <li>
+              <li role="option" aria-selected={selectedIndex === results.length}>
                 <Link
                   href={`/search?q=${encodeURIComponent(q.trim())}`}
-                  onClick={() => setOpen(false)}
-                  className="block px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
+                  onFocus={() => setSelectedIndex(results.length)}
+                  onClick={() => {
+                    setOpen(false);
+                    setSelectedIndex(-1);
+                  }}
+                  className={`block px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 focus:outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-brand-500/30 ${selectedIndex === results.length ? 'bg-emerald-50' : ''}`}
+                  aria-label={`See all results for "${q.trim()}"`}
+                  tabIndex={-1}
                 >
                   See all results →
                 </Link>

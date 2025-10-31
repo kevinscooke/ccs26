@@ -64,47 +64,42 @@ This document tracks pages and components that need work (CSS, SEO, accessibilit
 ---
 
 ### Charlotte Auto Show (`app/events/charlotte-auto-show/page.tsx`)
-**Status:** ✅ Good (Template for G4)
-**Issues:**
-- [ ] JSON-LD ItemList is good, but individual Event schemas could be more detailed
-- [ ] Map embed could have better accessibility (title attribute is good)
-- [ ] Event cards could use consistent component (EventCard vs EventListCard)
-- [ ] Past years section could use pagination if list grows
+**Status:** ✅ Excellent (Recent UX/SEO improvements applied)
+**Recent Improvements:**
+- ✅ UX reorganization: Quick Info → Schedule → Extended About
+- ✅ SEO copywriting: Removed duplicate content, enhanced unique value props
+- ✅ Brand guidelines: Icons, typography matching EventListCard
+- ✅ Mobile optimization: Sidebar ads hidden, better content flow
+- ✅ Uses EventListCard component consistently ✅
 
-**SEO Status:** ✅ Good
-- Metadata complete
-- JSON-LD ItemList for events
+**SEO Status:** ✅ Excellent
+- Metadata complete and optimized
+- JSON-LD ItemList with full Event schemas ✅
+- BreadcrumbList schema ✅
+- No duplicate content ✅
 
-**CSS Status:** ✅ Good
-- Consistent styling
-- Responsive layout
+**CSS Status:** ✅ Excellent
+- All Tailwind utilities (no `.ccs-*` classes) ✅
+- Consistent with brand guidelines ✅
+- Responsive layout optimized ✅
 
 ---
 
 ## CSS & Design Token Issues
 
-### Mixed Usage Patterns
-**Issue:** Some components use design tokens (CSS classes like `.ccs-card`), others use Tailwind directly
-**Affected Files:**
-- Most pages use mix of both patterns
-- Some components prefer Tailwind, others prefer CSS classes
+### Design Token & Tailwind Migration
+**Status:** ✅ Complete (All `.ccs-*` classes migrated to Tailwind)
+**Completed:**
+- ✅ All `.ccs-card` instances migrated to Tailwind utilities
+- ✅ All `.ccs-btn`/`.ccs-btn-primary` instances migrated to Tailwind utilities
+- ✅ All `.ccs-badge` instances migrated to Tailwind utilities
+- ✅ Removed utility class definitions from `app/globals.css`
+- ✅ Removed utility class overrides from `components/Weekly.module.css`
 
-**Recommendation:**
-- [ ] Audit all components for consistent token usage
-- [ ] Document preferred pattern (design tokens vs Tailwind)
-- [ ] Create migration guide for mixed usage
-
-### Design Token Consistency
-**Issue:** Design tokens exist but usage is inconsistent
-**Current State:**
-- Design tokens defined in `app/globals.css`
-- Tailwind config maps tokens
-- Some components use tokens, others use Tailwind directly
-
-**Recommendation:**
-- [ ] Standardize on design tokens for brand colors
-- [ ] Use Tailwind utilities for spacing and layout
-- [ ] Document preferred patterns
+**Current Pattern:**
+- **Preferred:** Tailwind utilities with token-mapped colors (`bg-brand-600`, `text-gray-800`)
+- **Design Tokens:** Brand colors (brand-*) and neutral grays (gray-*) mapped in Tailwind config
+- **Usage:** Tailwind utilities for all components, design tokens via Tailwind config (not CSS custom properties)
 
 ---
 
@@ -257,7 +252,8 @@ This document tracks pages and components that need work (CSS, SEO, accessibilit
 - ✅ Home (`app/(marketing)/page.tsx`)
 - ✅ Events Index (`app/events/page.tsx`)
 - ✅ Weekly List (`app/weekly-car-show-list-charlotte/page.tsx`)
-- ✅ Charlotte Auto Show (`app/events/charlotte-auto-show/page.tsx`)
+- ✅ Charlotte Auto Show (`app/events/charlotte-auto-show/page.tsx`) - Recent UX/SEO improvements ✅
+- ✅ Charlotte AutoFair (`app/events/charlotte-autofair/page.tsx`) - Recent UX/SEO improvements ✅
 
 **Next Pages to Review:**
 - [x] Event Detail (`app/events/[slug]/page.tsx`) ✅

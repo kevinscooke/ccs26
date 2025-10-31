@@ -317,7 +317,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
               <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border">
                 <Image
                   src={image}
-                  alt=""
+                  alt={ev.imageUrl ? `${ev.title} event image` : "Charlotte car show event"}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover"

@@ -152,12 +152,22 @@ export default function EventListCard({ e }: { e: EventLike }) {
 
         <div className="shrink-0 flex flex-col gap-3 mt-4 md:mt-0 w-full md:w-auto">
           {eventHref && (
-            <Link className="bg-brand-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-brand-700 group-hover:scale-105 transition-transform w-full md:w-auto" href={eventHref}>
+            <Link 
+              className="bg-brand-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-brand-700 group-hover:scale-105 transition-transform w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-brand-500/30" 
+              href={eventHref}
+              aria-label={`View details for ${eventTitle}`}
+            >
               View Details
             </Link>
           )}
           {officialUrl && (
-            <a className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-800 px-5 py-2.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30 w-full md:w-auto" href={officialUrl} target="_blank" rel="noreferrer">
+            <a 
+              className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-800 px-5 py-2.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30 w-full md:w-auto" 
+              href={officialUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label={`Visit official site for ${eventTitle} (opens in new tab)`}
+            >
               Official Site
             </a>
           )}

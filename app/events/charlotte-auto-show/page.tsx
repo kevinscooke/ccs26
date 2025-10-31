@@ -30,12 +30,12 @@ function toET(x: string | number | Date) {
 export const metadata = {
   title: "Charlotte Auto Show: Dates, Schedule, Location, and Guide",
   description:
-    "Your comprehensive guide to the Charlotte Auto Show: dates, schedule (Thu–Sun), location, parking, and ticket info. Browse this year’s events and past shows.",
+    "Plan your visit to the Charlotte Auto Show at Charlotte Convention Center. See new vehicles, test drives, manufacturer displays, and exclusive show-only offers. Browse schedules, parking info, and directions.",
   alternates: { canonical: "/events/charlotte-auto-show/" },
   openGraph: {
     title: "Charlotte Auto Show — Dates, Schedule, Location",
     description:
-      "Plan your trip to the Charlotte Auto Show. See this year’s schedule, map, and official links. Browse past events.",
+      "Explore the latest vehicles and automotive technology at Charlotte's premier auto show. Located in Uptown at the Charlotte Convention Center.",
     url: "/events/charlotte-auto-show/",
     type: "website",
   },
@@ -114,13 +114,50 @@ export default function CharlotteAutoShowPage() {
             Charlotte Auto Show
           </h1>
           <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
-            Dates, schedule, location, and guide for the Charlotte Auto Show. Typically runs Thu–Sun.
+            Explore the latest vehicles, meet industry experts, and experience interactive displays at Charlotte&apos;s premier automotive showcase in Uptown.
           </p>
         </header>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="space-y-8 lg:col-span-8">
-            {/* This Year's Schedule */}
+            {/* Quick Info Card - Condensed About + Location */}
+            <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
+              <div className="space-y-4">
+                {/* Location */}
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-[var(--fg)]/60 mt-0.5 flex-shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <div>
+                    <p className="font-semibold text-[var(--fg)] text-sm md:text-base mb-1">Location</p>
+                    <p className="text-[var(--fg)]/80 text-sm md:text-base">{VENUE_NAME}</p>
+                    <p className="text-[var(--fg)]/70 text-sm">{VENUE_ADDRESS}, Uptown Charlotte</p>
+                  </div>
+                </div>
+
+                {/* Parking */}
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-[var(--fg)]/60 mt-0.5 flex-shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 002 2h10a2 2 0 002-2v-4a2 2 0 00-2-2H7a2 2 0 00-2 2v4z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9V6a3 3 0 013-3h4a3 3 0 013 3v3" />
+                  </svg>
+                  <div>
+                    <p className="font-semibold text-[var(--fg)] text-sm md:text-base mb-1">Parking</p>
+                    <p className="text-[var(--fg)]/80 text-sm md:text-base">Multiple decks and lots nearby. Valet available. LYNX light rail accessible.</p>
+                  </div>
+                </div>
+
+                {/* Event Description */}
+                <div className="pt-2 border-t border-[var(--fg)]/10">
+                  <p className="text-[var(--fg)]/80 text-sm md:text-base leading-relaxed">
+                    Experience hands-on demonstrations, exclusive show-only offers, and specialty exhibits featuring electric vehicles, luxury models, trucks, and SUVs. Open to both industry professionals and families.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* This Year's Schedule - Primary CTA */}
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold">{currentYear} Schedule</h2>
 
@@ -148,37 +185,23 @@ export default function CharlotteAutoShowPage() {
               )}
             </section>
 
-            {/* Location + Map */}
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <article className="md:col-span-2 bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
-                <h2 className="text-2xl font-semibold mb-3">About the Charlotte Auto Show</h2>
-                <p className="text-[var(--fg)]/80">
-                  The Charlotte Auto Show features new model debuts, specialty exhibits, and family-friendly attractions in Uptown Charlotte.
-                  Expect hands-on displays, show-only offers, and a weekend schedule that typically runs Thursday through Sunday.
-                </p>
-                <h3 className="text-xl font-semibold mt-5">Location & Parking</h3>
-                <p className="text-[var(--fg)]/80">
-                  {VENUE_NAME}, {VENUE_ADDRESS}. Use the map or the Get Directions button for turn-by-turn navigation.
-                </p>
-              </article>
-
-              <aside className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
-                <h3 className="text-xl font-semibold mb-3">Map</h3>
-                <div className="aspect-[16/9] w-full overflow-hidden rounded-md border">
-                  <iframe
-                    title={`Map for ${VENUE_NAME}`}
-                    width="100%"
-                    height="100%"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src={mapEmbedSrc}
-                  />
-                </div>
-                <div className="mt-4 flex gap-3">
-                  <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Official Site</a>
-                  <a href={directionsHref} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Get Directions</a>
-                </div>
-              </aside>
+            {/* Map - Mobile only (shown in main content) */}
+            <section className="lg:hidden bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
+              <h3 className="text-xl font-semibold mb-3">Map</h3>
+              <div className="aspect-[16/9] w-full overflow-hidden rounded-md border">
+                <iframe
+                  title={`Map for ${VENUE_NAME}`}
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={mapEmbedSrc}
+                />
+              </div>
+              <div className="mt-4 flex gap-3">
+                <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Official Site</a>
+                <a href={directionsHref} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Get Directions</a>
+              </div>
             </section>
 
             {pastOtherYears.length > 0 && (
@@ -191,15 +214,49 @@ export default function CharlotteAutoShowPage() {
                 </div>
               </section>
             )}
+
+            {/* Extended About - After schedule for SEO */}
+            <section className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
+              <h2 className="text-2xl font-semibold mb-3">About the Charlotte Auto Show</h2>
+              <p className="text-[var(--fg)]/80">
+                The Charlotte Auto Show brings the automotive industry to the heart of the Queen City, showcasing the latest new vehicle models, cutting-edge technology, and interactive experiences for all ages. Held annually at the Charlotte Convention Center, this four-day event typically runs Thursday through Sunday, offering both industry professionals and families opportunities to explore hundreds of vehicles from leading manufacturers.
+              </p>
+              <p className="text-[var(--fg)]/80 mt-4">
+                Visitors can expect manufacturer displays, hands-on demonstrations, test drive opportunities, and exclusive show-only incentives. The event features specialty exhibits highlighting electric vehicles, luxury models, trucks, and SUVs, making it the region&apos;s most comprehensive automotive showcase.
+              </p>
+              <h3 className="text-xl font-semibold mt-5">Location & Parking Information</h3>
+              <p className="text-[var(--fg)]/80">
+                The Charlotte Auto Show takes place at the <strong>{VENUE_NAME}</strong>, located at <strong>{VENUE_ADDRESS}</strong> in Uptown Charlotte. The Convention Center is easily accessible via I-77 and I-277, with multiple parking decks and surface lots within walking distance. Valet parking is available, and public transportation options include the LYNX light rail. Use the interactive map in the sidebar or click Get Directions for turn-by-turn navigation from your location.
+              </p>
+            </section>
           </div>
 
-          <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+          <aside className="hidden lg:block space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            {/* Map - Desktop only (in sidebar above ad) */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow">
+              <h3 className="text-xl font-semibold mb-3">Map</h3>
+              <div className="aspect-[16/9] w-full overflow-hidden rounded-md border">
+                <iframe
+                  title={`Map for ${VENUE_NAME}`}
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={mapEmbedSrc}
+                />
+              </div>
+              <div className="mt-4 flex gap-3">
+                <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Official Site</a>
+                <a href={directionsHref} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-3 py-1.5 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30">Get Directions</a>
+              </div>
+            </div>
+            
+            {/* Ad Slot - Desktop only (mobile has top/bottom ads already) */}
             <div className="flex items-center justify-center">
               <AdSlot
                 slot="7335717776"
                 sizes={[
-                  { media: "(min-width: 1024px)", width: 300, height: 600 }, // desktop skyscraper
-                  { media: "(max-width: 1023px)", width: 320, height: 100 }, // mobile fallback
+                  { media: "(min-width: 1024px)", width: 300, height: 600 }, // desktop skyscraper only
                 ]}
               />
             </div>

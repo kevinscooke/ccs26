@@ -61,18 +61,21 @@ export default function CalendarButtons(props: Props) {
   return (
     <div className="inline-flex items-center gap-2" id="rsvp">
       <a
-        className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-zinc-50"
+        className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
         href={googleCalUrl(props)}
         target="_blank"
         rel="noopener noreferrer"
         data-cta="calendar_google"
+        aria-label={`Add ${props.title} to Google Calendar`}
       >
         Add to Google
       </a>
       <button
-        className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-zinc-50"
+        type="button"
+        className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
         onClick={handleIcs}
         data-cta="calendar_ics"
+        aria-label={`Download ${props.title} calendar file (.ics)`}
       >
         Download .ics
       </button>

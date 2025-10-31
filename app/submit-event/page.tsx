@@ -66,11 +66,12 @@ export default function SubmitEventPage() {
   {/* <input type="hidden" name="bot-field" /> */}
 
         <div className="grid gap-4">
-          <label className="flex flex-col gap-2">
+          <label htmlFor="submit-name" className="flex flex-col gap-2">
             <span className="text-sm text-zinc-500">
               Name<span className="text-red-500">*</span>
             </span>
             <input
+              id="submit-name"
               type="text"
               name="name"
               required
@@ -79,11 +80,12 @@ export default function SubmitEventPage() {
             />
           </label>
 
-          <label className="flex flex-col gap-2">
+          <label htmlFor="submit-email" className="flex flex-col gap-2">
             <span className="text-sm text-zinc-500">
               Email<span className="text-red-500">*</span>
             </span>
             <input
+              id="submit-email"
               type="email"
               name="email"
               required
@@ -92,9 +94,10 @@ export default function SubmitEventPage() {
             />
           </label>
 
-          <label className="flex flex-col gap-2">
+          <label htmlFor="submit-event-url" className="flex flex-col gap-2">
             <span className="text-sm text-zinc-500">Event URL</span>
             <input
+              id="submit-event-url"
               type="url"
               name="event_url"
               className="rounded-xl border border-zinc-300 bg-white px-3 py-2 text-zinc-900"
@@ -102,11 +105,12 @@ export default function SubmitEventPage() {
             />
           </label>
 
-          <label className="flex flex-col gap-2">
+          <label htmlFor="submit-event-date" className="flex flex-col gap-2">
             <span className="text-sm text-zinc-500">
               Event Date<span className="text-red-500">*</span>
             </span>
             <input
+              id="submit-event-date"
               type="date"
               name="event_date"
               required
@@ -115,11 +119,12 @@ export default function SubmitEventPage() {
           </label>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <label className="flex flex-col gap-2">
+            <label htmlFor="submit-start-time" className="flex flex-col gap-2">
               <span className="text-sm text-zinc-500">
                 Start Time<span className="text-red-500">*</span>
               </span>
               <input
+                id="submit-start-time"
                 type="time"
                 name="event_start_time"
                 required
@@ -127,11 +132,12 @@ export default function SubmitEventPage() {
               />
             </label>
 
-            <label className="flex flex-col gap-2">
+            <label htmlFor="submit-end-time" className="flex flex-col gap-2">
               <span className="text-sm text-zinc-500">
                 End Time<span className="text-red-500">*</span>
               </span>
               <input
+                id="submit-end-time"
                 type="time"
                 name="event_end_time"
                 required
@@ -140,9 +146,10 @@ export default function SubmitEventPage() {
             </label>
           </div>
 
-          <label className="flex flex-col gap-2">
+          <label htmlFor="submit-location" className="flex flex-col gap-2">
             <span className="text-sm text-zinc-500">Event Location</span>
             <input
+              id="submit-location"
               type="text"
               name="event_location"
               className="rounded-xl border border-zinc-300 bg-white px-3 py-2 text-zinc-900"
@@ -150,9 +157,10 @@ export default function SubmitEventPage() {
             />
           </label>
 
-          <label className="flex flex-col gap-2">
+          <label htmlFor="submit-details" className="flex flex-col gap-2">
             <span className="text-sm text-zinc-500">Details</span>
             <textarea
+              id="submit-details"
               name="details"
               rows={6}
               className="rounded-xl border border-zinc-300 bg-white px-3 py-2 text-zinc-900"

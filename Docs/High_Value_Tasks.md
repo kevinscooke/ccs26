@@ -9,12 +9,12 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 - ✅ **AutoFair 2026 Page (G4)** — COMPLETE  
 - ✅ **Documentation Structure** — COMPLETE
 - ✅ **Event Component Standardization & Tailwind Migration** — COMPLETE
-  - Consolidated EventCard → EventListCard
-  - Migrated all `.ccs-card`, `.ccs-btn`, `.ccs-btn-primary` to Tailwind
-  - Removed shadcn components (Dialog, DropdownMenu, Button)
-  - Cleaned up CSS files
+- ✅ **Auto Show & AutoFair Pages UX/SEO Improvements** — COMPLETE (Recent)
+- ✅ **Venues Index Page** — COMPLETE (Today)
+- ✅ **Accessibility Audit (Automated Checks)** — COMPLETE (Today)
+  - Automated checks complete, issues fixed, ready for manual testing
 - 🔥 **High Priority (G5):** Fix Weekly Events Auto-Update Workflow — Sunday night scheduling issue
-- ⏳ **Next Priorities:** Accessibility audit, Performance optimization
+- ⏳ **Next Priorities:** Browser-based accessibility audits (tomorrow), Performance optimization
 
 ---
 
@@ -96,23 +96,69 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ---
 
-### 5. Accessibility Audit & Fixes
-**Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** Compliance, usability
+### 5. Auto Show & AutoFair Pages UX/SEO Improvements
+**Priority:** Medium | **Effort:** Medium (4-5 hours) | **Impact:** User experience, SEO | **Status:** ✅ **COMPLETE**
 
-**Tasks:**
-- [ ] Run accessibility audit (axe-core, Lighthouse)
-- [ ] Add ARIA labels to interactive elements
-- [ ] Ensure keyboard navigation
-- [ ] Test with screen readers
-- [ ] Document accessibility patterns
+**Completed Tasks:**
+- [x] Reorganized page layout: Quick Info card → Schedule → Extended About ✅
+- [x] Improved SEO copywriting (removed duplicate content, enhanced unique value props) ✅
+- [x] Applied brand guidelines (icons, typography hierarchy matching EventListCard) ✅
+- [x] Condensed mobile experience (sidebar ads hidden on mobile) ✅
+- [x] Fixed duplicate content between quick info cards and extended about sections ✅
 
-**Files Affected:**
-- High-value pages (Home, Events, Weekly, Auto Show)
-- Interactive components (SearchBox, Buttons, Navigation)
+**Files Modified:**
+- ✅ `app/events/charlotte-auto-show/page.tsx` (UX reorganization, SEO improvements, brand guidelines)
+- ✅ `app/events/charlotte-autofair/page.tsx` (UX reorganization, SEO improvements, brand guidelines)
+
+**Key Improvements:**
+- ✅ Better UX: Schedule (primary CTA) appears immediately after condensed info card
+- ✅ SEO: No duplicate content, unique copy for each event
+- ✅ Brand consistency: Icons, typography, spacing match EventListCard patterns
+- ✅ Mobile optimization: Sidebar ads removed on mobile (top/bottom ads already present)
 
 ---
 
-### 6. Performance Optimization
+### 6. Accessibility Audit & Fixes
+**Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** Compliance, usability | **Status:** ✅ **COMPLETE** (Subtasks 2-3: ARIA labels & keyboard navigation)
+
+**Completed Tasks:**
+- [x] Add ARIA labels to interactive elements ✅
+  - CalendarButtons: Added aria-labels for "Add to Google" and "Download .ics"
+  - EventListCard: Added aria-labels for "View Details" and "Official Site" buttons
+  - Pagination links: Added descriptive aria-labels (e.g., "Go to page 2", "View previous events")
+  - Month separators: Added role="separator" with aria-label for screen readers
+  - SearchBox: Added comprehensive ARIA labels for results listbox items
+  - TopNav: Already had aria-expanded on mobile menu button ✅
+- [x] Ensure keyboard navigation ✅
+  - SearchBox: Full keyboard navigation with arrow keys (Up/Down), Enter to select, Escape to close
+  - All interactive elements: Focus states visible with `focus:ring-2 focus:ring-brand-500/30`
+  - CalendarButtons: Added focus states
+  - EventListCard buttons: Already had focus states ✅
+
+**Files Modified:**
+- ✅ `components/event/CalendarButtons.tsx` (ARIA labels, focus states)
+- ✅ `components/event/EventListCard.tsx` (ARIA labels for action buttons)
+- ✅ `components/search/SearchBox.tsx` (ARIA labels, keyboard navigation with arrow keys)
+- ✅ `app/events/page.tsx` (month separators, pagination aria-labels)
+- ✅ `app/events/page/[page]/page.tsx` (month separators, pagination aria-labels)
+- ✅ `app/events/past/page.tsx` (pagination aria-labels)
+
+**Remaining Tasks (In Progress):**
+- [x] Run accessibility audit (automated checks) - ✅ **COMPLETE**
+  - Created `Docs/Accessibility_Audit.md` with audit checklist
+  - Created `Docs/Accessibility_Audit_Summary.md` for quick reference
+  - Created `scripts/accessibility-audit.md` step-by-step guide
+  - Created `scripts/check-accessibility.sh` automated check script
+  - Fixed empty alt text on event images ✅
+  - Fixed form inputs without explicit id/htmlFor associations ✅
+  - Fixed links with incomplete rel attributes ✅
+  - **Next:** Manual testing and browser-based audits (Lighthouse, axe DevTools) - Scheduled for tomorrow
+- [ ] Test with screen readers - Next step (after browser audits)
+- [ ] Document accessibility patterns - After audit completion
+
+---
+
+### 7. Performance Optimization
 **Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** User experience, SEO
 
 **Tasks:**
@@ -129,7 +175,7 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ---
 
-### 7. Component Pattern Documentation
+### 8. Component Pattern Documentation
 **Priority:** Low | **Effort:** Low (1-2 hours) | **Impact:** Developer experience
 
 **Tasks:**
@@ -145,7 +191,7 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ---
 
-### 8. Advanced Filtering & Search
+### 9. Advanced Filtering & Search
 **Priority:** Low | **Effort:** High (8-12 hours) | **Impact:** User experience
 
 **Tasks:**
@@ -161,7 +207,7 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ---
 
-### 9. Testing Infrastructure
+### 10. Testing Infrastructure
 **Priority:** Low | **Effort:** High (10-16 hours) | **Impact:** Code quality, maintainability
 
 **Tasks:**
@@ -179,32 +225,33 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 
 ## Recommended Implementation Order
 
-1. **Week 3-4:**
-   - Task 5: Accessibility audit & fixes — Compliance
-   - Task 6: Performance optimization — User experience
+1. **Immediate (Next Sprint):**
+   - G5: Fix GitHub workflow for weekly events — Operational reliability
+   - Task 6: Accessibility audit & fixes — Compliance
+   - Task 7: Performance optimization — User experience
 
-2. **Week 5-6:**
-   - Task 4: Design token consistency — Maintainability
-   - Task 7: Component pattern documentation — Developer experience
+2. **Short-term (Next Month):**
+   - Task 8: Component pattern documentation — Developer experience
+   - Testing infrastructure setup — Code quality foundation
 
-3. **Month 2:**
-   - Task 8: Advanced filtering — User experience enhancement
-   - Task 9: Testing infrastructure — Code quality
+3. **Medium-term (Month 2+):**
+   - Task 9: Advanced filtering — User experience enhancement
+   - Advanced features and enhancements
 
 ---
 
 ## Success Metrics
 
-### Short-Term (Week 3-4)
+### Short-Term (Next Sprint)
+- [ ] GitHub workflow fixed and tested (G5)
 - [ ] Lighthouse accessibility score > 90 on all pages
 - [ ] Performance scores > 90 on all pages
-- [ ] All components use consistent design tokens
 - [ ] Accessibility issues resolved
 
 ### Medium-Term (Month 2)
 - [ ] Component patterns documented
 - [ ] Testing infrastructure in place
-- [ ] Advanced filtering implemented
+- [ ] Advanced filtering implemented (if prioritized)
 
 ---
 
