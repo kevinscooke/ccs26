@@ -16,7 +16,6 @@ export default function WeeklyControls() {
 
   const selectedIndex = useMemo(() => {
     if (pathname.startsWith("/weekly-car-show-list-charlotte")) return 1;
-    if (pathname.startsWith("/daily")) return 2;
     return 0;
   }, [pathname]);
 

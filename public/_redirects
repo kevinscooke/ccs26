@@ -5,3 +5,7 @@
 # Redirect old dated event URLs (slug + date) to /events
 /event/*/*      /events/  301!
 /events/*/*     /events/  301!
+
+# Redirect daily page to events
+/daily  /events/  301!
+/daily/*  /events/  301!

@@ -111,18 +111,27 @@ This document tracks pages and components that need work (CSS, SEO, accessibilit
 ## SEO Issues
 
 ### JSON-LD Schema Implementation
-**Issue:** JSON-LD schema varies across pages
+**Status:** ✅ Complete
 **Current State:**
 - Home page: Organization + WebSite ✅
-- Events index: ItemList ✅
-- Weekly list: Missing schema ⚠️
-- Charlotte Auto Show: ItemList ✅
+- Events index: ItemList + BreadcrumbList + Event schemas ✅
+- Weekly list: ItemList + BreadcrumbList + Event schemas ✅
+- Event detail pages: Event + BreadcrumbList ✅
+- Event pagination: ItemList + BreadcrumbList + Event schemas ✅
+- Past events: ItemList + BreadcrumbList + Event schemas ✅
+- Charlotte Auto Show: ItemList + BreadcrumbList ✅
+- Charlotte AutoFair: ItemList + BreadcrumbList ✅
+- Venue pages: Place + ItemList + BreadcrumbList ✅
+- Guide: Article + BreadcrumbList ✅
+- Search: BreadcrumbList ✅
+- All marketing/legal pages: BreadcrumbList ✅
+- Dashboard: Coming soon page (no JSON-LD needed) ✅
 
-**Recommendation:**
-- [ ] Add Event schema to weekly list
-- [ ] Add Event schema to featured events on home page
-- [ ] Standardize Event schema format across pages
-- [ ] Add BreadcrumbList schema to pages with breadcrumbs
+**Completed:**
+- [x] Added Event schema to weekly list ✅
+- [x] Standardized Event schema format across pages (via `lib/eventSchema.ts`) ✅
+- [x] Added BreadcrumbList schema to all pages with breadcrumbs ✅
+- [x] Enhanced all event list pages with Event schemas in ItemList ✅
 
 ### Metadata Completeness
 **Status:** ✅ Generally Good
@@ -251,9 +260,11 @@ This document tracks pages and components that need work (CSS, SEO, accessibilit
 - ✅ Charlotte Auto Show (`app/events/charlotte-auto-show/page.tsx`)
 
 **Next Pages to Review:**
-- [ ] Event Detail (`app/events/[slug]/page.tsx`)
-- [ ] Venue Detail (`app/venue/[slug]/page.tsx`)
-- [ ] Search (`app/search/page.tsx`)
-- [ ] Contact (`app/contact/page.tsx`)
-- [ ] Submit Event (`app/submit-event/page.tsx`)
+- [x] Event Detail (`app/events/[slug]/page.tsx`) ✅
+- [x] Venue Detail (`app/venue/[slug]/page.tsx`) ✅
+- [x] Search (`app/search/page.tsx`) ✅ (Added BreadcrumbList JSON-LD, metadata, Container, Breadcrumbs)
+- [x] Contact (`app/contact/page.tsx`) ✅
+- [x] Submit Event (`app/submit-event/page.tsx`) ✅
+- [x] Daily (`app/daily/page.tsx`) ✅ (Removed - redirects to /events/)
+- [x] Dashboard (`app/dashboard/page.tsx`) ✅ (Coming soon page - no JSON-LD needed)
 

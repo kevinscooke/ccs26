@@ -48,10 +48,13 @@ Based on PRD.md, we have four primary goals:
 5. **Accessibility audit and fixes**
 
 ### G4: Copy Charlotte Auto Show Page for 2026 AutoFair
-**Status:** Ready to implement
+**Status:** ✅ Complete
 - Template pattern exists in `app/events/charlotte-auto-show/page.tsx`
-- Need: Create `app/events/charlotte-autofair-2026/page.tsx`
-- Pattern uses event filtering by ID/slug and year-based organization
+- Created: `app/events/charlotte-autofair/page.tsx` ✅
+- Pattern uses event filtering by ID/slug and year-based organization (2026 events)
+- Added to Footer and TopNav navigation ✅
+- Added sidebar with skyscraper ad (matches `/events/` layout) ✅
+- Metadata and structured data (JSON-LD) complete ✅
 
 ## Feature Analysis
 
@@ -190,12 +193,14 @@ Based on PRD.md, we have four primary goals:
 ### Stage 3: Advanced Features
 
 #### 3.1 AutoFair 2026 Page (G4)
-- [ ] Create `app/events/charlotte-autofair-2026/page.tsx`
-- [ ] Identify AutoFair event IDs in events.json
-- [ ] Replicate Charlotte Auto Show page pattern
-- [ ] Update metadata and structured data
-- [ ] Add to navigation/sitemap
-- [ ] Test and verify functionality
+- [x] Create `app/events/charlotte-autofair/page.tsx` ✅
+- [x] Identify AutoFair event IDs in events.json ✅
+  - IDs: 7fb39344-1d13-4c45-882f-82ad90aa9e6c (Thu), 3940ada8-c47a-4c41-b4c0-3a856a703b99 (Fri), be48d403-c249-4453-8453-77baf66e9954 (Sat)
+- [x] Copy Charlotte Auto Show page pattern ✅
+- [x] Update metadata and structured data ✅
+- [x] Add to navigation (Footer and TopNav) ✅
+- [x] Add sidebar with skyscraper ad (matches `/events/`) ✅
+- [ ] Test and verify functionality after deploy
 
 #### 3.2 Accessibility Improvements
 - [ ] Run accessibility audit (axe, Lighthouse)
