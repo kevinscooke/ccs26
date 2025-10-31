@@ -2,8 +2,9 @@ name: Weekly events export & deploy
 
 on:
   schedule:
-    # Runs Monday 04:05 UTC (just after midnight ET during DST)
-    - cron: '5 4 * * 1'
+    # Runs Monday 04:00 UTC (Sunday 11:00 PM ET during EST, Sunday 12:00 AM ET during DST)
+    # This ensures weekly events are ready by Monday morning ET
+    - cron: '0 4 * * 1'
   workflow_dispatch: {}
 
 jobs:
@@ -14,6 +15,11 @@ jobs:
         with:
           persist-credentials: true
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -22,14 +28,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          corepack enable
           pnpm install --frozen-lockfile
 
       - name: Run exporter (writes public/data & app/data)
         env:
           NODE_ENV: production
-          # If your exporter needs DB credentials, set them as secrets
-          # EXAMPLE_DB_URL: ${{ secrets.EXAMPLE_DB_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: |
           node ./scripts/export-json.mjs
 

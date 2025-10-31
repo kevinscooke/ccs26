@@ -16,9 +16,10 @@ const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 const PAGE_SIZE = 15;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   // Generate page params for pages 2..N (page 1 is /events)
   const now = nowInET();
+  const eventsData = await loadEvents();
   type EventType = typeof eventsData[number];
   const events = (eventsData as EventType[])
     .filter((e: EventType) => {
@@ -60,9 +61,10 @@ export async function generateMetadata({ params }: { params: { page: string } })
   };
 }
 
-export default function EventsPage({ params }: { params: { page: string } }) {
+export default async function EventsPage({ params }: { params: { page: string } }) {
   const now = nowInET();
   const pageNum = Math.max(1, parseInt(params.page, 10) || 1);
+  const eventsData = await loadEvents();
   type EventType = typeof eventsData[number];
   const events = (eventsData as EventType[])
     .filter((e: EventType) => {

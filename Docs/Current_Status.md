@@ -8,21 +8,19 @@
 ## 🎯 Active Priorities
 
 ### 1. G5: Fix Weekly Events Auto-Update Workflow 🔥
-**Priority:** High | **Effort:** Low (1-2 hours) | **Status:** Not Started
+**Priority:** High | **Effort:** Low (1-2 hours) | **Status:** ⏳ **Partially Complete**
 
-**Issue:**
-- GitHub workflow currently runs Monday 04:05 UTC (Monday morning ET)
-- Should run Sunday night to prepare for new week
-- Not reliably triggering weekly updates
+**Completed:**
+- ✅ Updated cron schedule from `5 4 * * 1` to `0 4 * * 1` (Monday 04:00 UTC = Sunday 11:00 PM ET during EST)
+- ✅ Improved timing to run Sunday night ET (ready by Monday morning)
 
-**Next Steps:**
-- Review `.github/workflows/update-events-and-deploy.yml`
-- Update cron schedule (Sunday night ET = Monday 04:00/05:00 UTC depending on DST)
-- Consider webhook-based approach or Netlify scheduled functions
-- Test and verify workflow execution
+**Remaining:**
+- [ ] Monitor workflow execution over next few weeks to verify reliability
+- [ ] Consider adding workflow failure notifications (if needed)
+- [ ] Document final automation approach
 
 **Files:**
-- `.github/workflows/update-events-and-deploy.yml`
+- ✅ `.github/workflows/update-events-and-deploy.yml` (updated)
 
 ---
 

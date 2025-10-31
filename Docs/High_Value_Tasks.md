@@ -30,8 +30,8 @@ This document identifies prioritized tasks based on PRD goals G1-G4 and analysis
 - Better automation approach needed
 
 **Tasks:**
-- [ ] Review current workflow (`.github/workflows/update-events-and-deploy.yml`)
-- [ ] Update cron schedule to run Sunday night ET (23:00 ET Sunday = Monday 04:00 UTC during DST, 05:00 UTC during EST)
+- [x] Review current workflow (`.github/workflows/update-events-and-deploy.yml`) ✅
+- [x] Update cron schedule to run Sunday night ET (Monday 04:00 UTC = Sunday 11:00 PM ET during EST, Sunday 12:00 AM ET during DST) ✅
 - [ ] Consider alternative approaches:
   - [ ] On-demand rebuilds via webhook from Supabase
   - [ ] Netlify scheduled functions
