@@ -11,7 +11,6 @@ import weeklyStyles from "@/components/Weekly.module.css";
 import { SearchBox } from "@/components/search/SearchBox";
 import dynamic from "next/dynamic";
 import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/eventSchema";
-import { toEtDate, nowInET } from "@/lib/et";
 
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
