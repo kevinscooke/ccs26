@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import eventsData from "../../../data/events.json";
-import EventListCard from "@/components/event/EventListCard";
+import { loadEvents } from "@/lib/data";
+import { toEtDate, nowInET } from "@/lib/et";
+import UpcomingEventsList from "@/components/event/UpcomingEventsList.client";
 import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import WeeklyControls from "@/components/WeeklyControls.client";
@@ -16,25 +17,18 @@ const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
 const PAGE_SIZE = 15;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   // Generate page params for pages 2..N (page 1 is /events)
-  const now = nowInET();
+  // Use server time for static generation, but client will filter at runtime
+  const eventsData = await loadEvents();
   type EventType = typeof eventsData[number];
-  const events = (eventsData as EventType[])
-    .filter((e: EventType) => {
-      if (e.status !== "PUBLISHED") return false;
-      const dt = toEtDate(e.startAt);
-      return !!dt && dt.getTime() >= now.getTime();
-    })
-    .sort((a: EventType, b: EventType) => {
-      const ta = toEtDate(a.startAt)?.getTime() ?? 0;
-      const tb = toEtDate(b.startAt)?.getTime() ?? 0;
-      return ta - tb || a.title.localeCompare(b.title);
-    });
+  const publishedEvents = (eventsData as EventType[])
+    .filter((e: EventType) => e.status === "PUBLISHED");
 
-  const totalPages = Math.ceil(events.length / PAGE_SIZE);
+  // Estimate pages (will be corrected by client-side filtering)
+  const estimatedTotalPages = Math.ceil(publishedEvents.length / PAGE_SIZE);
   const pages: Array<{ page: string }> = [];
-  for (let i = 2; i <= totalPages; i++) {
+  for (let i = 2; i <= Math.min(estimatedTotalPages, 10); i++) {
     pages.push({ page: String(i) });
   }
   return pages;
@@ -60,11 +54,14 @@ export async function generateMetadata({ params }: { params: { page: string } })
   };
 }
 
-export default function EventsPage({ params }: { params: { page: string } }) {
-  const now = nowInET();
+export default async function EventsPage({ params }: { params: { page: string } }) {
   const pageNum = Math.max(1, parseInt(params.page, 10) || 1);
+  const eventsData = await loadEvents();
   type EventType = typeof eventsData[number];
-  const events = (eventsData as EventType[])
+  
+  // Filter PUBLISHED events for JSON-LD (SEO - use server time for now)
+  const now = nowInET();
+  const publishedEvents = (eventsData as EventType[])
     .filter((e: EventType) => {
       if (e.status !== "PUBLISHED") return false;
       const dt = toEtDate(e.startAt);
@@ -77,8 +74,11 @@ export default function EventsPage({ params }: { params: { page: string } }) {
     });
 
   const start = (pageNum - 1) * PAGE_SIZE;
-  const paginatedEvents = events.slice(start, start + PAGE_SIZE);
-  const totalPages = Math.ceil(events.length / PAGE_SIZE);
+  const paginatedEvents = publishedEvents.slice(start, start + PAGE_SIZE);
+
+  // All published events (for client-side filtering)
+  const allPublishedEvents = (eventsData as EventType[])
+    .filter((e: EventType) => e.status === "PUBLISHED");
 
   // Build JSON-LD ItemList with Event schemas (standardized format)
   const itemList = buildEventItemListSchema(paginatedEvents.slice(0, 100) as any[], {
@@ -95,15 +95,6 @@ export default function EventsPage({ params }: { params: { page: string } }) {
     ],
     { currentPageUrl: `https://charlottecarshows.com/events/page/${pageNum}/` }
   );
-
-  const monthFmt = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    year: "numeric",
-    timeZone: "America/New_York",
-  });
-
-  // track last rendered month when mapping events
-  let lastMonth: string | null = null;
 
   return (
     <Container>
@@ -151,56 +142,7 @@ export default function EventsPage({ params }: { params: { page: string } }) {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
-          <div className="space-y-5 lg:col-span-8">
-            {paginatedEvents.map((e: EventType) => {
-              const monthLabel = monthFmt.format(toEtDate(e.startAt) ?? new Date(e.startAt));
-              const showMonth = monthLabel !== lastMonth;
-              lastMonth = monthLabel;
-
-              return (
-                <React.Fragment key={e.id}>
-                  {showMonth && (
-                    <div className="my-4 flex items-center gap-3" key={`m-${monthLabel}`} role="separator" aria-label={`Events in ${monthLabel}`}>
-                      <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
-                      <div className="text-xs font-medium uppercase tracking-wide text-[var(--fg)]/60">
-                        {monthLabel}
-                      </div>
-                      <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
-                    </div>
-                  )}
-                  <EventListCard e={e} disableVenueLink />
-                </React.Fragment>
-              );
-            })}
-
-            <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
-              {pageNum > 1 && (
-                <Link 
-                  href={pageNum === 2 ? "/events/" : `/events/page/${pageNum - 1}/`} 
-                  className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
-                  aria-label={`Go to page ${pageNum - 1}`}
-                >
-                  Previous
-                </Link>
-              )}
-              <Link 
-                href="/events/past/" 
-                className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
-                aria-label="View previous events"
-              >
-                Previous events
-              </Link>
-              {pageNum < totalPages && (
-                <Link 
-                  href={`/events/page/${pageNum + 1}/`} 
-                  className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
-                  aria-label={`Go to page ${pageNum + 1}`}
-                >
-                  Next page
-                </Link>
-              )}
-            </nav>
-          </div>
+          <UpcomingEventsList allEvents={allPublishedEvents} initialPage={pageNum} showPagination={true} />
 
           <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
             <div className="flex items-center justify-center">

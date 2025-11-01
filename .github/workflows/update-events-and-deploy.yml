@@ -1,57 +1,36 @@
-name: Weekly events export & deploy
+name: Weekly events update trigger
 
 on:
   schedule:
-    # Runs Monday 04:05 UTC (just after midnight ET during DST)
-    - cron: '5 4 * * 1'
+    # Runs Sunday night 23:00 ET = Monday 04:00 UTC (DST) or 05:00 UTC (EST)
+    # Using 04:00 UTC to cover both (slight delay in EST but acceptable)
+    - cron: '0 4 * * 1'
   workflow_dispatch: {}
 
 jobs:
-  export-and-deploy:
+  trigger-rebuild:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: Install dependencies
+      - name: Update weekly page timestamp
         run: |
-          corepack enable
-          pnpm install --frozen-lockfile
+          # Get current ET time
+          TIMESTAMP=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          # Update the JavaScript comment in the weekly page file
+          sed -i.bak "s|// Last updated: .*|// Last updated: $TIMESTAMP|" app/weekly-car-show-list-charlotte/page.tsx
+          rm -f app/weekly-car-show-list-charlotte/page.tsx.bak
 
-      - name: Run exporter (writes public/data & app/data)
-        env:
-          NODE_ENV: production
-          # If your exporter needs DB credentials, set them as secrets
-          # EXAMPLE_DB_URL: ${{ secrets.EXAMPLE_DB_URL }}
-        run: |
-          node ./scripts/export-json.mjs
-
-      - name: Commit updated data (if any)
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/data events public/data || true
+          git add app/weekly-car-show-list-charlotte/page.tsx || true
           if ! git diff --quiet --cached; then
-            git commit -m "chore(data): weekly events snapshot [ci skip]"
+            git commit -m "chore: weekly update trigger $(date +%Y-%m-%d)"
             git push
           else
-            echo "No data changes"
-          fi
-
-      # Option A: rely on push -> Netlify Build (if Netlify auto-deploy is set)
-      # Option B: Or call a Netlify build hook directly:
-      - name: Trigger Netlify deploy hook (optional)
-        run: |
-          if [ -n "${{ secrets.NETLIFY_DEPLOY_HOOK }}" ]; then
-            echo "Triggering Netlify deploy hook..."
-            curl -sS -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}" || true
-          else
-            echo "No NETLIFY_DEPLOY_HOOK secret configured — skipping deploy hook."
+            echo "No changes to commit"
           fi

@@ -3,10 +3,10 @@ import React, { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { loadEvents } from "@/lib/data";
-import { toEtDate, nowInET, formatDateET, formatTimeET } from "@/lib/et";
+import { toEtDate, nowInET } from "@/lib/et";
 import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/eventSchema";
 import Container from '@/components/Container';
-import EventListCard from "@/components/event/EventListCard";
+import UpcomingEventsList from "@/components/event/UpcomingEventsList.client";
 import WeeklyControls from "@/components/WeeklyControls.client";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import weeklyStyles from "@/components/Weekly.module.css";
@@ -40,11 +40,13 @@ function isValidUrl(u: any): u is string {
 }
 
 export default async function EventsAllPage() {
-  // use ET-normalized "now" so comparisons match displayed ET times
+  // Load all events - client component will filter based on browser time
+  const eventsData = await loadEvents();
+  type EventType = typeof eventsData[number];
+  
+  // Filter PUBLISHED events for JSON-LD (SEO - use server time for now)
   const now = nowInET();
-   const eventsData = await loadEvents();
-   type EventType = typeof eventsData[number];
-   const events = (eventsData as EventType[])
+  const publishedEvents = (eventsData as EventType[])
     .filter((e: EventType) => {
       if (e.status !== "PUBLISHED") return false;
       const dt = toEtDate(e.startAt);
@@ -58,9 +60,14 @@ export default async function EventsAllPage() {
     // sanitize URL field so a non-http value won't render as a site link
     .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
 
+  // All published events (for client-side filtering)
+  const allPublishedEvents = (eventsData as EventType[])
+    .filter((e: EventType) => e.status === "PUBLISHED")
+    .map(e => ({ ...e, url: isValidUrl(e.url) ? e.url.trim() : null }));
+
   // --- JSON-LD: ItemList with Event schemas (standardized format) ---
   // Keep it reasonable in size; cap at 100 items to avoid huge script tags.
-  const itemList = buildEventItemListSchema(events.slice(0, 100) as any[], {
+  const itemList = buildEventItemListSchema(publishedEvents.slice(0, 100) as any[], {
     name: "All Charlotte Car Shows",
     limit: 100,
   });
@@ -70,17 +77,6 @@ export default async function EventsAllPage() {
     [{ label: "Home", href: "/" }, { label: "All Events", current: true }],
     { currentPageUrl: "https://charlottecarshows.com/events/" }
   );
-
-  const urlFor = (p: number) => (p <= 1 ? "/events/" : `/events/page/${p}/`);
-
-  const monthFmt = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    year: "numeric",
-    timeZone: "America/New_York",
-  });
-
-  // track last rendered month when mapping events
-  let lastMonth: string | null = null;
 
   return (
     <Container>
@@ -113,10 +109,10 @@ export default async function EventsAllPage() {
            The Charlotte Car Show List
           </h1>
           <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
-            Browse upcoming Cars & Coffee, meets, cruise-ins, and Charlotte Metro automotive events across the greater Charlotte area — including Concord, Huntersville, Rock Hill, and beyond. Whether you’re into exotics, classics, muscle cars, or family car shows in Charlotte, NC, you’ll find it here.
+            Browse upcoming Cars & Coffee, meets, cruise-ins, and Charlotte Metro automotive events across the greater Charlotte area — including Concord, Huntersville, Rock Hill, and beyond. Whether you're into exotics, classics, muscle cars, or family car shows in Charlotte, NC, you'll find it here.
           </p>
           <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
-            Search or scroll through upcoming events to find your next weekend meet. If you don’t see your event listed, <a href="/contact/">submit your event here</a> to be featured on the Charlotte Car Shows list.
+            Search or scroll through upcoming events to find your next weekend meet. If you don't see your event listed, <a href="/contact/">submit your event here</a> to be featured on the Charlotte Car Shows list.
           </p>
         </header>
 
@@ -127,45 +123,7 @@ export default async function EventsAllPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
-          <div className="space-y-5 lg:col-span-8">
-            {events.slice(0, 15).map((e: EventType) => {
-              const monthLabel = monthFmt.format(toEtDate(e.startAt) ?? new Date(e.startAt));
-              const showMonth = monthLabel !== lastMonth;
-              lastMonth = monthLabel;
-
-              return (
-                <React.Fragment key={e.id}>
-                  {showMonth && (
-                    <div className="my-4 flex items-center gap-3" key={`m-${monthLabel}`} role="separator" aria-label={`Events in ${monthLabel}`}>
-                      <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
-                      <div className="text-xs font-medium uppercase tracking-wide text-[var(--fg)]/60">
-                        {monthLabel}
-                      </div>
-                      <div className="h-px flex-1 bg-[var(--fg)]/10" aria-hidden="true" />
-                    </div>
-                  )}
-                  <EventListCard e={e} disableVenueLink />
-                </React.Fragment>
-              );
-            })}
-
-            <nav className="mt-6 flex flex-wrap gap-3" aria-label="Pagination">
-              <Link 
-                href="/events/past/" 
-                className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
-                aria-label="View previous events"
-              >
-                Previous events
-              </Link>
-              <Link 
-                href="/events/page/2/" 
-                className="inline-flex items-center justify-center rounded-xl bg-gray-100 text-gray-900 px-4 py-2 text-sm font-semibold border border-gray-200 hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-brand-500/30"
-                aria-label="Go to page 2"
-              >
-                Next page
-              </Link>
-            </nav>
-          </div>
+          <UpcomingEventsList allEvents={allPublishedEvents} initialPage={1} showPagination={true} />
 
           <aside className="space-y-4 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
             <div className="flex items-center justify-center">

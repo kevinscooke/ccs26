@@ -1,4 +1,4 @@
-# Implementation Plan for Charlotte Car Shows
+# Implementation Plan - Charlotte Car Shows
 
 ## Executive Summary
 
@@ -18,139 +18,112 @@ Charlotte Car Shows is a Next.js-based static site deployed on Netlify, using Su
 - ✅ **JSON-LD Schema Standardization** — COMPLETE
 - ✅ **Event Component Standardization & Tailwind Migration** — COMPLETE
 - ✅ **Weekly Events Page Improvements** — COMPLETE (Monday-Sunday ordering, venue links disabled)
+- 🔥 **High Priority (G5):** Fix Weekly Events Auto-Update Workflow — Sunday night scheduling issue
 - ⏳ **Active:** Foundation & Standardization (documentation, cursor rules, component patterns)
 - ⏳ **Active:** Core Features Enhancement (SEO, design tokens, performance)
 - ⏳ **Active:** Accessibility Improvements (automated checks complete, browser audits pending)
 
----
-
-## PRD Goals Analysis
-
-Based on PRD.md, we have four primary goals:
-
-### G1: Analyze High-Value Pages & Standardize Documentation
-**Status:** ✅ Complete (Analysis Done)
-**Target Pages:**
-- Home (`app/(marketing)/page.tsx`) ✅ Analyzed
-- Events Index (`app/events/page.tsx`) ✅ Analyzed
-- Weekly List (`app/weekly-car-show-list-charlotte/page.tsx`) ✅ Analyzed
-- Charlotte Auto Show (`app/events/charlotte-auto-show/page.tsx`) ✅ Analyzed
-
-**Findings:**
-- Consistent use of `Container`, `Breadcrumbs`, `EventListCard` components
-- SEO metadata patterns are consistent across pages
-- JSON-LD structured data implementation standardized ✅
-- Design token usage migrated to Tailwind utilities ✅
-- Ad integration patterns are consistent
-
-### G2: Track Pages Needing Work (CSS, SEO, etc.)
-**Status:** ⏳ In Progress
-**Pages Requiring Attention:**
-- [ ] Ensure consistent use of design tokens (migration to Tailwind complete, audit remaining)
-- [ ] Complete accessibility audit (automated checks done, browser audits pending)
-- [ ] Verify canonical URLs and Open Graph metadata completeness
-- [ ] Check mobile responsiveness on all high-value pages
-- [ ] Review performance metrics (LCP, CLS, FID)
-
-### G3: Determine High-Value Tasks to Prioritize Next
-**Status:** ✅ Complete
-**Recommended Priority (Updated):**
-1. ✅ ~~Standardize component patterns~~ — COMPLETE (EventListCard is standard)
-2. ✅ ~~Complete JSON-LD schema markup~~ — COMPLETE
-3. ✅ ~~Create AutoFair 2026 page~~ — COMPLETE (G4)
-4. Performance optimization (Core Web Vitals) — Active
-5. Accessibility audit and fixes — In Progress (automated complete, browser audits pending)
+**Recent Rollback:**
+- ⚠️ Venue slug normalization work rolled back to commit `25478d7` (Oct 30, 2025) — changes preserved on branch `venue-slug-changes`, site stable
 
 ---
 
-## Feature Analysis
+## Active Tasks (In Priority Order)
 
-### Identified Features:
+### G5: Fix Weekly Events Auto-Update Workflow 🔥
+**Priority:** High | **Effort:** Low (1-2 hours) | **Impact:** Operational reliability, user experience
 
-1. **Event Listings System**
-   - Dynamic event loading from JSON export
-   - Filtering by date, status, featured
-   - Pagination support
-   - Past events archive
+**Problem:**
+- Current GitHub workflow runs Monday 04:05 UTC (Monday morning ET)
+- Should run Sunday night to prepare for new week
+- Not reliably triggering weekly updates
+- Better automation approach needed
 
-2. **Search Functionality**
-   - Client-side search via `SearchBox` component
-   - Search index generation (`scripts/build-search-index.ts`)
-   - Search provider context
+**Tasks:**
+- [ ] Review current workflow (`.github/workflows/update-events-and-deploy.yml`)
+- [ ] Update cron schedule to run Sunday night ET (23:00 ET Sunday = Monday 04:00 UTC during DST, 05:00 UTC during EST)
+- [ ] Consider alternative approaches:
+  - [ ] On-demand rebuilds via webhook from Supabase
+  - [ ] Netlify scheduled functions
+  - [ ] Manual trigger + better monitoring
+- [ ] Add workflow monitoring/alerting for failures
+- [ ] Test workflow execution and verify weekly updates
+- [ ] Document the automation approach
 
-3. **SEO & Structured Data**
-   - Metadata per page (title, description, Open Graph, Twitter)
-   - JSON-LD schema (Organization, WebSite, Event, ItemList) ✅ Standardized
-   - Canonical URLs
-   - Sitemap generation
+**Files Affected:**
+- `.github/workflows/update-events-and-deploy.yml`
+- `scripts/export-json.mjs` (verify it works correctly)
+- Consider adding workflow status checks
 
-4. **Weekly View**
-   - Week-based filtering (Monday-Sunday) ✅ Fixed ordering
-   - Day-grouped event display
-   - Weekly controls for navigation
-
-5. **Event Series Pages**
-   - Special pages for recurring events (Charlotte Auto Show, AutoFair ✅)
-   - Year-based filtering and organization
-   - Past years archive
-
-6. **Ad Integration**
-   - Dynamic AdSlot component (SSR disabled)
-   - Responsive ad sizes
-   - Header/Footer ad bars
-
-7. **Responsive Design**
-   - Mobile-first approach
-   - Grid layouts for desktop/tablet
-   - Sticky sidebars on desktop
-
-### Feature Categorization:
-
-**Must-Have Features:**
-- ✅ Event listings and detail pages
-- ✅ Search functionality
-- ✅ SEO optimization
-- ✅ Mobile responsiveness
-- ✅ Basic ad integration
-
-**Should-Have Features:**
-- ✅ Weekly view (improved ordering)
-- ✅ Event series pages
-- Advanced filtering
-- Performance optimization — Active
-- Accessibility compliance — In Progress
-
-**Nice-to-Have Features:**
-- Advanced search filters
-- User accounts/submissions
-- Social sharing enhancements
-- Analytics dashboard
+**Alternative Approaches:**
+1. **Webhook from Supabase** - Trigger rebuild when data changes (best for real-time)
+2. **Netlify Scheduled Functions** - Run on Netlify's infrastructure (simpler than GitHub Actions)
+3. **Improved GitHub Actions** - Better cron timing, error handling, notifications
+4. **Hybrid Approach** - Scheduled + on-demand triggers
 
 ---
 
-## Recommended Tech Stack (Current Stack Confirmed)
+### Performance Optimization
+**Priority:** Medium | **Effort:** Medium (4-6 hours) | **Impact:** User experience, SEO
 
-### Frontend:
-- **Framework:** Next.js 14.2.5 - Proven for static export, excellent SEO, App Router for modern React patterns
-- **Documentation:** https://nextjs.org/docs
+**Tasks:**
+- [ ] Run Lighthouse audit on high-value pages
+- [ ] Optimize images (verify Next.js Image usage)
+- [ ] Review bundle size
+- [ ] Implement code splitting where needed
+- [ ] Address Core Web Vitals issues
 
-### Styling:
-- **Framework:** Tailwind CSS 3.4.13 - Utility-first, design token integration
-- **Documentation:** https://tailwindcss.com/docs
+**Files Affected:**
+- All high-value pages
+- Image components
+- Bundle optimization
 
-### Database:
-- **Database:** Supabase (PostgreSQL) - Serverless, real-time capabilities, Prisma integration
-- **Documentation:** https://supabase.com/docs
+---
 
-### Deployment:
-- **Platform:** Netlify - Optimized for Next.js static exports
-- **Documentation:** https://docs.netlify.com/
+### Component Pattern Documentation
+**Priority:** Low | **Effort:** Low (1-2 hours) | **Impact:** Developer experience
 
-### Additional Tools:
-- **ORM:** Prisma - Type-safe database access
-- **Documentation:** https://www.prisma.io/docs
-- **Search:** Client-side index (custom implementation)
-- **Ads:** Google AdSense (via AdSlot component)
+**Tasks:**
+- [ ] Document component usage patterns (EventListCard is now the standard)
+- [ ] Create component examples
+- [ ] Standardize prop interfaces
+
+**Files Affected:**
+- Component files
+- `Docs/05_UI_UX.md` (update)
+- `.cursor/rules/patterns.mdc` (update to reflect EventListCard as standard)
+
+---
+
+### Advanced Filtering & Search
+**Priority:** Low | **Effort:** High (8-12 hours) | **Impact:** User experience
+
+**Tasks:**
+- [ ] Enhance event filtering UI
+- [ ] Add date range picker for weekly view
+- [ ] Improve search relevance
+- [ ] Add event categories/tags UI
+
+**Files Affected:**
+- `app/events/page.tsx`
+- `app/weekly-car-show-list-charlotte/page.tsx`
+- Search components
+
+---
+
+### Testing Infrastructure
+**Priority:** Low | **Effort:** High (10-16 hours) | **Impact:** Code quality, maintainability
+
+**Tasks:**
+- [ ] Set up testing framework (Jest, React Testing Library)
+- [ ] Write tests for critical components
+- [ ] Set up E2E testing (Playwright)
+- [ ] Add to CI/CD pipeline
+
+**Files Affected:**
+- New: `__tests__/` or `tests/` directory
+- CI/CD configuration
+- Test utilities
 
 ---
 
@@ -159,10 +132,10 @@ Based on PRD.md, we have four primary goals:
 ### Stage 1: Foundation & Standardization ⏳ (In Progress)
 
 #### 1.1 Documentation Structure
-- [x] Create `Docs/Implementation.md` (this file) ✅
-- [ ] Complete `Docs/Project_Structure.md` with current architecture
-- [ ] Complete `Docs/UI_UX_doc.md` with design system
-- [ ] Update `Docs/Bug_Tracking.md` with identified issues
+- [x] Create `Docs/02_Implementation_Plan.md` (this file) ✅
+- [ ] Complete `Docs/04_Project_Structure.md` with current architecture
+- [ ] Complete `Docs/05_UI_UX.md` with design system
+- [ ] Update `Docs/99_Bug_Tracking.md` with identified issues
 
 #### 1.2 Cursor Rules Enhancement
 - [ ] Enhance `.cursor/rules/arch.mdc` with project-specific architecture guidelines
@@ -260,22 +233,113 @@ Based on PRD.md, we have four primary goals:
 
 ---
 
-## High-Value Tasks Prioritization
+## PRD Goals Analysis
 
-### Immediate (Week 1-2):
-1. ✅ ~~Complete documentation structure~~ — In Progress
-2. ✅ ~~Standardize JSON-LD schema~~ — COMPLETE
-3. ✅ ~~Create AutoFair 2026 page~~ — COMPLETE
+Based on `Docs/01_PRD.md`, we have primary goals:
 
-### Short-term (Week 3-4):
-4. ✅ ~~Design token consistency~~ — COMPLETE (migration done)
-5. Performance audit — Active
-6. Accessibility fixes — In Progress (automated complete)
+### G1: Analyze High-Value Pages & Standardize Documentation
+**Status:** ✅ Complete (Analysis Done)
+**Target Pages:**
+- Home (`app/(marketing)/page.tsx`) ✅ Analyzed
+- Events Index (`app/events/page.tsx`) ✅ Analyzed
+- Weekly List (`app/weekly-car-show-list-charlotte/page.tsx`) ✅ Analyzed
+- Charlotte Auto Show (`app/events/charlotte-auto-show/page.tsx`) ✅ Analyzed
 
-### Medium-term (Month 2):
-7. Component pattern documentation — Active
-8. Advanced filtering — Planned
-9. Testing infrastructure — Planned
+**Findings:**
+- Consistent use of `Container`, `Breadcrumbs`, `EventListCard` components
+- SEO metadata patterns are consistent across pages
+- JSON-LD structured data implementation standardized ✅
+- Design token usage migrated to Tailwind utilities ✅
+- Ad integration patterns are consistent
+
+### G2: Track Pages Needing Work (CSS, SEO, etc.)
+**Status:** ⏳ In Progress
+**Pages Requiring Attention:**
+- [ ] Ensure consistent use of design tokens (migration to Tailwind complete, audit remaining)
+- [ ] Complete accessibility audit (automated checks done, browser audits pending)
+- [ ] Verify canonical URLs and Open Graph metadata completeness
+- [ ] Check mobile responsiveness on all high-value pages
+- [ ] Review performance metrics (LCP, CLS, FID)
+
+### G3: Determine High-Value Tasks to Prioritize Next
+**Status:** ✅ Complete
+**Recommended Priority (Updated):**
+1. ✅ ~~Standardize component patterns~~ — COMPLETE (EventListCard is standard)
+2. ✅ ~~Complete JSON-LD schema markup~~ — COMPLETE
+3. ✅ ~~Create AutoFair 2026 page~~ — COMPLETE (G4)
+4. Performance optimization (Core Web Vitals) — Active
+5. Accessibility audit and fixes — In Progress (automated complete, browser audits pending)
+
+### G5: Fix GitHub Workflow for Weekly Events Auto-Update
+**Status:** 🔥 **High Priority Active**
+- Workflow not running reliably on Sunday night
+- Current schedule runs Monday morning, should run Sunday night
+- See Active Tasks section above for details
+
+---
+
+## Feature Analysis
+
+### Identified Features:
+
+1. **Event Listings System**
+   - Dynamic event loading from JSON export
+   - Filtering by date, status, featured
+   - Pagination support
+   - Past events archive
+
+2. **Search Functionality**
+   - Client-side search via `SearchBox` component
+   - Search index generation (`scripts/build-search-index.ts`)
+   - Search provider context
+
+3. **SEO & Structured Data**
+   - Metadata per page (title, description, Open Graph, Twitter)
+   - JSON-LD schema (Organization, WebSite, Event, ItemList) ✅ Standardized
+   - Canonical URLs
+   - Sitemap generation
+
+4. **Weekly View**
+   - Week-based filtering (Monday-Sunday) ✅ Fixed ordering
+   - Day-grouped event display
+   - Weekly controls for navigation
+
+5. **Event Series Pages**
+   - Special pages for recurring events (Charlotte Auto Show, AutoFair ✅)
+   - Year-based filtering and organization
+   - Past years archive
+
+6. **Ad Integration**
+   - Dynamic AdSlot component (SSR disabled)
+   - Responsive ad sizes
+   - Header/Footer ad bars
+
+7. **Responsive Design**
+   - Mobile-first approach
+   - Grid layouts for desktop/tablet
+   - Sticky sidebars on desktop
+
+### Feature Categorization:
+
+**Must-Have Features:**
+- ✅ Event listings and detail pages
+- ✅ Search functionality
+- ✅ SEO optimization
+- ✅ Mobile responsiveness
+- ✅ Basic ad integration
+
+**Should-Have Features:**
+- ✅ Weekly view (improved ordering)
+- ✅ Event series pages
+- Advanced filtering
+- Performance optimization — Active
+- Accessibility compliance — In Progress
+
+**Nice-to-Have Features:**
+- Advanced search filters
+- User accounts/submissions
+- Social sharing enhancements
+- Analytics dashboard
 
 ---
 
@@ -302,6 +366,38 @@ Based on PRD.md, we have four primary goals:
 - **Runtime:** Use `loadEvents()` for dynamic data
 - **Static:** Export to JSON for build-time generation
 - **Search Index:** Generate on build via `build:search-index` script
+
+---
+
+## Recommended Implementation Order
+
+1. **Immediate (Next Sprint):**
+   - G5: Fix GitHub workflow for weekly events — Operational reliability
+   - Browser-based accessibility audits — Compliance
+   - Performance optimization — User experience
+
+2. **Short-term (Next Month):**
+   - Component pattern documentation — Developer experience
+   - Testing infrastructure setup — Code quality foundation
+
+3. **Medium-term (Month 2+):**
+   - Advanced filtering — User experience enhancement
+   - Advanced features and enhancements
+
+---
+
+## Success Metrics
+
+### Short-Term (Next Sprint)
+- [ ] GitHub workflow fixed and tested (G5)
+- [ ] Lighthouse accessibility score > 90 on all pages
+- [ ] Performance scores > 90 on all pages
+- [ ] Accessibility issues resolved
+
+### Medium-Term (Month 2)
+- [ ] Component patterns documented
+- [ ] Testing infrastructure in place
+- [ ] Advanced filtering implemented (if prioritized)
 
 ---
 
@@ -351,6 +447,7 @@ Based on PRD.md, we have four primary goals:
 - [x] Update metadata and structured data ✅
 - [x] Add to navigation (Footer and TopNav) ✅
 - [x] Add sidebar with skyscraper ad (matches `/events/`) ✅
+- [x] UX improvements (reorganization, SEO copywriting) ✅
 - [x] Test and verify functionality after deploy ✅
 
 **Files Affected:**
@@ -422,7 +519,7 @@ Based on PRD.md, we have four primary goals:
 - Cleaned up CSS files (`globals.css`, `Weekly.module.css`)
 
 **Completed Tasks:**
-- [x] Consolidated EventCard into EventListCard (enhanced EventListCard to handle optional slug, multiple description fields, tags) ✅
+- [x] Consolidated EventCard into EventListCard ✅
 - [x] Deleted EventCard components ✅
 - [x] Migrated EventListCard from `.ccs-card` to Tailwind utilities ✅
 - [x] Migrated EventListCard buttons from `.ccs-btn`/`.ccs-btn-primary` to Tailwind utilities ✅
@@ -470,20 +567,13 @@ Based on PRD.md, we have four primary goals:
 
 **Completed Tasks:**
 - [x] Add ARIA labels to interactive elements ✅
-  - CalendarButtons: Added aria-labels for "Add to Google" and "Download .ics"
-  - EventListCard: Added aria-labels for "View Details" and "Official Site" buttons
-  - Pagination links: Added descriptive aria-labels
-  - Month separators: Added role="separator" with aria-label for screen readers
-  - SearchBox: Added comprehensive ARIA labels for results listbox items
+  - CalendarButtons, EventListCard, Pagination links, Month separators, SearchBox
 - [x] Ensure keyboard navigation ✅
   - SearchBox: Full keyboard navigation with arrow keys (Up/Down), Enter to select, Escape to close
   - All interactive elements: Focus states visible with `focus:ring-2 focus:ring-brand-500/30`
-  - CalendarButtons: Added focus states
 - [x] Run accessibility audit (automated checks) ✅
-  - Created `Docs/Accessibility_Audit.md` with audit checklist
-  - Created `Docs/Accessibility_Audit_Summary.md` for quick reference
-  - Created `scripts/accessibility-audit.md` step-by-step guide
-  - Created `scripts/check-accessibility.sh` automated check script
+  - Created `Docs/07_Accessibility_Audit.md` with audit checklist
+  - Created automated check script
   - Fixed empty alt text on event images ✅
   - Fixed form inputs without explicit id/htmlFor associations ✅
   - Fixed links with incomplete rel attributes ✅
@@ -491,10 +581,8 @@ Based on PRD.md, we have four primary goals:
 **Files Modified:**
 - ✅ `components/event/CalendarButtons.tsx` (ARIA labels, focus states)
 - ✅ `components/event/EventListCard.tsx` (ARIA labels for action buttons)
-- ✅ `components/search/SearchBox.tsx` (ARIA labels, keyboard navigation with arrow keys)
-- ✅ `app/events/page.tsx` (month separators, pagination aria-labels)
-- ✅ `app/events/page/[page]/page.tsx` (month separators, pagination aria-labels)
-- ✅ `app/events/past/page.tsx` (pagination aria-labels)
+- ✅ `components/search/SearchBox.tsx` (ARIA labels, keyboard navigation)
+- ✅ `app/events/page.tsx`, `app/events/page/[page]/page.tsx`, `app/events/past/page.tsx` (pagination aria-labels)
 
 **Remaining Tasks:**
 - [ ] Manual testing and browser-based audits (Lighthouse, axe DevTools) - Scheduled
@@ -531,5 +619,7 @@ Based on PRD.md, we have four primary goals:
 
 1. Continue Stage 1: Foundation & Standardization (documentation, cursor rules)
 2. Complete Stage 2: Core Features Enhancement (performance optimization, accessibility browser audits)
-3. Set up tracking for progress on each checkbox
-4. Schedule regular reviews of high-value pages
+3. Fix G5: Weekly Events Auto-Update Workflow (high priority)
+4. Set up tracking for progress on each checkbox
+5. Schedule regular reviews of high-value pages
+

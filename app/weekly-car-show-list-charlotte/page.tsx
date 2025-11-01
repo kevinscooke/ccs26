@@ -19,6 +19,8 @@ import { buildEventItemListSchema, buildBreadcrumbListSchema } from "@/lib/event
 
 const AdSlot = dynamic(() => import("@/components/ads/AdSlot"), { ssr: false });
 
+// Last updated: 2024-01-01 00:00:00 EST
+
 export const metadata: Metadata = {
   title: "Charlotte Weekly Car Show List | Charlotte Car Shows",
   description:
