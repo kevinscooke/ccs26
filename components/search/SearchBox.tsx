@@ -171,12 +171,14 @@ export function SearchBox({ className = "" }: { className?: string }) {
           role="combobox"
           aria-expanded={open}
           aria-haspopup="listbox"
+          aria-controls={results.length > 0 ? "search-results-listbox" : undefined}
         >
           {loading && <div className="p-3 text-sm text-gray-600" role="status" aria-live="polite">Loading index…</div>}
           {error && <div className="p-3 text-sm text-red-700 bg-red-50" role="alert" aria-live="assertive">Failed to load search index.</div>}
           {!loading && !error && results.length === 0 && <div className="p-3 text-sm text-gray-600" role="status" aria-live="polite">No matches.</div>}
           {!loading && !error && results.length > 0 && (
             <ul 
+              id="search-results-listbox"
               className="max-h-80 overflow-auto divide-y divide-gray-100" 
               role="listbox"
               aria-label={`${results.length} search result${results.length !== 1 ? 's' : ''}`}

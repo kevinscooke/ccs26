@@ -109,10 +109,10 @@ export default async function EventsAllPage() {
            The Charlotte Car Show List
           </h1>
           <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
-            Browse upcoming Cars & Coffee, meets, cruise-ins, and Charlotte Metro automotive events across the greater Charlotte area — including Concord, Huntersville, Rock Hill, and beyond. Whether you're into exotics, classics, muscle cars, or family car shows in Charlotte, NC, you'll find it here.
+            Browse upcoming Cars & Coffee, meets, cruise-ins, and Charlotte Metro automotive events across the greater Charlotte area — including Concord, Huntersville, Rock Hill, and beyond. Whether you&apos;re into exotics, classics, muscle cars, or family car shows in Charlotte, NC, you&apos;ll find it here.
           </p>
           <p className="max-w-3xl text-base text-[var(--fg)]/70 lg:text-[15px]">
-            Search or scroll through upcoming events to find your next weekend meet. If you don't see your event listed, <a href="/contact/">submit your event here</a> to be featured on the Charlotte Car Shows list.
+            Search or scroll through upcoming events to find your next weekend meet. If you don&apos;t see your event listed, <a href="/contact/">submit your event here</a> to be featured on the Charlotte Car Shows list.
           </p>
         </header>
 
